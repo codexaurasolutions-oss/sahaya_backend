@@ -1,0 +1,12 @@
+[phases.setup]
+nixPkgs = ["php82", "php82Packages.composer"]
+
+[phases.build]
+cmds = [
+  "composer install --optimize-autoloader --no-dev --ignore-platform-reqs",
+  "mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache",
+  "chmod -R 775 storage bootstrap/cache"
+]
+
+[start]
+cmd = "mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache && chmod -R 777 storage bootstrap/cache && php artisan config:clear && php artisan cache:clear && php artisan route:clear && php artisan config:cache && php artisan migrate --force && (while true; do php artisan schedule:run >> storage/logs/scheduler.log 2>&1; sleep 60; done) & php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"

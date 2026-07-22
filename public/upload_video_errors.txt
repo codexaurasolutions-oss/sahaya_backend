@@ -1,0 +1,638 @@
+2024-09-27 07:35:18{"videoLibraryId":315631,"guid":"30974793-4dc2-47ff-a68d-a741a81a24d9","title":"variant_video11727422518","dateUploaded":"2024-09-27T07:35:18.4566447Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-09-27 07:35:18{"success":true,"message":"OK","statusCode":200}
+
+2024-09-27 07:43:22{"videoLibraryId":315631,"guid":"5ef53b20-1c52-4f02-bcd6-ed777be136f8","title":"variant_video11727423002","dateUploaded":"2024-09-27T07:43:22.0797281Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-09-27 07:43:22{"success":true,"message":"OK","statusCode":200}
+
+2024-09-27 07:46:31{"videoLibraryId":315631,"guid":"ed5d01d9-8146-4c73-9017-eb2c4688f4b3","title":"variant_video11727423191","dateUploaded":"2024-09-27T07:46:31.1425931Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-09-27 07:46:31{"success":true,"message":"OK","statusCode":200}
+
+2024-09-27 07:50:20{"videoLibraryId":315631,"guid":"ffc8f62c-00bb-462c-947a-c51943521385","title":"variant_video11727423420","dateUploaded":"2024-09-27T07:50:20.4399227Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-09-27 07:50:20{"success":true,"message":"OK","statusCode":200}
+
+2024-09-27 10:33:56{"videoLibraryId":315631,"guid":"745c6131-487a-4fde-b456-36c1334d05de","title":"variant_video11727433236","dateUploaded":"2024-09-27T10:33:56.3846186Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-09-27 10:33:56{"success":true,"message":"OK","statusCode":200}
+
+2024-10-01 08:10:28{"videoLibraryId":315631,"guid":"1b309216-d5b8-4d7b-b631-4565b3b5cfa1","title":"variant_video11727770228","dateUploaded":"2024-10-01T08:10:28.6922283Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-01 08:10:29{"success":true,"message":"OK","statusCode":200}
+
+2024-10-01 09:39:30{"videoLibraryId":315631,"guid":"2aa8fa9f-eed5-4bcd-b20d-a093456d4320","title":"variant_video11727775570","dateUploaded":"2024-10-01T09:39:30.1369565Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-01 09:39:30{"success":true,"message":"OK","statusCode":200}
+
+2024-10-01 09:53:50{"videoLibraryId":315631,"guid":"b7ea6da6-ebb4-47bf-a40f-e7887bc31b85","title":"variant_video11727776430","dateUploaded":"2024-10-01T09:53:50.695494Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-01 09:53:52{"success":true,"message":"OK","statusCode":200}
+
+2024-10-01 10:21:22{"videoLibraryId":315631,"guid":"24d7242e-56bd-4d7a-bfbb-340e700cefa1","title":"variant_video11727778082","dateUploaded":"2024-10-01T10:21:22.6365757Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-01 10:21:22{"success":true,"message":"OK","statusCode":200}
+
+2024-10-01 10:22:53{"videoLibraryId":315631,"guid":"5856dd63-f9d6-4c1d-a287-437313b32f8c","title":"variant_video11727778173","dateUploaded":"2024-10-01T10:22:53.2485167Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-01 10:22:53{"success":true,"message":"OK","statusCode":200}
+
+2024-10-01 13:20:45{"videoLibraryId":315631,"guid":"77ec23a9-1dd7-4973-bae8-a78e9521d5d0","title":"variant_video11727788840","dateUploaded":"2024-10-01T13:20:45.6173446Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-01 13:20:48{"success":true,"message":"OK","statusCode":200}
+
+2024-10-01 14:24:24{"videoLibraryId":315631,"guid":"d82d4f07-d756-41da-bf6d-af9319ae8d52","title":"variant_video101727792663","dateUploaded":"2024-10-01T14:24:24.1849201Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-01 14:24:28{"success":true,"message":"OK","statusCode":200}
+
+2024-10-01 14:29:54{"videoLibraryId":315631,"guid":"b3f6ec4b-43b7-42fd-9fbc-479875aa03af","title":"variant_video101727792994","dateUploaded":"2024-10-01T14:29:54.8212984Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-01 14:29:55{"success":true,"message":"OK","statusCode":200}
+
+2024-10-01 15:14:47{"videoLibraryId":315631,"guid":"99eda25e-dc43-4342-99b8-1bce805d3b07","title":"variant_video101727795687","dateUploaded":"2024-10-01T15:14:47.5684245Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-01 15:14:49{"success":true,"message":"OK","statusCode":200}
+
+2024-10-01 15:19:33{"videoLibraryId":315631,"guid":"ce51172e-db75-4f1d-a875-b9b6bbdfe23f","title":"variant_video101727795973","dateUploaded":"2024-10-01T15:19:33.2797771Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-01 15:19:36{"success":true,"message":"OK","statusCode":200}
+
+2024-10-03 07:37:03{"videoLibraryId":315631,"guid":"85a9eb89-a517-45eb-8729-1a74642cdace","title":"variant_video11727941023","dateUploaded":"2024-10-03T07:37:03.7784374Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-03 07:37:04{"success":true,"message":"OK","statusCode":200}
+
+2024-10-03 11:42:18{"videoLibraryId":315631,"guid":"2b29bcb4-f7cb-4e72-8c24-a3cce0b90a48","title":"variant_video11727955738","dateUploaded":"2024-10-03T11:42:18.9486889Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-03 11:42:19{"success":true,"message":"OK","statusCode":200}
+
+2024-10-03 12:12:57{"videoLibraryId":315631,"guid":"14ce363f-5d3f-4b91-a517-bb0134903ece","title":"variant_video11727957577","dateUploaded":"2024-10-03T12:12:57.4023855Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-03 12:12:57{"success":true,"message":"OK","statusCode":200}
+
+2024-10-03 12:14:41{"videoLibraryId":315631,"guid":"b9e5ca50-d1c7-4dcb-aeb7-e039a2b0b36d","title":"variant_video11727957681","dateUploaded":"2024-10-03T12:14:41.4995827Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-03 12:14:42{"success":true,"message":"OK","statusCode":200}
+
+2024-10-03 12:29:46{"videoLibraryId":315631,"guid":"7f03308b-39c4-4330-a5dd-3b4a76377ef4","title":"variant_video11727958586","dateUploaded":"2024-10-03T12:29:46.2989502Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-03 12:29:46{"success":true,"message":"OK","statusCode":200}
+
+2024-10-03 14:05:10{"videoLibraryId":315631,"guid":"58f7a03d-d074-443f-8cfa-3b968917a4c7","title":"variant_video11727964309","dateUploaded":"2024-10-03T14:05:09.9760916Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-03 14:05:10{"success":true,"message":"OK","statusCode":200}
+
+2024-10-03 14:10:39{"videoLibraryId":315631,"guid":"448c7320-bb91-40ef-85c7-276abe5edc0f","title":"variant_video11727964639","dateUploaded":"2024-10-03T14:10:39.8794538Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-03 14:10:41{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 05:49:43{"videoLibraryId":315631,"guid":"e143b2e0-d126-4f22-b86b-303039d34f50","title":"variant_video11728020983","dateUploaded":"2024-10-04T05:49:43.0920009Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 05:49:43{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 05:52:54{"videoLibraryId":315631,"guid":"3b3e7895-ac79-4faa-a2dd-2dae8848b2d3","title":"variant_video11728021174","dateUploaded":"2024-10-04T05:52:54.5425799Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 05:52:54{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 05:53:05{"videoLibraryId":315631,"guid":"dae196b5-b17a-4f4c-ab7e-97b095073a1c","title":"variant_video11728021185","dateUploaded":"2024-10-04T05:53:05.335006Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 05:53:05{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 05:53:40{"videoLibraryId":315631,"guid":"323438f3-4c5e-4d97-9a53-484a6431a8a2","title":"variant_video11728021219","dateUploaded":"2024-10-04T05:53:40.0292237Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 05:53:40{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 05:58:47{"videoLibraryId":315631,"guid":"c095728b-431f-4f43-933b-029fee733484","title":"variant_video11728021527","dateUploaded":"2024-10-04T05:58:47.5648017Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 05:58:48{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 06:14:50{"videoLibraryId":315631,"guid":"e39dcfb3-d25d-45b4-abcb-6f0c2d1ea940","title":"variant_video11728022490","dateUploaded":"2024-10-04T06:14:50.6091269Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 06:14:51{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 06:39:53{"videoLibraryId":315631,"guid":"3b6062aa-c3f7-44fa-86c0-33de55c19d4f","title":"variant_video11728023993","dateUploaded":"2024-10-04T06:39:53.3215603Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 06:39:53{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 06:53:54{"videoLibraryId":315631,"guid":"cd0f4018-cbd6-4fd4-bb5c-e484c515e47a","title":"variant_video11728024834","dateUploaded":"2024-10-04T06:53:54.1182472Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 06:53:54{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 06:54:38{"videoLibraryId":315631,"guid":"609c4b16-db18-4baa-a468-825c48a68e0e","title":"variant_video11728024878","dateUploaded":"2024-10-04T06:54:38.0986216Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 06:54:38{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 06:55:08{"videoLibraryId":315631,"guid":"b7cc3472-5d55-457c-aa6f-4dd25e9ba86e","title":"variant_video11728024908","dateUploaded":"2024-10-04T06:55:08.7317026Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 06:55:09{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 14:35:52{"videoLibraryId":315631,"guid":"8598668d-97e9-47a4-92e5-1f1516a4bc1d","title":"variant_video11728052552","dateUploaded":"2024-10-04T14:35:52.3436729Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 14:35:52{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 14:36:48{"videoLibraryId":315631,"guid":"d391f7e6-b866-4c62-b970-6dc2b2eb3a05","title":"variant_video11728052608","dateUploaded":"2024-10-04T14:36:48.715146Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 14:36:49{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 14:37:43{"videoLibraryId":315631,"guid":"7c836e2e-a3ec-4eee-b7b0-accc0d192777","title":"variant_video11728052663","dateUploaded":"2024-10-04T14:37:43.3170762Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 14:37:43{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 14:40:52{"videoLibraryId":315631,"guid":"66a4a7f8-f5d4-4fa4-aef8-15ecca51c8f9","title":"variant_video11728052852","dateUploaded":"2024-10-04T14:40:52.1186581Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 14:40:52{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 14:42:54{"videoLibraryId":315631,"guid":"5ef0e080-1eea-4528-b708-e65572415af2","title":"variant_video11728052974","dateUploaded":"2024-10-04T14:42:54.8914047Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 14:42:55{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 14:55:26{"videoLibraryId":315631,"guid":"3a7bb202-e4c3-42f7-8a43-edffa0b34ecf","title":"variant_video11728053726","dateUploaded":"2024-10-04T14:55:26.4655909Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 14:55:26{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 15:11:39{"videoLibraryId":315631,"guid":"d858289f-585b-402b-8be3-628324fcf776","title":"variant_video11728054698","dateUploaded":"2024-10-04T15:11:39.0289608Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 15:11:39{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 15:12:14{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 15:12:14{"videoLibraryId":315631,"guid":"ff3b9f63-2e98-4727-b3b7-60a9eba57c82","title":"variant_video11728054734","dateUploaded":"2024-10-04T15:12:14.2087612Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 15:12:14{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 15:26:30{"videoLibraryId":315631,"guid":"d8dbc0f4-3498-47aa-803e-d077ab6be160","title":"variant_video31728055590","dateUploaded":"2024-10-04T15:26:30.6038789Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 15:26:30{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 15:27:03{"videoLibraryId":315631,"guid":"6eb9e060-16a8-473e-b620-580c8252d4a4","title":"variant_video11728055622","dateUploaded":"2024-10-04T15:27:03.0158208Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 15:27:03{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 15:44:32{"videoLibraryId":315631,"guid":"88f0d889-0201-4be8-ac4f-e09ee31ccab0","title":"variant_video11728056672","dateUploaded":"2024-10-04T15:44:32.304075Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 15:44:32{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 16:13:20{"videoLibraryId":315631,"guid":"3fd4f305-7bb0-48f1-8075-db5ed238d238","title":"variant_video11728058400","dateUploaded":"2024-10-04T16:13:20.3340029Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 16:13:20{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 16:16:39{"videoLibraryId":315631,"guid":"c81da56b-c60a-4df6-8cdb-0455aaa5c2f4","title":"variant_video11728058599","dateUploaded":"2024-10-04T16:16:39.9567545Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 16:16:40{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 16:20:25{"videoLibraryId":315631,"guid":"2a01839f-aaef-44ae-9751-d5a954c33bf0","title":"variant_video11728058825","dateUploaded":"2024-10-04T16:20:25.2517135Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 16:20:25{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 16:21:05{"videoLibraryId":315631,"guid":"05ecbc6c-effe-499c-a01f-06481218dcb2","title":"variant_video11728058865","dateUploaded":"2024-10-04T16:21:05.7646012Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 16:21:06{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 16:21:31{"videoLibraryId":315631,"guid":"929873f4-bc97-4674-83cd-fb80fc4eccfd","title":"variant_video11728058891","dateUploaded":"2024-10-04T16:21:31.8716289Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 16:21:32{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 16:36:50{"videoLibraryId":315631,"guid":"51c0a346-8c39-41cb-9eea-1ae2d05e783a","title":"variant_video11728059810","dateUploaded":"2024-10-04T16:36:50.6971829Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 16:36:51{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 16:37:25{"videoLibraryId":315631,"guid":"c69547ab-38e4-4d56-8816-7b74b6ec7ce9","title":"variant_video11728059845","dateUploaded":"2024-10-04T16:37:25.7457497Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 16:37:26{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 16:37:58{"videoLibraryId":315631,"guid":"d5804ef8-2557-419c-bcb1-5f5b4d7bf596","title":"variant_video11728059878","dateUploaded":"2024-10-04T16:37:58.0516566Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 16:37:58{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 16:45:01{"videoLibraryId":315631,"guid":"da75ddc7-928a-4f7e-a43f-a46ba8c37b59","title":"variant_video11728060301","dateUploaded":"2024-10-04T16:45:01.1729029Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 16:45:01{"success":true,"message":"OK","statusCode":200}
+
+2024-10-04 16:47:21{"videoLibraryId":315631,"guid":"b7287b59-fe53-4a41-ab0a-89a2e4afda4a","title":"variant_video11728060441","dateUploaded":"2024-10-04T16:47:21.1949938Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-04 16:47:21{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 05:48:59{"videoLibraryId":315631,"guid":"a4777f5f-c001-463d-a2d2-2616fa93c831","title":"variant_video11728280139","dateUploaded":"2024-10-07T05:48:59.5023404Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 05:48:59{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 05:49:05{"videoLibraryId":315631,"guid":"9ecaeae5-162e-4e8a-8252-cac36406079b","title":"variant_video11728280145","dateUploaded":"2024-10-07T05:49:05.7975816Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 05:49:06{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 05:51:24{"videoLibraryId":315631,"guid":"b45504b2-2649-4f50-a3d1-163cf7ceffa1","title":"variant_video11728280284","dateUploaded":"2024-10-07T05:51:24.819011Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 05:51:25{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 05:59:59{"videoLibraryId":315631,"guid":"571048dc-5fdf-4124-9622-802f41c028b9","title":"variant_video11728280799","dateUploaded":"2024-10-07T05:59:59.4233096Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 05:59:59{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 09:25:05{"videoLibraryId":315631,"guid":"6700866a-ef6b-4a2b-bdb0-a79d2eaa32d5","title":"variant_video11728293105","dateUploaded":"2024-10-07T09:25:05.0936871Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 09:25:05{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 09:41:05{"videoLibraryId":315631,"guid":"fae47e4b-94a0-4c22-91ff-962d7c32cfbf","title":"variant_video101728294065","dateUploaded":"2024-10-07T09:41:05.4374246Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 09:41:06{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 10:00:07{"videoLibraryId":315631,"guid":"2c02bce5-c4b4-4b8d-b4b1-3f6a8f17cee9","title":"variant_video11728295207","dateUploaded":"2024-10-07T10:00:07.4691857Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 10:00:07{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 10:52:28{"videoLibraryId":315631,"guid":"1704fd89-5b3a-4d11-9e1e-638ee0ccbde7","title":"variant_video31728298348","dateUploaded":"2024-10-07T10:52:28.6105158Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 10:52:28{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 10:52:49{"videoLibraryId":315631,"guid":"63135bf7-360d-44e2-8177-3049bde0f472","title":"variant_video31728298369","dateUploaded":"2024-10-07T10:52:49.9009554Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 10:52:50{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 10:54:03{"videoLibraryId":315631,"guid":"81caef4a-0542-4509-b8d8-5f284e158b8b","title":"variant_video11728298443","dateUploaded":"2024-10-07T10:54:03.1691173Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 10:54:03{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 10:55:00{"videoLibraryId":315631,"guid":"30b1a144-8b7b-45ff-83ba-3de81b6cdac7","title":"variant_video11728298500","dateUploaded":"2024-10-07T10:55:00.362335Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 10:55:00{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 11:00:25{"videoLibraryId":315631,"guid":"32cbf464-722d-4cdf-b733-8779b534bae4","title":"variant_video101728298825","dateUploaded":"2024-10-07T11:00:25.4106713Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 11:00:25{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 11:01:06{"videoLibraryId":315631,"guid":"9432b6f1-01ef-479f-b296-3b17020490cb","title":"variant_video101728298866","dateUploaded":"2024-10-07T11:01:06.6889358Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 11:01:07{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 12:18:09{"videoLibraryId":315631,"guid":"c860c6d7-ae92-40b4-932b-74aae7201882","title":"variant_video101728303489","dateUploaded":"2024-10-07T12:18:09.0518326Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 12:18:09{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 12:22:19{"videoLibraryId":315631,"guid":"a4585156-aed4-4387-adb9-5bd52abdef2b","title":"variant_video11728303739","dateUploaded":"2024-10-07T12:22:19.8579024Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 12:22:20{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 12:27:15{"videoLibraryId":315631,"guid":"41fe43a2-1661-4526-b575-545ad0247141","title":"variant_video11728304035","dateUploaded":"2024-10-07T12:27:15.4230525Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 12:27:15{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 12:30:59{"videoLibraryId":315631,"guid":"9a3307c6-d4be-45c8-9c50-587047e74aa7","title":"variant_video11728304258","dateUploaded":"2024-10-07T12:30:58.9911506Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 12:30:59{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 12:40:26{"videoLibraryId":315631,"guid":"fdb7d5c4-b220-42a7-b637-046d6d241a70","title":"variant_video11728304826","dateUploaded":"2024-10-07T12:40:26.3567435Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 12:40:26{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 12:41:53{"videoLibraryId":315631,"guid":"f729a49f-091e-4eb5-9fa1-293ad38487ef","title":"variant_video11728304913","dateUploaded":"2024-10-07T12:41:53.0638897Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 12:41:53{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 12:45:12{"videoLibraryId":315631,"guid":"92b38910-f213-4fed-b4bf-fb4f074db32a","title":"variant_video11728305112","dateUploaded":"2024-10-07T12:45:12.8158659Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 12:45:13{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 13:44:42{"videoLibraryId":315631,"guid":"1844226e-b724-4323-bc1e-095c2334369f","title":"variant_video11728308682","dateUploaded":"2024-10-07T13:44:42.4945184Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 13:44:42{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 13:58:01{"videoLibraryId":315631,"guid":"7bf70d3d-b8c7-4c2f-a27e-b1008de0bec7","title":"variant_video21728309481","dateUploaded":"2024-10-07T13:58:01.4413842Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 13:58:02{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 16:29:29{"videoLibraryId":315631,"guid":"b8e0604f-a03e-4ad8-9c26-4ab7a461385d","title":"variant_video11728318569","dateUploaded":"2024-10-07T16:29:29.2283894Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 16:29:34{"success":true,"message":"OK","statusCode":200}
+
+2024-10-07 16:30:03{"videoLibraryId":315631,"guid":"e1cc02b1-d8a2-4ed5-93b1-e0f7c7d535bd","title":"variant_video11728318603","dateUploaded":"2024-10-07T16:30:03.8872739Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-07 16:30:04{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 05:59:27{"videoLibraryId":315631,"guid":"e9c9e251-12b4-4b89-9cdb-4447322864a2","title":"variant_video11728367167","dateUploaded":"2024-10-08T05:59:27.8000451Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 05:59:28{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 05:59:52{"videoLibraryId":315631,"guid":"4541cc79-7643-45f4-8b3d-c545b8927136","title":"variant_video11728367191","dateUploaded":"2024-10-08T05:59:52.0205206Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 05:59:52{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 06:03:16{"videoLibraryId":315631,"guid":"66d289ec-5355-40ca-acdb-e39e202dd92b","title":"variant_video11728367396","dateUploaded":"2024-10-08T06:03:16.3747448Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 06:03:16{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 06:25:08{"videoLibraryId":315631,"guid":"8f65413f-ff66-4883-a78b-10ebd08dc44b","title":"variant_video101728368708","dateUploaded":"2024-10-08T06:25:08.5689246Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 06:25:12{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 06:51:07{"videoLibraryId":315631,"guid":"65867615-ccf5-45dd-9901-b3f1f78b98c9","title":"variant_video11728370267","dateUploaded":"2024-10-08T06:51:07.7390816Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 06:51:08{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 08:11:02{"videoLibraryId":315631,"guid":"754c5475-4d71-4035-8185-ae5979113bf3","title":"variant_video31728375062","dateUploaded":"2024-10-08T08:11:02.1678213Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 08:11:02{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:05:23{"videoLibraryId":315631,"guid":"14d384fe-954d-4f0a-bce6-337f1d684f26","title":"variant_video51728378323","dateUploaded":"2024-10-08T09:05:23.1356033Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 09:05:23{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:21:22{"videoLibraryId":315631,"guid":"67799888-cbb3-40ec-a236-d5e742369e1a","title":"variant_video11728379282","dateUploaded":"2024-10-08T09:21:22.1043185Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 09:21:22{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:21:32{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:21:32{"videoLibraryId":315631,"guid":"83955355-e7ec-4346-a707-033e6595f194","title":"variant_video11728379292","dateUploaded":"2024-10-08T09:21:32.8894611Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 09:21:33{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:23:36{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:23:36{"videoLibraryId":315631,"guid":"0ec428ab-0f9c-45e3-a47a-ae7f4ce488c0","title":"variant_video11728379416","dateUploaded":"2024-10-08T09:23:36.2061586Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 09:23:36{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:23:36{"videoLibraryId":315631,"guid":"23592637-c05a-4c47-8915-2ff02adb2322","title":"variant_video31728379416","dateUploaded":"2024-10-08T09:23:36.4973009Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 09:23:36{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:24:25{"videoLibraryId":315631,"guid":"a2bcc2f1-7ed7-4a0f-bf2e-d91e0e8494b2","title":"variant_video11728379465","dateUploaded":"2024-10-08T09:24:25.7826763Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 09:24:26{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:32:39{"videoLibraryId":315631,"guid":"6668a52e-145e-4639-b34e-f2d70f4253bd","title":"variant_video11728379959","dateUploaded":"2024-10-08T09:32:39.2220429Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 09:32:40{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:37:56{"videoLibraryId":315631,"guid":"bccd7204-afa1-41c8-b3ec-c94c3fa8596d","title":"variant_video51728380276","dateUploaded":"2024-10-08T09:37:56.2520904Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 09:37:56{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 09:51:57{"videoLibraryId":315631,"guid":"2bfb7f45-94b0-4026-933f-f165dd7292c9","title":"variant_video11728381116","dateUploaded":"2024-10-08T09:51:57.0266256Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 09:51:57{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 10:09:59{"videoLibraryId":315631,"guid":"e2256d73-8349-47fa-82bb-83afd7a94931","title":"variant_video31728382199","dateUploaded":"2024-10-08T10:09:59.7038314Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 10:10:00{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 11:16:26{"videoLibraryId":315631,"guid":"de497d63-9b4b-40c2-88a8-f4d1f5492b6f","title":"variant_video11728386186","dateUploaded":"2024-10-08T11:16:26.7745509Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 11:16:27{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 11:27:13{"videoLibraryId":315631,"guid":"5c4e0366-10bd-48cc-9f14-98c2bdb11a0d","title":"variant_video11728386832","dateUploaded":"2024-10-08T11:27:12.9849757Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 11:27:13{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 11:28:14{"videoLibraryId":315631,"guid":"049236be-d3dd-4393-8dac-eb2e0a7212b6","title":"variant_video21728386894","dateUploaded":"2024-10-08T11:28:14.3244026Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 11:28:14{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 11:40:10{"videoLibraryId":315631,"guid":"fa5c77a7-1c5d-4600-97e6-96a80d486fea","title":"variant_video11728387610","dateUploaded":"2024-10-08T11:40:10.8275311Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 11:40:11{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 11:49:59{"videoLibraryId":315631,"guid":"f4e2641b-19b6-477f-87ec-ad7ff957b487","title":"variant_video11728388199","dateUploaded":"2024-10-08T11:49:59.0830191Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 11:49:59{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 13:33:07{"videoLibraryId":315631,"guid":"190c3ccd-4abd-4207-a28a-839be40d9469","title":"variant_video11728394387","dateUploaded":"2024-10-08T13:33:07.0607607Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 13:33:07{"success":true,"message":"OK","statusCode":200}
+
+2024-10-08 13:33:07{"videoLibraryId":315631,"guid":"fc46dc9a-ad46-4f3b-94fa-2dfcb9ec3840","title":"variant_video31728394387","dateUploaded":"2024-10-08T13:33:07.5216623Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-08 13:33:07{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 08:50:37{"videoLibraryId":315631,"guid":"f660a673-1a89-4fc2-ac30-6a9e62c68343","title":"variant_video51728463837","dateUploaded":"2024-10-09T08:50:37.7014897Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 08:50:37{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 08:50:38{"videoLibraryId":315631,"guid":"c19ecd8a-d795-46a8-9b5c-1beb4f814d0c","title":"variant_video101728463838","dateUploaded":"2024-10-09T08:50:38.0450385Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 08:50:38{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 08:56:50{"videoLibraryId":315631,"guid":"fcac3a42-00b0-48fa-8140-b78d1c02f410","title":"variant_video101728464210","dateUploaded":"2024-10-09T08:56:50.0917597Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 08:56:50{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 13:34:18{"videoLibraryId":315631,"guid":"e2ba5d3b-24ce-4234-b5f3-8d5e7cba8e39","title":"variant_video11728480858","dateUploaded":"2024-10-09T13:34:18.6321027Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 13:34:19{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 13:37:41{"videoLibraryId":315631,"guid":"7fc7dae0-d405-4049-9185-0f9fe45624f6","title":"variant_video11728481060","dateUploaded":"2024-10-09T13:37:41.0581931Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 13:37:41{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 16:21:06{"videoLibraryId":315631,"guid":"ef9609ff-e115-48a9-985f-0db97556655f","title":"variant_video11728490866","dateUploaded":"2024-10-09T16:21:06.6041487Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 16:21:06{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 16:22:13{"videoLibraryId":315631,"guid":"15015ab5-7cae-4abb-92fc-16f027b2f2c2","title":"variant_video11728490933","dateUploaded":"2024-10-09T16:22:13.1335151Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 16:22:13{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 16:24:42{"videoLibraryId":315631,"guid":"1da752fe-ac11-4e8f-8adf-f1ceae2892be","title":"variant_video31728491082","dateUploaded":"2024-10-09T16:24:42.1531092Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 16:24:42{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 16:38:35{"videoLibraryId":315631,"guid":"c56dc50f-e26c-455e-a0ce-27fe1b5cae77","title":"variant_video11728491915","dateUploaded":"2024-10-09T16:38:35.2839916Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 16:38:35{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 16:38:35{"videoLibraryId":315631,"guid":"53db7adc-086a-4f27-bdb0-cb8ebf3f9e4d","title":"variant_video21728491915","dateUploaded":"2024-10-09T16:38:35.5128445Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 16:38:35{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 16:43:17{"videoLibraryId":315631,"guid":"32ae22a2-81af-4a4d-9f90-5ac631c10784","title":"variant_video11728492197","dateUploaded":"2024-10-09T16:43:17.4203921Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 16:43:17{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 16:50:05{"videoLibraryId":315631,"guid":"3b2c32d3-4bc0-4b2d-81c6-407956f097b6","title":"variant_video11728492605","dateUploaded":"2024-10-09T16:50:05.3860914Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 16:50:05{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 16:50:05{"videoLibraryId":315631,"guid":"0f6a5095-77f5-4d99-8348-88d023c33358","title":"variant_video21728492605","dateUploaded":"2024-10-09T16:50:05.9141563Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 16:50:06{"success":true,"message":"OK","statusCode":200}
+
+2024-10-09 17:00:47{"videoLibraryId":315631,"guid":"43ef8cc4-c0e9-4268-9b9d-61b0b4e95379","title":"variant_video11728493247","dateUploaded":"2024-10-09T17:00:47.785561Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-09 17:00:48{"success":true,"message":"OK","statusCode":200}
+
+2024-10-10 06:17:13{"videoLibraryId":315631,"guid":"f4055984-3747-44ee-8691-d025142f2e6e","title":"variant_video11728541033","dateUploaded":"2024-10-10T06:17:13.4795971Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-10 06:17:13{"success":true,"message":"OK","statusCode":200}
+
+2024-10-10 12:25:25{"videoLibraryId":315631,"guid":"73dd11df-b1fe-4374-8bd0-6710fb3c0936","title":"variant_video11728563125","dateUploaded":"2024-10-10T12:25:25.6939736Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-10 12:25:26{"success":true,"message":"OK","statusCode":200}
+
+2024-10-10 12:25:26{"videoLibraryId":315631,"guid":"72c0e80f-ef45-4fdf-ae9d-1e12bd500765","title":"variant_video31728563126","dateUploaded":"2024-10-10T12:25:26.195649Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-10 12:25:27{"success":true,"message":"OK","statusCode":200}
+
+2024-10-10 12:25:27{"videoLibraryId":315631,"guid":"7e972b5e-b1d5-4ee2-a5b1-a3015b51dbf1","title":"variant_video51728563127","dateUploaded":"2024-10-10T12:25:27.1641922Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-10 12:25:29{"success":true,"message":"OK","statusCode":200}
+
+2024-10-10 12:25:29{"videoLibraryId":315631,"guid":"9ec163ea-f3c0-4604-aa5d-860777a60b13","title":"variant_video101728563129","dateUploaded":"2024-10-10T12:25:29.1570661Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-10 12:25:29{"success":true,"message":"OK","statusCode":200}
+
+2024-10-13 08:19:06{"videoLibraryId":315631,"guid":"96c914b5-17f4-45cb-b228-fe05caee83d2","title":"variant_video11728807546","dateUploaded":"2024-10-13T08:19:06.4395163Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-13 08:19:06{"success":true,"message":"OK","statusCode":200}
+
+2024-10-21 10:34:27{"videoLibraryId":315631,"guid":"e6f6b36a-a000-4824-8bb2-ac7d5b092233","title":"variant_video11729506867","dateUploaded":"2024-10-21T10:34:27.8111986Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-21 10:34:30{"success":true,"message":"OK","statusCode":200}
+
+2024-10-21 10:50:20{"videoLibraryId":315631,"guid":"36483b51-28e2-4872-b657-2e0da8760113","title":"variant_video31729507820","dateUploaded":"2024-10-21T10:50:20.8334912Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-21 10:50:21{"success":true,"message":"OK","statusCode":200}
+
+2024-10-21 12:05:28{"videoLibraryId":315631,"guid":"426fb84c-4e58-4a7c-a6f0-a3963284ca12","title":"variant_video51729512328","dateUploaded":"2024-10-21T12:05:28.4893992Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-21 12:05:29{"success":true,"message":"OK","statusCode":200}
+
+2024-10-21 12:05:29{"videoLibraryId":315631,"guid":"65ff6d26-920a-4a9b-86e8-d72f54b89649","title":"variant_video71729512329","dateUploaded":"2024-10-21T12:05:29.6285465Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-21 12:05:29{"success":true,"message":"OK","statusCode":200}
+
+2024-10-21 12:18:27{"videoLibraryId":315631,"guid":"7e43f2e1-a18b-4b62-a651-c1983c0bae5d","title":"variant_video11729513107","dateUploaded":"2024-10-21T12:18:27.9172173Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-21 12:18:28{"success":true,"message":"OK","statusCode":200}
+
+2024-10-21 12:18:28{"videoLibraryId":315631,"guid":"c8d5ad24-5ef3-4b16-9cba-2375e7e8008c","title":"variant_video21729513108","dateUploaded":"2024-10-21T12:18:28.4369574Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-21 12:18:29{"success":true,"message":"OK","statusCode":200}
+
+2024-10-23 12:51:32{"videoLibraryId":315631,"guid":"b14def8c-37cd-4c00-9d4e-3d17bcd70528","title":"variant_video31729687892","dateUploaded":"2024-10-23T12:51:32.3865778Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-10-23 12:51:32{"success":true,"message":"OK","statusCode":200}
+
+2024-11-12 12:24:37{"videoLibraryId":315631,"guid":"d0cda5db-51a5-4df1-8e7c-608a95e5bb4a","title":"variant_video11731414277","dateUploaded":"2024-11-12T12:24:37.8326971Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-12 12:24:38{"success":true,"message":"OK","statusCode":200}
+
+2024-11-13 07:56:48{"videoLibraryId":315631,"guid":"6cd35948-d34f-4c0d-98fb-50af49d2c121","title":"variant_video21731484608","dateUploaded":"2024-11-13T07:56:48.2392992Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-13 07:56:48{"success":true,"message":"OK","statusCode":200}
+
+2024-11-21 06:52:01{"videoLibraryId":315631,"guid":"58d40885-6fe5-4e8e-a1fb-7a66ef352591","title":"variant_video11732171920","dateUploaded":"2024-11-21T06:52:00.9774293Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-21 06:52:01{"success":true,"message":"OK","statusCode":200}
+
+2024-11-21 06:52:01{"videoLibraryId":315631,"guid":"f087cfac-69f0-4192-8335-b6f6be60992d","title":"variant_video31732171921","dateUploaded":"2024-11-21T06:52:01.4115163Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-21 06:52:01{"success":true,"message":"OK","statusCode":200}
+
+2024-11-25 09:16:11{"videoLibraryId":341571,"guid":"a1f1f5b3-fe78-4fe0-9a2b-0c0474423179","title":"variant_video11732526171","dateUploaded":"2024-11-25T09:16:11.4644348Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-25 09:16:11{"success":true,"message":"OK","statusCode":200}
+
+2024-11-25 09:16:11{"videoLibraryId":341571,"guid":"83eafef4-ccb8-46d7-96bb-20200ce86008","title":"variant_video21732526171","dateUploaded":"2024-11-25T09:16:11.7828168Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-25 09:16:12{"success":true,"message":"OK","statusCode":200}
+
+2024-11-25 09:47:48{"videoLibraryId":341571,"guid":"d57fcd31-304c-430d-9996-6c28c05d22cc","title":"variant_video11732528068","dateUploaded":"2024-11-25T09:47:48.6672016Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-25 09:47:49{"success":true,"message":"OK","statusCode":200}
+
+2024-11-25 09:51:21{"videoLibraryId":341571,"guid":"1734d980-3399-474e-a479-08e89f85d280","title":"variant_video21732528281","dateUploaded":"2024-11-25T09:51:21.0827184Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-25 09:51:21{"success":true,"message":"OK","statusCode":200}
+
+2024-11-25 10:48:40{"videoLibraryId":341571,"guid":"d19675c2-8d66-4617-a09c-a56c0bf5b2ca","title":"variant_video11732531719","dateUploaded":"2024-11-25T10:48:40.0036247Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-25 10:48:40{"success":true,"message":"OK","statusCode":200}
+
+2024-11-25 10:50:51{"videoLibraryId":341571,"guid":"e3d24c27-9b17-41f0-aea3-1c02751102a8","title":"variant_video11732531851","dateUploaded":"2024-11-25T10:50:51.953845Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-25 10:50:52{"success":true,"message":"OK","statusCode":200}
+
+2024-11-25 10:58:38{"videoLibraryId":341571,"guid":"73105279-d83e-4ee7-9b45-d04c4c1cb3de","title":"variant_video31732532318","dateUploaded":"2024-11-25T10:58:38.3803145Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-25 10:58:38{"success":true,"message":"OK","statusCode":200}
+
+2024-11-25 11:21:59{"videoLibraryId":341571,"guid":"1700a6fa-0fd1-46c4-b0e6-650464f29dda","title":"variant_video11732533719","dateUploaded":"2024-11-25T11:21:59.6899359Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-25 11:22:00{"success":true,"message":"OK","statusCode":200}
+
+2024-11-25 11:22:00{"videoLibraryId":341571,"guid":"ca338f71-11c0-4680-b4fc-020dc19a127d","title":"variant_video21732533720","dateUploaded":"2024-11-25T11:22:00.2810455Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-25 11:22:00{"success":true,"message":"OK","statusCode":200}
+
+2024-11-29 12:01:02{"videoLibraryId":341571,"guid":"e9f17b46-253c-44eb-a4ca-9773ceee4427","title":"variant_video11732881662","dateUploaded":"2024-11-29T12:01:02.4032842Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-29 12:01:02{"success":true,"message":"OK","statusCode":200}
+
+2024-11-29 12:58:00{"videoLibraryId":341571,"guid":"b526fa98-f361-4992-96c1-4adf137fb33e","title":"variant_video21732885080","dateUploaded":"2024-11-29T12:58:00.2863744Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-11-29 12:58:00{"success":true,"message":"OK","statusCode":200}
+
+2024-12-05 12:43:04{"videoLibraryId":341571,"guid":"71b9871c-b0bd-4e8d-997b-21b68a253934","title":"variant_video101733402584","dateUploaded":"2024-12-05T12:43:04.6483187Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-12-05 12:43:05{"success":true,"message":"OK","statusCode":200}
+
+2024-12-05 12:51:20{"videoLibraryId":341571,"guid":"aad6d021-369a-4a25-9375-c775de4cd174","title":"variant_video101733403080","dateUploaded":"2024-12-05T12:51:20.5361922Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-12-05 12:51:21{"success":true,"message":"OK","statusCode":200}
+
+2024-12-09 06:51:03{"videoLibraryId":341571,"guid":"055f8602-4362-4db3-a57a-92d044dcad16","title":"variant_video21733727063","dateUploaded":"2024-12-09T06:51:03.8124223Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-12-09 06:51:04{"success":true,"message":"OK","statusCode":200}
+
+2024-12-10 08:51:31{"videoLibraryId":341571,"guid":"ce1df2ee-ae3e-4702-aeb6-da43395a14b4","title":"variant_video11733820691","dateUploaded":"2024-12-10T08:51:31.2536545Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-12-10 08:51:31{"success":true,"message":"OK","statusCode":200}
+
+2024-12-10 08:53:20{"videoLibraryId":341571,"guid":"2c0a98b7-a32c-456b-af50-50d20f1c62c4","title":"variant_video21733820800","dateUploaded":"2024-12-10T08:53:20.3892435Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-12-10 08:53:21{"success":true,"message":"OK","statusCode":200}
+
+2024-12-11 09:49:50{"videoLibraryId":341571,"guid":"0bcdcd17-66be-42ff-8a33-55eb131da139","title":"variant_video31733910590","dateUploaded":"2024-12-11T09:49:50.1176562Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-12-11 09:49:51{"success":true,"message":"OK","statusCode":200}
+
+2024-12-11 09:50:42{"videoLibraryId":341571,"guid":"c77cbd68-365b-4b36-a2ff-91c1add6831a","title":"variant_video51733910642","dateUploaded":"2024-12-11T09:50:42.4698721Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-12-11 09:50:46{"success":true,"message":"OK","statusCode":200}
+
+2024-12-11 09:51:34{"videoLibraryId":341571,"guid":"c87f9ce3-c4b9-48b5-98e6-e75760ff5466","title":"variant_video71733910694","dateUploaded":"2024-12-11T09:51:34.8495869Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-12-11 09:51:38{"success":true,"message":"OK","statusCode":200}
+
+2024-12-16 06:04:54{"videoLibraryId":341571,"guid":"734b6a70-1e1f-4f1b-bc81-ee22493d712b","title":"variant_video71734329094","dateUploaded":"2024-12-16T06:04:54.7822718Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"outputCodecs":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2024-12-16 06:04:54{"success":true,"message":"OK","statusCode":200}
+
+2025-01-10 12:35:17{"videoLibraryId":341571,"guid":"dab0317d-6317-4e8f-9279-8afaf0c55ce8","title":"variant_video21736512517","dateUploaded":"2025-01-10T12:35:17.8992552Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"outputCodecs":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2025-01-10 12:35:18{"success":true,"message":"OK","statusCode":200}
+
+2025-01-10 12:51:52{"videoLibraryId":341571,"guid":"3a6be9dc-2e66-41d0-9243-34599e95f532","title":"variant_video31736513512","dateUploaded":"2025-01-10T12:51:52.3725342Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"outputCodecs":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2025-01-10 12:51:56{"success":true,"message":"OK","statusCode":200}
+
+2025-01-27 10:36:28{"videoLibraryId":341571,"guid":"0d804fc4-6241-4d2d-9716-6195b623338f","title":"variant_video51737974188","dateUploaded":"2025-01-27T10:36:28.5706255Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"outputCodecs":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2025-01-27 10:36:28{"success":true,"message":"OK","statusCode":200}
+
+2025-01-27 10:54:58{"videoLibraryId":341571,"guid":"5ff6affb-dc80-426e-91d1-027cb2218548","title":"variant_video21737975298","dateUploaded":"2025-01-27T10:54:58.0441417Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"outputCodecs":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2025-01-27 10:54:58{"success":true,"message":"OK","statusCode":200}
+
+2025-01-27 11:56:52{"videoLibraryId":341571,"guid":"a1daac13-51a4-4526-8cf0-d0075c87f768","title":"variant_video31737979012","dateUploaded":"2025-01-27T11:56:52.8073929Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"outputCodecs":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2025-01-27 11:56:53{"success":true,"message":"OK","statusCode":200}
+
+2025-01-29 07:02:50{"videoLibraryId":341571,"guid":"2c692ad1-aedd-45ed-a57b-46629ef890af","title":"variant_video101738134170","dateUploaded":"2025-01-29T07:02:50.4152615Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"outputCodecs":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2025-01-29 07:02:53{"success":true,"message":"OK","statusCode":200}
+
+2025-02-09 19:20:35{"videoLibraryId":341571,"guid":"aa5a5233-85df-45af-bf76-e4ea7360603e","title":"variant_video11739128835","dateUploaded":"2025-02-09T19:20:35.2804751Z","views":0,"isPublic":false,"length":0,"status":0,"framerate":0,"rotation":null,"width":0,"height":0,"availableResolutions":null,"outputCodecs":null,"thumbnailCount":0,"encodeProgress":0,"storageSize":0,"captions":[],"hasMP4Fallback":false,"collectionId":"","thumbnailFileName":"thumbnail.jpg","averageWatchTime":0,"totalWatchTime":0,"category":"unknown","chapters":[],"moments":[],"metaTags":[],"transcodingMessages":[]}
+
+2025-02-09 19:20:35{"success":true,"message":"OK","statusCode":200}
+
