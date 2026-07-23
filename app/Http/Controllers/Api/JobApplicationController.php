@@ -113,7 +113,7 @@ class JobApplicationController extends Controller
                 : [];
 
             $acceptedDate = $application->updated_at ?? now();
-            $nextPayDate = \Carbon\Carbon::parse($acceptedDate)->addDays(7)->format('F d, Y');
+            $nextPayDate = \Carbon\Carbon::now()->endOfMonth()->format('F d, Y');
 
             $response[] = [
                 "employer" => $employer['name'] ?? "Unknown Employer",

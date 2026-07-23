@@ -748,7 +748,7 @@ public function getEarningsSummary(Request $request, $job_id = null)
             $actualAbsentDays = $totalWorkingDays - ($presentDays + $lateArrivals);
 
             $acceptedDate = $application->updated_at ?? now();
-            $nextPayDate = \Carbon\Carbon::parse($acceptedDate)->addDays(7)->format('d/m/Y');
+            $nextPayDate = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
 
             $earningsSummary = [
                 "employer" => $application->job && isset($application->job->creator) 
