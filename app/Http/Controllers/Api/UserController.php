@@ -4958,14 +4958,14 @@ private function updateExistingStaff(User $existingUser, Request $request)
         ]);
 
         $validator = Validator::make($request->all(), [
-            'street' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'pincode' => 'required|string|max:10',
-            'area_locality' => 'required|string|max:255',
-            'google_location' => 'required|string',
-            'lat' => 'required|numeric',
-            'long' => 'required|numeric',
+            'street' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'state' => 'nullable|string|max:255',
+            'pincode' => 'nullable|string|max:10',
+            'area_locality' => 'nullable|string|max:255',
+            'google_location' => 'nullable|string',
+            'lat' => 'nullable|numeric',
+            'long' => 'nullable|numeric',
         ]);
 
         if ($validator->fails()) {
