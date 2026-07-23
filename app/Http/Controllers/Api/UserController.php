@@ -808,15 +808,32 @@ public function getProfile(Request $request)
                     $pincode = $splitAddress['pincode'] ?? null;
 
                     if (!empty($street) || !empty($city) || !empty($state) || !empty($pincode)) {
-                        \App\Models\UserAddress::updateOrCreate(
-                            ['user_id' => $user->id, 'is_primary' => true],
-                            [
-                                'street' => $street,
-                                'city' => $city,
-                                'state' => $state,
-                                'pincode' => $pincode
-                            ]
-                        );
+                        $existingPrimary = \App\Models\UserAddress::where('user_id', $user->id)
+                            ->where('is_primary', true)->first();
+                        $existingWithGl = \App\Models\UserAddress::where('user_id', $user->id)
+                            ->whereNotNull('google_location')->where('google_location', '!=', '')->first();
+
+                        $updateData = [
+                            'street' => $street,
+                            'city' => $city,
+                            'state' => $state,
+                            'pincode' => $pincode,
+                        ];
+
+                        if ($existingPrimary && !$existingPrimary->google_location && $existingWithGl) {
+                            $updateData['google_location'] = $existingWithGl->google_location;
+                            $updateData['latitude'] = $existingWithGl->latitude;
+                            $updateData['longitude'] = $existingWithGl->longitude;
+                        }
+
+                        if ($existingPrimary) {
+                            $existingPrimary->update($updateData);
+                        } else {
+                            \App\Models\UserAddress::create(array_merge($updateData, [
+                                'user_id' => $user->id,
+                                'is_primary' => true,
+                            ]));
+                        }
                     }
                 }
             } catch (\Exception $addrEx) {
@@ -4728,7 +4745,7 @@ public function addStaff(Request $request)
                 'added_by' => $authUser->id,
                 'is_active' => 1,
                 'is_verified' => 1,
-                'relation' => $request->emergency_contact_name,
+                'relation' => $request->relation,
                 'upi_id' => $request->upi_id ?? null,
                 'is_deleted' => 0,
                 'status' => 'active',
@@ -5173,9 +5190,9 @@ private function updateExistingStaff(User $existingUser, Request $request)
         'added_by' => $authUser->id,
         'is_active' => 1,
         'is_verified' => 1,
-        'step' => 6, // ← FIXED: Use 'step' not 'steps'
-        'relation' => $request->emergency_contact_name,
-        'upi_id' => $request->upi_id, // ← ADDED: Persist UPI ID
+        'step' => 6,
+        'relation' => $request->relation,
+        'upi_id' => $request->upi_id,
         'is_deleted' => 0, // ← RESTORE: Ensure not deleted
         'status' => 'active', // ← RESTORE: Ensure active status
     ];
