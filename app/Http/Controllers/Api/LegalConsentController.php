@@ -12,7 +12,7 @@ class LegalConsentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'type' => 'required|in:privacy_policy,disclaimer',
+            'type' => 'required|in:privacy_policy,disclaimer,terms_and_conditions',
             'consent_data' => 'nullable|array',
             'phone_number' => 'nullable|string|max:20',
         ]);
@@ -38,7 +38,7 @@ class LegalConsentController extends Controller
     {
         $request->validate([
             'consents' => 'required|array',
-            'consents.*.type' => 'required|in:privacy_policy,disclaimer',
+            'consents.*.type' => 'required|in:privacy_policy,disclaimer,terms_and_conditions',
             'consents.*.consent_data' => 'nullable|array',
             'phone_number' => 'nullable|string|max:20',
         ]);
