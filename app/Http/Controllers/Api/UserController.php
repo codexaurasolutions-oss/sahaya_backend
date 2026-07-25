@@ -1482,13 +1482,13 @@ public function updateProfile(Request $request)
                                 foreach ($petsRaw as $pet) {
                                     if (!is_array($pet)) continue;
                                     $type = trim((string)($pet['pet_type'] ?? ''));
-                                    $count = $pet['pet_count'] ?? '';
-                                    if ($type === '' || $count === '') continue;
+                                    $count = $pet['pet_count'] ?? null;
+                                    if ($type === '') continue;
                                     \App\Models\UserPetDetail::create([
                                         'user_id' => $user->id,
                                         'address_id' => $addressId,
                                         'pet_type' => $type,
-                                        'pet_count' => (int) $count,
+                                        'pet_count' => $count !== null && $count !== '' ? (int) $count : null,
                                     ]);
                                     $savedNestedPets = true;
                                 }
@@ -1542,11 +1542,11 @@ public function updateProfile(Request $request)
                 foreach ($request->pet_details as $petDetail) {
                     if (!is_array($petDetail)) continue;
                     $type = trim((string)($petDetail['pet_type'] ?? ''));
-                    $count = $petDetail['pet_count'] ?? '';
-                    if ($type === '' || $count === '') continue;
+                    $count = $petDetail['pet_count'] ?? null;
+                    if ($type === '') continue;
                     $user->petDetails()->create([
                         'pet_type' => $type,
-                        'pet_count' => (int) $count,
+                        'pet_count' => $count !== null && $count !== '' ? (int) $count : null,
                     ]);
                     $savedGlobalPets = true;
                 }
@@ -2069,11 +2069,12 @@ public function updateProfileCustomer(Request $request)
         if ($request->has('pet_details') && is_array($request->pet_details)) {
             \App\Models\UserPetDetail::where('user_id', $user->id)->delete();
             foreach ($request->pet_details as $pet) {
-                if (!empty($pet['pet_type']) && !empty($pet['pet_count'])) {
+                if (!empty($pet['pet_type'])) {
+                    $petCount = $pet['pet_count'] ?? null;
                     \App\Models\UserPetDetail::create([
                         'user_id'   => $user->id,
                         'pet_type'  => $pet['pet_type'],
-                        'pet_count' => $pet['pet_count'],
+                        'pet_count' => $petCount !== null && $petCount !== '' ? $petCount : null,
                     ]);
                 }
             }
@@ -2123,12 +2124,13 @@ public function updateProfileCustomer(Request $request)
                     }
                     if (!empty($petsRaw) && is_array($petsRaw)) {
                         foreach ($petsRaw as $pet) {
-                            if (!empty($pet['pet_type']) && !empty($pet['pet_count'])) {
+                            if (!empty($pet['pet_type'])) {
+                                $petCount = $pet['pet_count'] ?? null;
                                 \App\Models\UserPetDetail::create([
                                     'user_id'   => $user->id,
                                     'address_id'=> $newAddress->id,
                                     'pet_type'  => $pet['pet_type'],
-                                    'pet_count' => $pet['pet_count'],
+                                    'pet_count' => $petCount !== null && $petCount !== '' ? $petCount : null,
                                 ]);
                             }
                         }
