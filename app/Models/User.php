@@ -320,6 +320,23 @@ class User extends Authenticatable
     }
 
     /**
+     * Get user display name — falls back to first_name + last_name if name is empty or a placeholder
+     */
+    public function getNameAttribute()
+    {
+        $raw = $this->attributes['name'] ?? null;
+        $name = trim((string) $raw);
+        $invalidNames = ['', 'User', 'Staff Member', 'Admin', 'Unknown'];
+        if ($name !== '' && !in_array($name, $invalidNames)) {
+            return $name;
+        }
+        $first = trim((string) ($this->attributes['first_name'] ?? ''));
+        $last  = trim((string) ($this->attributes['last_name'] ?? ''));
+        $composed = trim($first . ' ' . $last);
+        return $composed !== '' ? $composed : ($name !== '' ? $name : null);
+    }
+
+    /**
      * Check if user is vendor
      */
     public function getIsVendorAttribute()

@@ -315,7 +315,11 @@ class AdminSalaryController extends Controller
         if ($request->hasFile('payment_receipt')) {
             $file = $request->file('payment_receipt');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/receipts'), $filename);
+            $receiptDir = public_path('uploads/receipts');
+            if (!file_exists($receiptDir)) {
+                mkdir($receiptDir, 0755, true);
+            }
+            $file->move($receiptDir, $filename);
             $salary->payment_receipt = 'uploads/receipts/' . $filename;
         }
 

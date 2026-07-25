@@ -464,6 +464,9 @@ class StaffController extends Controller
         }
 
         $role = Role::where('slug', 'staff')->first();
+        if (!$role) {
+            return response()->json(['success' => false, 'message' => 'Staff role not configured'], 500);
+        }
         $terminatedUserIds = Termination::where('reported_by', $request->user_id)
             ->pluck('user_id')
             ->filter()
@@ -527,6 +530,9 @@ class StaffController extends Controller
     public function show($id)
     {
         $role = Role::where('slug', 'staff')->first();
+        if (!$role) {
+            return response()->json(['success' => false, 'message' => 'Staff role not configured'], 500);
+        }
         $staff = User::with(['userWorkInfo', 'addresses', 'kycInformation', 'lastExp', 'addedByUser'])
             ->where('id', $id)
             ->where('user_role_id', $role->id)

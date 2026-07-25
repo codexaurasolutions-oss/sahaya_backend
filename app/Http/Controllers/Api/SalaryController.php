@@ -407,7 +407,7 @@ class SalaryController extends Controller
                     \App\Services\NotificationService::salaryPaid(
                         $user_id,
                         number_format($netSalary, 2),
-                        Auth::guard('api')->user()->name
+                        Auth::guard('api')->user()->name ?? 'Employer'
                     );
                 } catch (\Exception $e) {
                     \Log::error('Salary notification failed: ' . $e->getMessage());
@@ -417,44 +417,49 @@ class SalaryController extends Controller
             DB::rollBack();
             throw $e;
         }
-        $transaction = Transaction::create([
-            'user_id' => $user_id,
-            'transaction_id' => $transactionId,
-            'type' => 'salary',
-            'order_id' => $orderId,
-            'order_number' => $orderId,
-            'reference_id' => $paymentId,
-            'amount' => $netSalary,
-            'currency' => 'INR',
-            'payment_mode' => $paymentMode,
-            'payment_status' => $status,
-            'created_by' => Auth::guard('api')->user()->id,
-            'payment_response' => json_encode([
-                'base_salary' => $baseSalary,
-                'performance_bonus' => $performanceBonus,
-                'overtime_pay' => $overtimePay,
-                'tax_deduction' => $taxDeduction,
+
+        // Create Transaction and Salary records (outside transaction to avoid blocking)
+        try {
+            $transaction = Transaction::create([
+                'user_id' => $user_id,
+                'transaction_id' => $transactionId,
+                'type' => 'salary',
+                'order_id' => $orderId,
+                'order_number' => $orderId,
+                'reference_id' => $paymentId,
+                'amount' => $netSalary,
+                'currency' => 'INR',
+                'payment_mode' => $paymentMode,
+                'payment_status' => $status,
+                'created_by' => Auth::guard('api')->user()->id,
+                'payment_response' => json_encode([
+                    'base_salary' => $baseSalary,
+                    'performance_bonus' => $performanceBonus,
+                    'overtime_pay' => $overtimePay,
+                    'tax_deduction' => $taxDeduction,
+                    'advance_payment' => $advancePayment,
+                    'net_salary' => $netSalary,
+                    'period' => date('F Y')
+                ]),
+                'for_entry' => 'salary_payment'
+            ]);
+
+            \App\Models\Salary::create([
+                'staff_id' => $user_id,
+                'houseowner_id' => Auth::guard('api')->user()->id,
+                'basic_salary' => $baseSalary,
+                'performative_allowance' => $performanceBonus,
+                'over_time_allowance' => $overtimePay,
+                'tax' => $taxDeduction,
                 'advance_payment' => $advancePayment,
                 'net_salary' => $netSalary,
-                'period' => date('F Y')
-            ]),
-            'for_entry' => 'salary_payment'
-        ]);
-
-        // ✅ Also Create record in 'salaries' table for unified history/admin visibility
-        \App\Models\Salary::create([
-            'staff_id' => $user_id,
-            'houseowner_id' => Auth::guard('api')->user()->id,
-            'basic_salary' => $baseSalary,
-            'performative_allowance' => $performanceBonus,
-            'over_time_allowance' => $overtimePay,
-            'tax' => $taxDeduction,
-            'advance_payment' => $advancePayment,
-            'net_salary' => $netSalary,
-            'payment_mode' => $paymentMode,
+                'payment_mode' => $paymentMode,
             'status' => $status,
             'payment_date' => now()->toDateString(),
-        ]);
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to create Transaction/Salary record: ' . $e->getMessage());
+        }
 
         $salaryData = [
             'staff_member' => [
@@ -753,7 +758,7 @@ public function getEarningsSummary(Request $request, $job_id = null)
             $earningsSummary = [
                 "employer" => $application->job && isset($application->job->creator) 
                     ? (trim(($application->job->creator->first_name ?? '') . ' ' . ($application->job->creator->last_name ?? '')) ?: ($application->job->creator->name ?? "Your Employer"))
-                    : (trim(($user->addedByUser->first_name ?? '') . ' ' . ($user->addedByUser->last_name ?? '')) ?: ($user->addedByUser->name ?? ($employer['name'] ?? "Your Employer"))),
+                    : (trim(($user->addedByUser?->first_name ?? '') . ' ' . ($user->addedByUser?->last_name ?? '')) ?: ($user->addedByUser?->name ?? ($employer['name'] ?? "Your Employer"))),
                 "job_id" => $job['id'] ?? null,
                 "role" => $job['title'] ?? "Job Role",
 

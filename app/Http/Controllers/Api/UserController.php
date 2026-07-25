@@ -319,7 +319,6 @@ public function loginCustomer(Request $request)
         'status'  => true,
         'message' => 'OTP sent successfully',
         'user_id' => $user->id,
-        'otp'     => $verificationCode,
     ]);
 }
 
@@ -368,7 +367,6 @@ public function signUpCustomer(Request $request)
         'status'  => true,
         'message' => 'OTP sent successfully',
         'user_id' => $user->id,
-        'otp'     => $otp,
     ]);
 }
 
@@ -376,6 +374,12 @@ public function getProfile(Request $request)
 {
     try {
         $user = Auth::guard('api')->user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not authenticated'
+            ], 401);
+        }
         $userDetails = User::with(['addresses.householdInformation','addresses.petDetails','petDetails','lastExp','householdInformation','kycInformation','userWorkInfo','addedByUser', 'addedByUser.addresses.householdInformation', 'addedByUser.addresses.petDetails',
             'addedByUser.petDetails',
             'addedByUser.lastExp',
@@ -388,12 +392,6 @@ public function getProfile(Request $request)
         ->where('staff_id', $user->id)
         ->groupBy('status')
         ->get();
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not authenticated'
-            ], 401);
-        }
         // Return user data without sensitive information
         return response()->json([
             'success' => true,
@@ -961,7 +959,6 @@ public function getProfile(Request $request)
         return response()->json([
             'message' => 'Verification code resent to your Phone Number',
             'user_id' => $user->id,
-            'otp'     => $otp,
         ]);
     }
 
