@@ -272,6 +272,26 @@ class JobApplicationController extends Controller
                 ], 400);
             }
 
+            // Check if staff already has an accepted job with the same commitment type
+            if ($job->commitment_type) {
+                $activeSameRole = JobApplication::where('user_id', $user->id)
+                    ->where('application_status', 'accepted')
+                    ->whereHas('job', function ($q) use ($job) {
+                        $q->where('commitment_type', $job->commitment_type)
+                          ->where('status', 'open');
+                    })
+                    ->first();
+
+                if ($activeSameRole) {
+                    // Refund credits
+                    \DB::table('users')->where('id', $user->id)->increment('wallet_balance', $creditsPerApplication);
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'You already have an active ' . $job->commitment_type . ' job. Please leave your current job first before applying for a new one.'
+                    ], 400);
+                }
+            }
+
             // Create application
             $application = JobApplication::create([
                 'job_id' => $jobId,
