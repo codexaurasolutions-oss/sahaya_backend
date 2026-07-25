@@ -277,8 +277,7 @@ class JobApplicationController extends Controller
                 $activeSameRole = JobApplication::where('user_id', $user->id)
                     ->where('application_status', 'accepted')
                     ->whereHas('job', function ($q) use ($job) {
-                        $q->where('commitment_type', $job->commitment_type)
-                          ->where('status', 'open');
+                        $q->where('commitment_type', $job->commitment_type);
                     })
                     ->first();
 
@@ -290,6 +289,16 @@ class JobApplicationController extends Controller
                         'message' => 'You already have an active ' . $job->commitment_type . ' job. Please leave your current job first before applying for a new one.'
                     ], 400);
                 }
+            }
+
+            // Also check if staff is already added by another employer
+            if ($user->is_staff_added && $user->added_by && $user->added_by !== $job->created_by) {
+                // Refund credits
+                \DB::table('users')->where('id', $user->id)->increment('wallet_balance', $creditsPerApplication);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'You are already employed by another house owner. Please leave your current job first before applying for a new one.'
+                ], 400);
             }
 
             // Create application
