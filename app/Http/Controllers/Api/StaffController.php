@@ -533,7 +533,7 @@ class StaffController extends Controller
         if (!$role) {
             return response()->json(['success' => false, 'message' => 'Staff role not configured'], 500);
         }
-        $staff = User::with(['userWorkInfo', 'addresses', 'kycInformation', 'lastExp', 'addedByUser'])
+        $staff = User::with(['userWorkInfo', 'addresses', 'kycInformation', 'lastExp', 'addedByUser', 'petDetails', 'householdInformation', 'reviewsReceived'])
             ->where('id', $id)
             ->where('user_role_id', $role->id)
             ->first();

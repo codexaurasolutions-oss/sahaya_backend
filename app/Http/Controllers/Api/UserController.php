@@ -5607,6 +5607,9 @@ private function updateExistingStaff(User $existingUser, Request $request)
             'userWorkInfo',
             'addedByUser',
             'lastExp',
+            'kycInformation',
+            'petDetails',
+            'householdInformation',
         ];
 
         // Reviews are optional in older production databases. Eager-loading
