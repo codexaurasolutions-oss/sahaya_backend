@@ -1477,6 +1477,7 @@ private function getWorkingDays($startDate, $endDate)
             }
 
             // ✅ Also create StaffAdvance record so staff can see it in My Advances
+            $advanceId = null;
             try {
                 $numInstallments = $request->input('num_installments');
                 $monthlyDeduction = $request->input('monthly_deduction');
@@ -1488,7 +1489,7 @@ private function getWorkingDays($startDate, $endDate)
                     $installmentAmount = $request->amount;
                 }
 
-                \App\Models\StaffAdvance::create([
+                $advanceRecord = \App\Models\StaffAdvance::create([
                     'staff_id'           => $user->id,
                     'employer_id'        => $employerId,
                     'amount'             => $request->amount,
@@ -1500,17 +1501,20 @@ private function getWorkingDays($startDate, $endDate)
                     'status'             => $status === 'paid' ? ($shouldDeduct ? 'active' : 'closed') : 'pending',
                     'remarks'            => 'Paid via ' . strtoupper($paymentMode),
                 ]);
+                $advanceId = $advanceRecord->id;
             } catch (\Exception $e) {
                 \Log::warning('StaffAdvance record creation failed: ' . $e->getMessage());
                 // non-fatal — advance_withdraw_amount already updated
             }
 
-            // ✅ Create notification for staff (in-app + FCM push only)
+            // ✅ Create notification for staff with employer name (in-app + FCM push only)
             try {
+                $employerObj = Auth::guard('api')->user();
+                $employerName = $employerObj ? (trim($employerObj->first_name . ' ' . $employerObj->last_name) ?: ($employerObj->name ?: 'Your employer')) : 'Your employer';
                 \App\Services\NotificationService::send(
                     $user->id,
                     'Advance Payment Received',
-                    "You have received an advance of ₹" . number_format($request->amount, 2) . ($shouldDeduct ? ". This will be deducted from your salary ($deductionMethod)." : "."),
+                    "You have received an advance of ₹" . number_format($request->amount, 2) . " from {$employerName}" . ($shouldDeduct ? ". This will be deducted from your salary ($deductionMethod)." : "."),
                     'advance_payment',
                     ['skip_whatsapp' => true, 'skip_sms' => true]
                 );
@@ -1530,7 +1534,13 @@ private function getWorkingDays($startDate, $endDate)
                     'deduction_method' => $deductionMethod,
                     'num_installments' => ($deductionMethod === 'installments' && $numInstallments) ? $numInstallments : null,
                     'installment_amount' => ($deductionMethod === 'installments' && $numInstallments) ? ($monthlyDeduction ?: ceil($request->amount / $numInstallments)) : null,
-                    'payment_mode' => $paymentMode
+                    'payment_mode' => $paymentMode,
+                    'advance_id' => $advanceId ?? null,
+                    'amount' => (float) $request->amount,
+                    'given_date' => now()->toDateString(),
+                    'staff_name' => trim($user->first_name . ' ' . $user->last_name) ?: ($user->name ?: 'Staff'),
+                    'employer_name' => trim(Auth::guard('api')->user()->first_name . ' ' . Auth::guard('api')->user()->last_name) ?: (Auth::guard('api')->user()->name ?: 'Employer'),
+                    'receipt_id' => 'ADV_' . strtoupper(uniqid()),
                 ]
             ]);
 

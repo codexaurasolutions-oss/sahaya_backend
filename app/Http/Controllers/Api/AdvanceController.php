@@ -82,12 +82,21 @@ class AdvanceController extends Controller
                 'given_date'         => $request->given_date ?? now()->toDateString(),
             ]);
 
-            // Notify staff (in-app + FCM push only)
+            // Sync advance_withdraw_amount on staff user
+            $staffUser = User::find($request->staff_id);
+            if ($staffUser) {
+                $staffUser->advance_withdraw_amount = (float) $staffUser->advance_withdraw_amount + (float) $request->amount;
+                $staffUser->advance_withdraw_added_by = $employer->id;
+                $staffUser->save();
+            }
+
+            // Notify staff with employer name (in-app + FCM push only)
+            $employerName = trim($employer->first_name . ' ' . $employer->last_name) ?: ($employer->name ?: 'Your employer');
             \App\Services\NotificationService::send(
                 $request->staff_id,
                 'Advance Received',
                 'You have received an advance of ₹' . number_format($request->amount, 2) .
-                 '. Deduction type: ' . ucfirst($request->deduction_type) . '.',
+                 ' from ' . $employerName . '. Deduction type: ' . ucfirst($request->deduction_type) . '.',
                 'advance_received',
                 ['skip_whatsapp' => true, 'skip_sms' => true]
             );
@@ -172,11 +181,20 @@ class AdvanceController extends Controller
             }
             $advance->save();
 
-            // Notify staff (in-app + FCM push only)
+            // Sync advance_withdraw_amount on staff user
+            $staffUser = User::find($advance->staff_id);
+            if ($staffUser) {
+                $staffUser->advance_withdraw_amount = max(0, (float) $staffUser->advance_withdraw_amount - $deductAmount);
+                $staffUser->advance_withdraw_added_by = $employer->id;
+                $staffUser->save();
+            }
+
+            // Notify staff with employer name (in-app + FCM push only)
+            $employerName = trim($employer->first_name . ' ' . $employer->last_name) ?: ($employer->name ?: 'Your employer');
             \App\Services\NotificationService::send(
                 $advance->staff_id,
                 'Advance Deduction',
-                '₹' . number_format($deductAmount, 2) . ' deducted from your advance. Remaining: ₹' . number_format($balanceAfter, 2),
+                '₹' . number_format($deductAmount, 2) . ' deducted from your advance by ' . $employerName . '. Remaining: ₹' . number_format($balanceAfter, 2),
                 'advance_deducted',
                 ['skip_whatsapp' => true, 'skip_sms' => true]
             );
