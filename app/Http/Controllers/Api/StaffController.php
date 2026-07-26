@@ -75,6 +75,119 @@ class StaffController extends Controller
         ];
     }
 
+    private function cityAliases(): array
+    {
+        return [
+            'vizag' => ['visakhapatnam', 'vizag', 'waltair'],
+            'visakhapatnam' => ['visakhapatnam', 'vizag', 'waltair'],
+            'waltair' => ['visakhapatnam', 'vizag', 'waltair'],
+            'bangalore' => ['bangalore', 'bengaluru', 'bengalooru'],
+            'bengaluru' => ['bangalore', 'bengaluru', 'bengalooru'],
+            'mumbai' => ['mumbai', 'bombay'],
+            'bombay' => ['mumbai', 'bombay'],
+            'chennai' => ['chennai', 'madras'],
+            'madras' => ['chennai', 'madras'],
+            'kolkata' => ['kolkata', 'calcutta'],
+            'calcutta' => ['kolkata', 'calcutta'],
+            'hyderabad' => ['hyderabad', 'secunderabad'],
+            'secunderabad' => ['hyderabad', 'secunderabad'],
+            'pune' => ['pune', 'poona'],
+            'poona' => ['pune', 'poona'],
+            'coimbatore' => ['coimbatore', 'kovai'],
+            'kovai' => ['coimbatore', 'kovai'],
+            'trivandrum' => ['trivandrum', 'thiruvananthapuram'],
+            'thiruvananthapuram' => ['trivandrum', 'thiruvananthapuram'],
+            'trichy' => ['trichy', 'tiruchirappalli'],
+            'tiruchirappalli' => ['trichy', 'tiruchirappalli'],
+            'madurai' => ['madurai', 'thoondamani'],
+            'jaipur' => ['jaipur', 'pink city'],
+            'agra' => ['agra', 'taj city'],
+            'lucknow' => ['lucknow', 'lucknau'],
+            'kanpur' => ['kanpur', 'cawnpore'],
+            'nagpur' => ['nagpur', 'orange city'],
+            'indore' => ['indore', 'indoor'],
+            'bhopal' => ['bhopal', 'city of lakes'],
+            'patna' => ['patna', 'patliputra'],
+            'varanasi' => ['varanasi', 'banaras', 'kashi'],
+            'banaras' => ['varanasi', 'banaras', 'kashi'],
+            'kashi' => ['varanasi', 'banaras', 'kashi'],
+            'allahabad' => ['allahabad', 'prayagraj'],
+            'prayagraj' => ['allahabad', 'prayagraj'],
+            'udaipur' => ['udaipur', 'city of lakes rajasthan'],
+            'jodhpur' => ['jodhpur', 'sun city'],
+            'ahmedabad' => ['ahmedabad', 'amdavad'],
+            'amdavad' => ['ahmedabad', 'amdavad'],
+            'surat' => ['surat', 'diamond city'],
+            'rajkot' => ['rajkot'],
+            'vadodara' => ['vadodara', 'baroda'],
+            'baroda' => ['vadodara', 'baroda'],
+            'goa' => ['goa', 'panaji', 'panjim'],
+            'panaji' => ['goa', 'panaji', 'panjim'],
+            'chandigarh' => ['chandigarh'],
+            'ludhiana' => ['ludhiana'],
+            'amritsar' => ['amritsar'],
+            'dehradun' => ['dehradun', 'dehra'],
+            'rishikesh' => ['rishikesh', 'hrishikesh'],
+            ' shimla' => ['shimla', 'simla'],
+            'simla' => ['shimla', 'simla'],
+            'guwahati' => ['guwahati', 'gauhati'],
+            'shillong' => ['shillong'],
+            'imphal' => ['imphal'],
+            'bhubaneswar' => ['bhubaneswar', 'bhubaneswar'],
+            'cuttack' => ['cuttack', 'katak'],
+            'rourkela' => ['rourkela'],
+            'vijayawada' => ['vijayawada', 'bezwada'],
+            'guntur' => ['guntur'],
+            'tirupati' => ['tirupati', 'tirumala'],
+            'nellore' => ['nellore', 'nelluru'],
+            'kurnool' => ['kurnool'],
+            'kadapa' => ['kadapa', 'cuddapah'],
+            'cuddapah' => ['kadapa', 'cuddapah'],
+            'warangal' => ['warangal', 'orangal'],
+            'karimnagar' => ['karimnagar'],
+            'nizamabad' => ['nizamabad'],
+            'mahbubnagar' => ['mahbubnagar'],
+            'adilabad' => ['adilabad'],
+            'khammam' => ['khammam'],
+            'nalgonda' => ['nalgonda'],
+            'medak' => ['medak'],
+            'nalgonda' => ['nalgonda'],
+            'ongole' => ['ongole'],
+            'chittoor' => ['chittoor'],
+            'anantapur' => ['anantapur'],
+            'east godavari' => ['east godavari', 'rajamahendravaram'],
+            'rajamahendravaram' => ['rajamahendravaram', 'rajahmundry'],
+            'rajahmundry' => ['rajamahendravaram', 'rajahmundry'],
+            'west godavari' => ['west godavari', 'narsapur'],
+            'krishna' => ['krishna', 'machilipatnam'],
+            'guntur' => ['guntur'],
+            'prakasam' => ['prakasam', 'ongole'],
+            'srikakulam' => ['srikakulam'],
+            'vizianagaram' => ['vizianagaram'],
+        ];
+    }
+
+    private function expandLocationWithAliases(string $location): array
+    {
+        $normalized = function_exists('mb_strtolower')
+            ? mb_strtolower(trim($location), 'UTF-8')
+            : strtolower(trim($location));
+
+        $aliases = $this->cityAliases();
+
+        if (isset($aliases[$normalized])) {
+            return array_unique($aliases[$normalized]);
+        }
+
+        foreach ($aliases as $canonical => $aliasList) {
+            if (in_array($normalized, $aliasList, true)) {
+                return array_unique($aliasList);
+            }
+        }
+
+        return [$normalized];
+    }
+
     private function detectCanonicalRole($text): ?string
     {
         $normalized = $this->normalizeStaffSearchText($text);
@@ -139,17 +252,30 @@ class StaffController extends Controller
             return $query;
         }
 
-        return $query->where(function ($locationQuery) use ($location) {
-            $locationQuery->whereHas('addresses', function ($addressQuery) use ($location) {
-                $addressQuery->where('city', 'like', '%' . $location . '%')
-                    ->orWhere('state', 'like', '%' . $location . '%')
-                    ->orWhere('area_locality', 'like', '%' . $location . '%')
-                    ->orWhere('street', 'like', '%' . $location . '%')
-                    ->orWhere('pincode', 'like', '%' . $location . '%')
-                    ->orWhere('google_location', 'like', '%' . $location . '%');
-            })->orWhereHas('userWorkInfo', function ($workQuery) use ($location) {
-                $workQuery->where('preferred_work_location', 'like', '%' . $location . '%');
-            })->orWhere('location', 'like', '%' . $location . '%');
+        $searchTerms = $this->expandLocationWithAliases($location);
+
+        return $query->where(function ($locationQuery) use ($searchTerms) {
+            $locationQuery->whereHas('addresses', function ($addressQuery) use ($searchTerms) {
+                foreach ($searchTerms as $term) {
+                    $addressQuery->orWhere('city', 'like', '%' . $term . '%')
+                        ->orWhere('state', 'like', '%' . $term . '%')
+                        ->orWhere('area_locality', 'like', '%' . $term . '%')
+                        ->orWhere('street', 'like', '%' . $term . '%')
+                        ->orWhere('pincode', 'like', '%' . $term . '%')
+                        ->orWhere('google_location', 'like', '%' . $term . '%');
+                }
+            })->orWhereHas('userWorkInfo', function ($workQuery) use ($searchTerms) {
+                foreach ($searchTerms as $term) {
+                    $workQuery->orWhere('preferred_work_location', 'like', '%' . $term . '%');
+                }
+                $workQuery->orWhere('preferred_work_location', 'like', '%all india%');
+                $workQuery->orWhere('preferred_work_location', 'like', '%anywhere%');
+                $workQuery->orWhere('preferred_work_location', 'like', '%pan india%');
+            })->orWhere(function ($userQuery) use ($searchTerms) {
+                foreach ($searchTerms as $term) {
+                    $userQuery->orWhere('location', 'like', '%' . $term . '%');
+                }
+            });
         });
     }
 
@@ -321,6 +447,8 @@ class StaffController extends Controller
             return false;
         }
 
+        $searchTerms = array_map($normalize, $this->expandLocationWithAliases($location));
+
         $addresses = $staff->relationLoaded('addresses')
             ? $staff->addresses
             : $staff->addresses()->get();
@@ -343,11 +471,23 @@ class StaffController extends Controller
             $staff->current_state ?? null,
         );
 
-        return $values->filter()->contains(static function ($value) use ($normalize, $target) {
+        return $values->filter()->contains(static function ($value) use ($normalize, $target, $searchTerms) {
             $candidate = $normalize($value);
-
-            return $candidate !== ''
-                && (str_contains($candidate, $target) || str_contains($target, $candidate));
+            if ($candidate === '') {
+                return false;
+            }
+            if (str_contains($candidate, 'all india') || str_contains($candidate, 'anywhere') || str_contains($candidate, 'pan india')) {
+                return true;
+            }
+            if (str_contains($candidate, $target) || str_contains($target, $candidate)) {
+                return true;
+            }
+            foreach ($searchTerms as $term) {
+                if ($term !== '' && (str_contains($candidate, $term) || str_contains($term, $candidate))) {
+                    return true;
+                }
+            }
+            return false;
         });
     }
 
