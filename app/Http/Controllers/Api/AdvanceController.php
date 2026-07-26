@@ -215,13 +215,24 @@ class AdvanceController extends Controller
         $totalRemaining = $advances->where('status', 'active')->sum('remaining_balance');
         $totalRecovered = $totalGiven - $totalRemaining;
 
+        // Calculate projected per-salary-cycle deduction (matches SalaryController logic)
+        $projectedDeduction = $advances->where('status', 'active')->reduce(function ($carry, $advance) {
+            if ($advance->deduction_type === 'full') {
+                return $carry + (float) $advance->remaining_balance;
+            } elseif ($advance->deduction_type === 'installment') {
+                return $carry + min((float) $advance->installment_amount, (float) $advance->remaining_balance);
+            }
+            return $carry;
+        }, 0);
+
         return response()->json([
             'success' => true,
             'data'    => $advances,
             'summary' => [
-                'total_given'     => $totalGiven,
-                'total_remaining' => $totalRemaining,
-                'total_recovered' => $totalRecovered,
+                'total_given'            => $totalGiven,
+                'total_remaining'        => $totalRemaining,
+                'total_recovered'        => $totalRecovered,
+                'projected_deduction'    => $projectedDeduction,
             ],
         ]);
     }
