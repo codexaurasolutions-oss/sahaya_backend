@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\UserWorkInfo;
 use App\Models\Termination;
 use App\Models\UserAddress;
+use Illuminate\Support\Facades\DB;
 
 
 class StaffController extends Controller
@@ -489,6 +490,45 @@ class StaffController extends Controller
             }
             return false;
         });
+    }
+
+    private function enrichStaffWithRatings($data)
+    {
+        if ($data->isEmpty()) {
+            return $data;
+        }
+
+        $staffIds = $data->pluck('id')->filter()->values()->all();
+        if (empty($staffIds)) {
+            return $data;
+        }
+
+        $ratingMap = DB::table('reviews')
+            ->select('received_by_id', DB::raw('AVG(rating) as avg_rating'), DB::raw('COUNT(*) as review_count'))
+            ->where('received_by_type', 'user')
+            ->whereIn('received_by_id', $staffIds)
+            ->groupBy('received_by_id')
+            ->pluck('avg_rating', 'received_by_id');
+
+        $reviewCountMap = DB::table('reviews')
+            ->select('received_by_id', DB::raw('COUNT(*) as cnt'))
+            ->where('received_by_type', 'user')
+            ->whereIn('received_by_id', $staffIds)
+            ->groupBy('received_by_id')
+            ->pluck('cnt', 'received_by_id');
+
+        foreach ($data as $item) {
+            $id = $item->id ?? $item['id'] ?? null;
+            if ($id && isset($ratingMap[$id])) {
+                $item->_average_rating = round((float) $ratingMap[$id], 1);
+                $item->_review_count = (int) ($reviewCountMap[$id] ?? 0);
+            } else {
+                $item->_average_rating = 0;
+                $item->_review_count = 0;
+            }
+        }
+
+        return $data;
     }
 
     private function resolveSearchOrigin(Request $request): ?array
@@ -1013,6 +1053,7 @@ class StaffController extends Controller
                     $searchRadiusKm,
                     $nearbyFallbackLocation,
                 );
+                $data = $this->enrichStaffWithRatings($data);
                 return response()->json([
                     'success' => true,
                     'ai_filters' => null,
@@ -1043,6 +1084,7 @@ class StaffController extends Controller
                     $searchRadiusKm,
                     $nearbyFallbackLocation,
                 );
+                $data = $this->enrichStaffWithRatings($data);
 
                 // Semantic ranking even without subscription (free feature)
                 if ($data->isNotEmpty() && !$searchOrigin) {
@@ -1081,6 +1123,8 @@ class StaffController extends Controller
                         $arr = $item->toArray();
                         $arr['_similarity'] = $item->_similarity ?? 0;
                         $arr['_distance_km'] = $item->_distance_km ?? null;
+                        $arr['_average_rating'] = $item->_average_rating ?? 0;
+                        $arr['_review_count'] = $item->_review_count ?? 0;
                         return $arr;
                     }),
                 ]);
@@ -1276,11 +1320,16 @@ class StaffController extends Controller
 
             $subscription->increment('user_limit');
 
+            // Enrich with ratings
+            $data = $this->enrichStaffWithRatings($data);
+
             // Map to arrays including _similarity (dynamic property not included by toArray())
             $dataOut = $data->map(function ($item) {
                 $arr = $item->toArray();
                 $arr['_similarity'] = $item->_similarity ?? 0;
                 $arr['_distance_km'] = $item->_distance_km ?? null;
+                $arr['_average_rating'] = $item->_average_rating ?? 0;
+                $arr['_review_count'] = $item->_review_count ?? 0;
                 return $arr;
             });
 
@@ -1340,6 +1389,8 @@ class StaffController extends Controller
                     }
                 }
 
+                $data = $this->enrichStaffWithRatings($data);
+
                 return response()->json([
                     'success' => true,
                     'ai_filters' => null,
@@ -1349,6 +1400,8 @@ class StaffController extends Controller
                         $arr = $item->toArray();
                         $arr['_similarity'] = $item->_similarity ?? 0;
                         $arr['_distance_km'] = $item->_distance_km ?? null;
+                        $arr['_average_rating'] = $item->_average_rating ?? 0;
+                        $arr['_review_count'] = $item->_review_count ?? 0;
                         return $arr;
                     }),
                 ]);
