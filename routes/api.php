@@ -1081,6 +1081,49 @@ Route::group(['middleware' => 'auth:api'], function() {
 });
 
 
+// ═══════════════════════════════════════════════════════════════════
+// ZOHO CRM + DESK INTEGRATION
+// ═══════════════════════════════════════════════════════════════════
+
+Route::group(['prefix' => 'zoho', 'middleware' => 'auth:api'], function () {
+    // Auth status
+    Route::get('/status', [\App\Http\Controllers\Api\ZohoController::class, 'authStatus']);
+    Route::get('/auth-url', [\App\Http\Controllers\Api\ZohoController::class, 'getAuthUrl']);
+
+    // OAuth callback (no auth middleware needed for callback)
+    Route::get('/crm/callback', [\App\Http\Controllers\Api\ZohoController::class, 'oauthCallback']);
+    Route::get('/desk/callback', [\App\Http\Controllers\Api\ZohoController::class, 'oauthCallback']);
+
+    // ── CRM ──
+    Route::prefix('crm')->group(function () {
+        Route::get('/summary', [\App\Http\Controllers\Api\ZohoController::class, 'getCrmModulesSummary']);
+        Route::get('/modules', [\App\Http\Controllers\Api\ZohoController::class, 'getCrmModules']);
+        Route::get('/leads', [\App\Http\Controllers\Api\ZohoController::class, 'getLeads']);
+        Route::post('/leads', [\App\Http\Controllers\Api\ZohoController::class, 'createLead']);
+        Route::get('/leads/search', [\App\Http\Controllers\Api\ZohoController::class, 'searchLeads']);
+        Route::get('/contacts', [\App\Http\Controllers\Api\ZohoController::class, 'getContacts']);
+        Route::post('/contacts', [\App\Http\Controllers\Api\ZohoController::class, 'createContact']);
+        Route::get('/deals', [\App\Http\Controllers\Api\ZohoController::class, 'getDeals']);
+        Route::post('/deals', [\App\Http\Controllers\Api\ZohoController::class, 'createDeal']);
+        Route::post('/sync/staff', [\App\Http\Controllers\Api\ZohoController::class, 'syncStaffToCrm']);
+        Route::post('/sync/owners', [\App\Http\Controllers\Api\ZohoController::class, 'syncOwnersToCrm']);
+    });
+
+    // ── DESK ──
+    Route::prefix('desk')->group(function () {
+        Route::get('/tickets', [\App\Http\Controllers\Api\ZohoController::class, 'getTickets']);
+        Route::get('/tickets/counts', [\App\Http\Controllers\Api\ZohoController::class, 'getTicketCounts']);
+        Route::get('/tickets/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'getTicket']);
+        Route::post('/tickets', [\App\Http\Controllers\Api\ZohoController::class, 'createTicket']);
+        Route::put('/tickets/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'updateTicket']);
+        Route::post('/tickets/{id}/comments', [\App\Http\Controllers\Api\ZohoController::class, 'addTicketComment']);
+        Route::get('/departments', [\App\Http\Controllers\Api\ZohoController::class, 'getDepartments']);
+        Route::get('/agents', [\App\Http\Controllers\Api\ZohoController::class, 'getAgents']);
+        Route::get('/contacts', [\App\Http\Controllers\Api\ZohoController::class, 'getDeskContacts']);
+    });
+});
+
+
 Route::get('/debug-db', function () {
     if (!config('app.debug')) {
         return response()->json(['message' => 'Not available in production'], 403);
