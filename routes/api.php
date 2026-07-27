@@ -33,6 +33,7 @@ use App\Http\Controllers\Api\StaffController;
 use App\Http\Controllers\Api\JobApplyLimitController;
 use App\Http\Controllers\Api\VoiceTranscriptionController;
 use App\Http\Controllers\Api\LegalConsentController;
+use App\Http\Controllers\Api\PolicyController;
 
 
 Route::get('/debug-logs', function() {
@@ -867,6 +868,16 @@ Route::prefix('/admin')->middleware('auth:api')->group(function () {
 
 Route::post('/legal-consent', [LegalConsentController::class, 'store']);
 Route::post('/legal-consent/bulk', [LegalConsentController::class, 'storeBulk']);
+
+// Policy version status (public for logged-in users)
+Route::get('/policy/status', [PolicyController::class, 'status'])->middleware('auth:api');
+Route::post('/policy/accept', [PolicyController::class, 'accept'])->middleware('auth:api');
+
+// Admin policy management
+Route::prefix('admin')->middleware(['auth:api', 'admin.permission:settings'])->group(function () {
+    Route::get('/policy-versions', [PolicyController::class, 'index']);
+    Route::post('/policy-versions', [PolicyController::class, 'store']);
+});
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::post('/logout', [UserController::class, 'logout']);

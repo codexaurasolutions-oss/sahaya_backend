@@ -437,6 +437,19 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class);
     }
 
+    public function policyAcceptances()
+    {
+        return $this->hasMany(UserPolicyAcceptance::class);
+    }
+
+    public function hasAcceptedPolicy(string $type, string $version): bool
+    {
+        return $this->policyAcceptances()
+            ->where('policy_type', $type)
+            ->where('policy_version', $version)
+            ->exists();
+    }
+
     public function orders()
     {
         return $this->hasMany(Order::class);
