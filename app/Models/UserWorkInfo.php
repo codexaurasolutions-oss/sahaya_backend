@@ -26,6 +26,7 @@ class UserWorkInfo extends Model
         'working_days',
         'stay_type',
         'pay_frequency',
+        'salary_closing_date',
         'salary',
         'joining_date',
         'preferred_work_location',

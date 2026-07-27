@@ -1623,6 +1623,7 @@ private function saveWorkAndExperience($user, $request, $isEdit)
         'emergency_contact_number' => 'nullable|string|max:255',
             'relation' => 'nullable|string|max:255',
         'preferred_work_location' => 'nullable|string|max:255',
+        'salary_closing_date' => 'nullable|integer|min:1|max:31',
     ]);
 
     $data = [];
@@ -1696,6 +1697,10 @@ private function saveWorkAndExperience($user, $request, $isEdit)
 
     if ($request->has('preferred_work_location')) {
         $data['preferred_work_location'] = $workValidated['preferred_work_location'];
+    }
+
+    if ($request->has('salary_closing_date')) {
+        $data['salary_closing_date'] = $workValidated['salary_closing_date'];
     }
 
     if ($request->hasFile('voice_note')) {
@@ -3725,6 +3730,7 @@ public function addressUpdate(Request $request)
         'emergency_contact_number' => 'nullable|string|max:255',
             'relation' => 'nullable|string|max:255',
         'preferred_work_location' => 'nullable|string|max:255',
+        'salary_closing_date' => 'nullable|integer|min:1|max:31',
         'upi_id' => 'nullable|string|max:255',
     ]);
  $workInfo = UserWorkInfo::where('user_id', $user->id)->first();
@@ -3748,6 +3754,7 @@ if (isset($validated['upi_id'])) {
         'emergency_contact_name' => $validated['emergency_contact_name'] ?? null,
         'emergency_contact_number' => $validated['emergency_contact_number'] ?? null,
         'preferred_work_location' => $validated['preferred_work_location'] ?? null,
+        'salary_closing_date' => $validated['salary_closing_date'] ?? null,
     ];
     if ($request->hasFile('voice_note')) {
         $directory = "uploads/user_voice_notes";
@@ -4843,6 +4850,7 @@ public function addStaff(Request $request)
                     'joining_date' => $request->joining_date ?? null,
                     'salary' => $request->salary ?? null,
                     'pay_frequency' => $request->pay_frequency ?? null,
+                    'salary_closing_date' => $request->salary_closing_date ?? null,
                     'working_days' => $request->working_days ?? null,
                     'emergency_contact_name' => $request->emergency_contact_name,
                     'emergency_contact_number' => $request->emergency_contact_number,
@@ -5834,6 +5842,7 @@ private function updateExistingStaff(User $existingUser, Request $request)
                 'emergency_contact_name' => 'sometimes|required|string|max:255',
                 'emergency_contact_number' => 'sometimes|required|string|max:15',
                 'relation' => 'sometimes|nullable|string|max:255',
+                'salary_closing_date' => 'sometimes|nullable|integer|min:1|max:31',
                 
                 'aadhar_number' => 'sometimes|required|string|max:12|unique:users,aadhar_number,' . $id,
                 'upi_id' => 'nullable|string|max:255',
@@ -6095,7 +6104,7 @@ private function updateExistingStaff(User $existingUser, Request $request)
 
         // Update work info
         try {
-            if ($request->hasAny(['role_designation', 'joining_date', 'salary', 'pay_frequency', 'working_days', 'emergency_contact_name', 'emergency_contact_number'])) {
+            if ($request->hasAny(['role_designation', 'joining_date', 'salary', 'pay_frequency', 'working_days', 'emergency_contact_name', 'emergency_contact_number', 'salary_closing_date'])) {
                 \Log::info('Processing work info update', [
                     'action' => $logAction,
                     'staff_id' => $staff->id,
@@ -6106,7 +6115,8 @@ private function updateExistingStaff(User $existingUser, Request $request)
                         'pay_frequency' => $request->has('pay_frequency'),
                         'working_days' => $request->has('working_days'),
                         'emergency_contact_name' => $request->has('emergency_contact_name'),
-                        'emergency_contact_number' => $request->has('emergency_contact_number')
+                        'emergency_contact_number' => $request->has('emergency_contact_number'),
+                        'salary_closing_date' => $request->has('salary_closing_date')
                     ],
                     'timestamp' => now()->toDateTimeString()
                 ]);
@@ -6126,6 +6136,7 @@ private function updateExistingStaff(User $existingUser, Request $request)
                         'joining_date' => $request->joining_date ?? $workInfo->joining_date,
                         'salary' => $request->salary ?? $workInfo->salary,
                         'pay_frequency' => $request->pay_frequency ?? $workInfo->pay_frequency,
+                        'salary_closing_date' => $request->salary_closing_date ?? $workInfo->salary_closing_date,
                         'working_days' => $request->working_days ?? $workInfo->working_days,
                         'emergency_contact_name' => $request->emergency_contact_name ?? $workInfo->emergency_contact_name,
                         'emergency_contact_number' => $request->emergency_contact_number ?? $workInfo->emergency_contact_number,
