@@ -61,30 +61,35 @@ class ZohoController extends Controller
     // OAUTH CALLBACK (exchanges code for tokens)
     // ═══════════════════════════════════════════════════════════════════
 
-    public function oauthCallback(Request $request): JsonResponse
+    public function oauthCallback(Request $request)
     {
         $code = $request->get('code');
         $state = $request->get('state', 'crm');
 
         if (!$code) {
-            return response()->json(['success' => false, 'message' => 'Authorization code is required'], 422);
+            return response()->view('zoho.callback', [
+                'success' => false,
+                'service' => $state,
+                'message' => 'Authorization code is missing. Please try connecting again.',
+            ]);
         }
 
         try {
             $zohoService = new ZohoService($state);
             $tokens = $zohoService->exchangeCodeForTokens($code);
 
-            return response()->json([
+            return response()->view('zoho.callback', [
                 'success' => true,
-                'message' => "Zoho {$state} authorized successfully",
-                'data' => [
-                    'service' => $state,
-                    'api_domain' => $tokens['api_domain'] ?? null,
-                ],
+                'service' => $state,
+                'message' => ucfirst($state) . ' connected successfully! You can close this window and return to the admin panel.',
             ]);
         } catch (\Exception $e) {
             Log::error("Zoho {$state} OAuth callback failed", ['error' => $e->getMessage()]);
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            return response()->view('zoho.callback', [
+                'success' => false,
+                'service' => $state,
+                'message' => 'Failed to connect: ' . $e->getMessage(),
+            ]);
         }
     }
 
@@ -470,16 +475,29 @@ class ZohoController extends Controller
         try {
             $zohoService = new ZohoService('desk');
 
-            $open = $zohoService->makeRequest('GET', '/tickets?status=Open&limit=1');
-            $inProgress = $zohoService->makeRequest('GET', '/tickets?status=In%20Progress&limit=1');
-            $closed = $zohoService->makeRequest('GET', '/tickets?status=Closed&limit=1');
+            // Single call for all tickets — count client-side
+            $result = $zohoService->makeRequest('GET', '/tickets?limit=100');
+            $tickets = $result['data']['data'] ?? [];
+            $totalCount = $result['data']['info']['total_count'] ?? 0;
+
+            $open = 0;
+            $inProgress = 0;
+            $closed = 0;
+
+            foreach ($tickets as $t) {
+                $status = $t['status'] ?? '';
+                if ($status === 'Open') $open++;
+                elseif ($status === 'In Progress') $inProgress++;
+                elseif ($status === 'Closed') $closed++;
+            }
 
             return response()->json([
                 'success' => true,
                 'data' => [
-                    'open' => $open['ok'] ? ($open['data']['info']['total_count'] ?? 0) : 0,
-                    'in_progress' => $inProgress['ok'] ? ($inProgress['data']['info']['total_count'] ?? 0) : 0,
-                    'closed' => $closed['ok'] ? ($closed['data']['info']['total_count'] ?? 0) : 0,
+                    'open' => $open,
+                    'in_progress' => $inProgress,
+                    'closed' => $closed,
+                    'total' => $totalCount,
                 ],
             ]);
         } catch (\Exception $e) {
@@ -508,7 +526,7 @@ class ZohoController extends Controller
             foreach ($staff as $member) {
                 try {
                     $phone = $member->phone_number_country_code . $member->phone_number;
-                    $result = $zohoService->makeRequest('POST', '/upsert', [
+                    $result = $zohoService->makeRequest('POST', '/Leads/upsert', [
                         'data' => [[
                             'First_Name' => $member->first_name,
                             'Last_Name' => $member->last_name,
@@ -518,8 +536,6 @@ class ZohoController extends Controller
                             'Description' => "Staff member synced from Sahayya (User ID: {$member->id})",
                         ]],
                         'trigger' => ['approval', 'workflow', 'blueprint'],
-                    ], [
-                        'module' => 'Leads',
                     ]);
 
                     if ($result['ok']) {
@@ -560,7 +576,7 @@ class ZohoController extends Controller
             foreach ($owners as $owner) {
                 try {
                     $phone = $owner->phone_number_country_code . $owner->phone_number;
-                    $result = $zohoService->makeRequest('POST', '/upsert', [
+                    $result = $zohoService->makeRequest('POST', '/Contacts/upsert', [
                         'data' => [[
                             'First_Name' => $owner->first_name,
                             'Last_Name' => $owner->last_name,
@@ -570,8 +586,6 @@ class ZohoController extends Controller
                             'Description' => "House owner synced from Sahayya (User ID: {$owner->id})",
                         ]],
                         'trigger' => ['approval', 'workflow', 'blueprint'],
-                    ], [
-                        'module' => 'Contacts',
                     ]);
 
                     if ($result['ok']) {

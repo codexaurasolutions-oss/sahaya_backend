@@ -1090,17 +1090,13 @@ Route::group(['prefix' => 'zoho', 'middleware' => 'auth:api'], function () {
     Route::get('/status', [\App\Http\Controllers\Api\ZohoController::class, 'authStatus']);
     Route::get('/auth-url', [\App\Http\Controllers\Api\ZohoController::class, 'getAuthUrl']);
 
-    // OAuth callback (no auth middleware needed for callback)
-    Route::get('/crm/callback', [\App\Http\Controllers\Api\ZohoController::class, 'oauthCallback']);
-    Route::get('/desk/callback', [\App\Http\Controllers\Api\ZohoController::class, 'oauthCallback']);
-
     // ── CRM ──
     Route::prefix('crm')->group(function () {
         Route::get('/summary', [\App\Http\Controllers\Api\ZohoController::class, 'getCrmModulesSummary']);
         Route::get('/modules', [\App\Http\Controllers\Api\ZohoController::class, 'getCrmModules']);
         Route::get('/leads', [\App\Http\Controllers\Api\ZohoController::class, 'getLeads']);
-        Route::post('/leads', [\App\Http\Controllers\Api\ZohoController::class, 'createLead']);
         Route::get('/leads/search', [\App\Http\Controllers\Api\ZohoController::class, 'searchLeads']);
+        Route::post('/leads', [\App\Http\Controllers\Api\ZohoController::class, 'createLead']);
         Route::get('/contacts', [\App\Http\Controllers\Api\ZohoController::class, 'getContacts']);
         Route::post('/contacts', [\App\Http\Controllers\Api\ZohoController::class, 'createContact']);
         Route::get('/deals', [\App\Http\Controllers\Api\ZohoController::class, 'getDeals']);
@@ -1122,6 +1118,10 @@ Route::group(['prefix' => 'zoho', 'middleware' => 'auth:api'], function () {
         Route::get('/contacts', [\App\Http\Controllers\Api\ZohoController::class, 'getDeskContacts']);
     });
 });
+
+// OAuth callbacks — OUTSIDE auth middleware (Zoho redirects browser directly)
+Route::get('/zoho/crm/callback', [\App\Http\Controllers\Api\ZohoController::class, 'oauthCallback']);
+Route::get('/zoho/desk/callback', [\App\Http\Controllers\Api\ZohoController::class, 'oauthCallback']);
 
 
 Route::get('/debug-db', function () {

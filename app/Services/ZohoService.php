@@ -129,16 +129,27 @@ class ZohoService
     {
         $expiresIn = $data['expires_in'] ?? 3600;
 
-        ZohoToken::updateOrCreate(
-            ['service' => $this->service],
-            [
-                'access_token' => $data['access_token'],
-                'refresh_token' => $data['refresh_token'] ?? null,
-                'api_domain' => $data['api_domain'] ?? null,
-                'user_id' => $data['user_id'] ?? null,
-                'token_expires_at' => now()->addSeconds($expiresIn - 300),
-            ]
-        );
+        $token = ZohoToken::where('service', $this->service)->first();
+
+        $updateData = [
+            'access_token' => $data['access_token'],
+            'api_domain' => $data['api_domain'] ?? $token?->api_domain,
+            'user_id' => $data['user_id'] ?? $token?->user_id,
+            'token_expires_at' => now()->addSeconds($expiresIn - 300),
+        ];
+
+        // Only update refresh_token if Zoho actually sent one
+        if (!empty($data['refresh_token'])) {
+            $updateData['refresh_token'] = $data['refresh_token'];
+        }
+
+        if ($token) {
+            $token->update($updateData);
+        } else {
+            $updateData['service'] = $this->service;
+            $updateData['refresh_token'] = $data['refresh_token'] ?? null;
+            ZohoToken::create($updateData);
+        }
     }
 
     public function isAuthorized(): bool
