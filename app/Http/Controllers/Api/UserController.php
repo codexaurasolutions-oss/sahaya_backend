@@ -4908,7 +4908,16 @@ public function addStaff(Request $request)
 
         DB::commit();
 
-        \App\Services\NotificationService::staffAdded($staff->id, $authUser->name);
+        try {
+            \App\Services\NotificationService::staffAdded($staff->id, $authUser->name);
+        } catch (\Throwable $e) {
+            \Log::warning('Staff added but notification failed', [
+                'action' => $logAction,
+                'staff_id' => $staff->id,
+                'error' => $e->getMessage(),
+                'timestamp' => now()->toDateTimeString()
+            ]);
+        }
 
         \Log::info('Staff addition completed successfully', [
             'action' => $logAction,
@@ -4928,7 +4937,7 @@ public function addStaff(Request $request)
             'data' => $staff->load(['addresses', 'userWorkInfo'])
         ], 201);
 
-    } catch (\Exception $e) {
+    } catch (\Throwable $e) {
         DB::rollBack();
 
         \Log::error('Staff addition failed - Transaction rolled back', [
@@ -4941,7 +4950,7 @@ public function addStaff(Request $request)
         ]);
         try {
              file_put_contents(storage_path('logs/debug_error.log'), date('Y-m-d H:i:s') . " - Error in addStaff: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n\n", FILE_APPEND);
-        } catch (\Exception $writeErr) {}
+        } catch (\Throwable $writeErr) {}
 
         return response()->json([
             'success' => false,
