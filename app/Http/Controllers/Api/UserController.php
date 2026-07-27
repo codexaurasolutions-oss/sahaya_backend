@@ -4908,6 +4908,10 @@ public function addStaff(Request $request)
 
         DB::commit();
 
+        // ── POST-COMMIT: Everything below is fire-and-forget ──────────────
+        // Transaction is already committed. Any error here must NOT return 500,
+        // because the staff record is already persisted in the database.
+
         try {
             \App\Services\NotificationService::staffAdded($staff->id, $authUser->name);
         } catch (\Throwable $e) {
@@ -4929,13 +4933,25 @@ public function addStaff(Request $request)
             'timestamp' => now()->toDateTimeString()
         ]);
 
-        
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Staff member added successfully',
-            'data' => $staff->load(['addresses', 'userWorkInfo'])
-        ], 201);
+        try {
+            return response()->json([
+                'success' => true,
+                'message' => 'Staff member added successfully',
+                'data' => $staff->load(['addresses', 'userWorkInfo'])
+            ], 201);
+        } catch (\Throwable $e) {
+            \Log::error('Staff added but response serialization failed', [
+                'action' => $logAction,
+                'staff_id' => $staff->id,
+                'error' => $e->getMessage(),
+                'timestamp' => now()->toDateTimeString()
+            ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Staff member added successfully',
+                'staff_id' => $staff->id,
+            ], 201);
+        }
 
     } catch (\Throwable $e) {
         DB::rollBack();
