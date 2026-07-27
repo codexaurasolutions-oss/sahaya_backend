@@ -1708,6 +1708,11 @@ private function saveWorkAndExperience($user, $request, $isEdit)
         UserWorkInfo::updateOrCreate(['user_id' => $user->id], $data);
     }
 
+    // Save relation to users table (not on user_work_infos)
+    if ($request->has('relation') && !empty($workValidated['relation'] ?? null)) {
+        $user->update(['relation' => $workValidated['relation']]);
+    }
+
     // Last Work Experience - only update if relevant experience fields are sent
     $expFields = ['role', 'join_date', 'end_date', 'salary', 'working_hours', 'house_sold', 'owner_name', 'contact_number', 'state', 'city'];
     if ($request->hasAny($expFields)) {
@@ -3764,6 +3769,12 @@ if (isset($validated['upi_id'])) {
         ['user_id' => $user->id],
         $data
     );
+
+    // Save relation to users table (not on user_work_infos)
+    if (isset($validated['relation']) && $validated['relation'] !== null) {
+        $user->update(['relation' => $validated['relation']]);
+    }
+
     return response()->json([
         'success' => true,
         'message' => 'Work information saved successfully',
@@ -5822,6 +5833,7 @@ private function updateExistingStaff(User $existingUser, Request $request)
                 // Emergency contact
                 'emergency_contact_name' => 'sometimes|required|string|max:255',
                 'emergency_contact_number' => 'sometimes|required|string|max:15',
+                'relation' => 'sometimes|nullable|string|max:255',
                 
                 'aadhar_number' => 'sometimes|required|string|max:12|unique:users,aadhar_number,' . $id,
                 'upi_id' => 'nullable|string|max:255',
@@ -5870,7 +5882,7 @@ private function updateExistingStaff(User $existingUser, Request $request)
         $updatedFields = [];
         $userFields = [
             'first_name', 'last_name', 'email', 'phone_number', 'gender',
-            'dob', 'aadhar_number', 'upi_id'
+            'dob', 'aadhar_number', 'upi_id', 'relation'
         ];
 
         try {
