@@ -114,7 +114,8 @@ class ZohoController extends Controller
                 'success' => $result['ok'],
                 'data' => $result['data'],
             ], $result['status']);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            Log::error("Zoho CRM getLeads failed", ['error' => $e->getMessage(), 'file' => $e->getFile(), 'line' => $e->getLine()]);
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
@@ -297,7 +298,8 @@ class ZohoController extends Controller
                     'deals' => $dealCount,
                 ],
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            Log::error("Zoho CRM summary failed", ['error' => $e->getMessage(), 'file' => $e->getFile(), 'line' => $e->getLine()]);
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
@@ -606,5 +608,75 @@ class ZohoController extends Controller
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // DEBUG - Test Zoho connection
+    // ═══════════════════════════════════════════════════════════════════
+
+    public function debugZoho(): JsonResponse
+    {
+        $results = [];
+
+        try {
+            $crmService = new ZohoService('crm');
+            $results['crm_config'] = [
+                'client_id' => config('zoho.crm.client_id') ? 'set' : 'MISSING',
+                'client_secret' => config('zoho.crm.client_secret') ? 'set' : 'MISSING',
+                'data_center' => config('zoho.crm.data_center'),
+            ];
+            $results['crm_authorized'] = $crmService->isAuthorized();
+
+            $token = \App\Models\ZohoToken::where('service', 'crm')->first();
+            $results['crm_token'] = $token ? [
+                'has_refresh' => !empty($token->refresh_token),
+                'has_access' => !empty($token->access_token),
+                'expires' => $token->token_expires_at?->toISOString(),
+                'is_expired' => $token->token_expires_at ? $token->token_expires_at->isPast() : 'unknown',
+            ] : 'no token record';
+
+            if ($results['crm_authorized']) {
+                try {
+                    $accessToken = $crmService->getAccessToken();
+                    $results['crm_access_token'] = substr($accessToken, 0, 10) . '...';
+                } catch (\Throwable $e) {
+                    $results['crm_token_error'] = $e->getMessage();
+                }
+            }
+        } catch (\Throwable $e) {
+            $results['crm_init_error'] = $e->getMessage();
+        }
+
+        try {
+            $deskService = new ZohoService('desk');
+            $results['desk_config'] = [
+                'client_id' => config('zoho.desk.client_id') ? 'set' : 'MISSING',
+                'client_secret' => config('zoho.desk.client_secret') ? 'set' : 'MISSING',
+                'org_id' => config('zoho.desk.org_id') ?: 'MISSING',
+                'data_center' => config('zoho.desk.data_center'),
+            ];
+            $results['desk_authorized'] = $deskService->isAuthorized();
+
+            $token = \App\Models\ZohoToken::where('service', 'desk')->first();
+            $results['desk_token'] = $token ? [
+                'has_refresh' => !empty($token->refresh_token),
+                'has_access' => !empty($token->access_token),
+                'expires' => $token->token_expires_at?->toISOString(),
+                'is_expired' => $token->token_expires_at ? $token->token_expires_at->isPast() : 'unknown',
+            ] : 'no token record';
+
+            if ($results['desk_authorized']) {
+                try {
+                    $accessToken = $deskService->getAccessToken();
+                    $results['desk_access_token'] = substr($accessToken, 0, 10) . '...';
+                } catch (\Throwable $e) {
+                    $results['desk_token_error'] = $e->getMessage();
+                }
+            }
+        } catch (\Throwable $e) {
+            $results['desk_init_error'] = $e->getMessage();
+        }
+
+        return response()->json(['success' => true, 'data' => $results]);
     }
 }

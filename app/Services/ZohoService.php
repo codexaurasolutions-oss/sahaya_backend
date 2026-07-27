@@ -164,6 +164,8 @@ class ZohoService
         $token = $this->getAccessToken();
         $url = $this->getApiBaseUrl() . $endpoint;
 
+        Log::info("Zoho {$this->service} API request", ['method' => $method, 'url' => $url]);
+
         $defaultHeaders = array_merge([
             'Authorization' => "Zoho-oauthtoken {$token}",
             'Content-Type' => 'application/json',
@@ -182,6 +184,8 @@ class ZohoService
             default => throw new \Exception("Unsupported HTTP method: {$method}"),
         };
 
+        Log::info("Zoho {$this->service} API response", ['status' => $response->status(), 'url' => $url]);
+
         $result = $response->json();
 
         if ($response->status() === 401) {
@@ -197,6 +201,10 @@ class ZohoService
                 default => throw new \Exception("Unsupported HTTP method: {$method}"),
             };
             $result = $response->json();
+        }
+
+        if (!$response->successful()) {
+            Log::error("Zoho {$this->service} API error", ['status' => $response->status(), 'url' => $url, 'response' => $result]);
         }
 
         return [
