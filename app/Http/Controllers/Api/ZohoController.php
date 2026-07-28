@@ -17,6 +17,16 @@ class ZohoController extends Controller
     public function authStatus(): JsonResponse
     {
         try {
+            if (!\Illuminate\Support\Facades\Schema::hasTable('zoho_tokens')) {
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'crm' => ['authorized' => false],
+                        'desk' => ['authorized' => false],
+                    ],
+                ]);
+            }
+
             $crmService = new ZohoService('crm');
             $deskService = new ZohoService('desk');
 
