@@ -940,7 +940,7 @@ class ZohoController extends Controller
         }
     }
 
-    public function sendMail(Request $request): JsonResponse
+    public function sendZohoMail(Request $request): JsonResponse
     {
         $request->validate([
             'accountId' => 'required|string',

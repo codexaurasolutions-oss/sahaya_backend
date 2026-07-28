@@ -1149,7 +1149,7 @@ Route::group(['prefix' => 'zoho', 'middleware' => 'auth:api'], function () {
         Route::get('/folders', [\App\Http\Controllers\Api\ZohoController::class, 'getMailFolders']);
         Route::get('/messages', [\App\Http\Controllers\Api\ZohoController::class, 'getMailMessages']);
         Route::get('/messages/{accountId}/{messageId}', [\App\Http\Controllers\Api\ZohoController::class, 'getMailMessage']);
-        Route::post('/send', [\App\Http\Controllers\Api\ZohoController::class, 'sendMail']);
+        Route::post('/send', [\App\Http\Controllers\Api\ZohoController::class, 'sendZohoMail']);
         Route::post('/reply/{accountId}/{messageId}', [\App\Http\Controllers\Api\ZohoController::class, 'replyMail']);
     });
 });
