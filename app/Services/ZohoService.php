@@ -33,8 +33,8 @@ class ZohoService
 
     public function getCrmApiUrl(): string
     {
-        $domain = $this->dataCenter === 'in' ? 'zoho.in' : "zoho.{$this->dataCenter}";
-        return "https://www.crm.{$domain}/crm/v2";
+        $domain = $this->dataCenter === 'in' ? 'zohoapis.in' : "zohoapis.{$this->dataCenter}";
+        return "https://{$domain}/crm/v2";
     }
 
     public function getDeskApiUrl(): string
@@ -159,6 +159,28 @@ class ZohoService
             ->exists();
     }
 
+    public function fetchDeskOrgId(string $token): ?string
+    {
+        try {
+            $domain = $this->dataCenter === 'in' ? 'zoho.in' : "zoho.{$this->dataCenter}";
+            $response = Http::withHeaders([
+                'Authorization' => "Zoho-oauthtoken {$token}",
+            ])->get("https://desk.{$domain}/api/v1/organizations");
+
+            $data = $response->json();
+            if (isset($data['organizations'][0]['id'])) {
+                $orgId = $data['organizations'][0]['id'];
+                config(["zoho.desk.org_id" => $orgId]);
+                $this->orgId = $orgId;
+                Log::info("Auto-fetched Desk org ID", ['org_id' => $orgId]);
+                return $orgId;
+            }
+        } catch (\Throwable $e) {
+            Log::error("Failed to fetch Desk org ID", ['error' => $e->getMessage()]);
+        }
+        return $this->orgId;
+    }
+
     public function makeRequest(string $method, string $endpoint, array $data = [], array $headers = []): array
     {
         $token = $this->getAccessToken();
@@ -172,7 +194,11 @@ class ZohoService
         ], $headers);
 
         if ($this->service === 'desk') {
-            $defaultHeaders['orgId'] = $this->orgId;
+            $orgId = $this->orgId;
+            if (!$orgId) {
+                $orgId = $this->fetchDeskOrgId($token);
+            }
+            $defaultHeaders['orgId'] = $orgId;
         }
 
         $response = match (strtoupper($method)) {
