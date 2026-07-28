@@ -694,6 +694,18 @@ class ZohoController extends Controller
             $results['desk_tickets_error'] = $e->getMessage();
         }
 
+        try {
+            $deskService2 = new ZohoService('desk');
+            $deskToken = $deskService2->getAccessToken();
+            $domain = config('zoho.desk.data_center') === 'in' ? 'zoho.in' : 'zoho.' . config('zoho.desk.data_center');
+            $orgResponse = \Illuminate\Support\Facades\Http::withHeaders([
+                'Authorization' => "Zoho-oauthtoken {$deskToken}",
+            ])->get("https://desk.{$domain}/api/v1/organizations");
+            $results['desk_orgs_raw'] = $orgResponse->json();
+        } catch (\Throwable $e) {
+            $results['desk_orgs_error'] = $e->getMessage();
+        }
+
         return response()->json(['success' => true, 'data' => $results]);
     }
 }
