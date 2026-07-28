@@ -43,16 +43,30 @@ class ZohoService
         return "https://desk.{$domain}/api/v1";
     }
 
+    public function getMailApiUrl(): string
+    {
+        $domain = $this->dataCenter === 'in' ? 'zoho.in' : "zoho.{$this->dataCenter}";
+        return "https://mail.{$domain}/api/v1";
+    }
+
     public function getApiBaseUrl(): string
     {
-        return $this->service === 'crm' ? $this->getCrmApiUrl() : $this->getDeskApiUrl();
+        return match($this->service) {
+            'crm' => $this->getCrmApiUrl(),
+            'desk' => $this->getDeskApiUrl(),
+            'mail' => $this->getMailApiUrl(),
+            default => $this->getCrmApiUrl(),
+        };
     }
 
     public function getAuthorizationUrl(): string
     {
-        $scopes = $this->service === 'crm'
-            ? 'ZohoCRM.modules.ALL,ZohoCRM.settings.ALL'
-            : 'Desk.tickets.ALL,Desk.contacts.ALL,Desk.basic.READ,Desk.settings.ALL';
+        $scopes = match($this->service) {
+            'crm' => 'ZohoCRM.modules.ALL,ZohoCRM.settings.ALL',
+            'desk' => 'Desk.tickets.ALL,Desk.contacts.ALL,Desk.basic.READ,Desk.settings.ALL',
+            'mail' => 'ZohoMail.messages.ALL,ZohoMail.folders.READ,ZohoMail.compose.CREATE,ZohoMail.accounts.READ',
+            default => '',
+        };
 
         $accountsUrl = $this->getAccountsUrl();
 

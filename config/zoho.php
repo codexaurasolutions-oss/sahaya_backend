@@ -21,4 +21,12 @@ return [
         'data_center' => env('ZOHO_DESK_DATA_CENTER', 'in'),
     ],
 
+    'mail' => [
+        'client_id' => env('ZOHO_MAIL_CLIENT_ID'),
+        'client_secret' => env('ZOHO_MAIL_CLIENT_SECRET'),
+        'refresh_token' => env('ZOHO_MAIL_REFRESH_TOKEN'),
+        'redirect_uri' => env('ZOHO_MAIL_REDIRECT_URI', 'https://sahayaa-backend-production.up.railway.app/api/zoho/mail/callback'),
+        'data_center' => env('ZOHO_MAIL_DATA_CENTER', 'in'),
+    ],
+
 ];

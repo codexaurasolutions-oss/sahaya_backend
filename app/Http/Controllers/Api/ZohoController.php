@@ -66,7 +66,7 @@ class ZohoController extends Controller
         $code = $request->get('code');
         $state = $request->get('state', 'crm');
 
-        if (!in_array($state, ['crm', 'desk'])) {
+        if (!in_array($state, ['crm', 'desk', 'mail'])) {
             $state = 'crm';
         }
 
@@ -783,6 +783,185 @@ class ZohoController extends Controller
             return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
         } catch (\Throwable $e) {
             Log::error("Zoho getCannedResponses failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // ZOHO CRM - PIPELINE (deals grouped by stage)
+    // ═══════════════════════════════════════════════════════════════════
+
+    public function getDealsPipeline(): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('crm');
+            $result = $zohoService->makeRequest('GET', '/Deals?per_page=200');
+
+            if (!$result['ok']) {
+                return response()->json(['success' => false, 'data' => $result['data']], $result['status']);
+            }
+
+            $deals = $result['data']['data'] ?? [];
+            $pipeline = [];
+
+            $stageOrder = [
+                'Qualification', 'Needs Analysis', 'Value Proposition',
+                'Id. Decision Makers', 'Perception Analysis',
+                'Proposal/Price Quote', 'Negotiation/Review',
+                'Closed Won', 'Closed Lost',
+            ];
+
+            foreach ($stageOrder as $stage) {
+                $pipeline[$stage] = ['stage' => $stage, 'deals' => [], 'total_amount' => 0, 'count' => 0];
+            }
+
+            foreach ($deals as $deal) {
+                $stage = $deal['Stage'] ?? 'Other';
+                if (!isset($pipeline[$stage])) {
+                    $pipeline[$stage] = ['stage' => $stage, 'deals' => [], 'total_amount' => 0, 'count' => 0];
+                }
+                $pipeline[$stage]['deals'][] = $deal;
+                $pipeline[$stage]['total_amount'] += (float) ($deal['Amount'] ?? 0);
+                $pipeline[$stage]['count']++;
+            }
+
+            $pipeline = array_filter($pipeline, fn($col) => $col['count'] > 0);
+            $pipeline = array_values($pipeline);
+
+            return response()->json([
+                'success' => true,
+                'data' => $pipeline,
+                'meta' => [
+                    'total_deals' => count($deals),
+                    'total_amount' => array_sum(array_column($pipeline, 'total_amount')),
+                ],
+            ]);
+        } catch (\Throwable $e) {
+            Log::error("Zoho getDealsPipeline failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function moveDealStage(Request $request, string $id): JsonResponse
+    {
+        $request->validate(['stage' => 'required|string']);
+        try {
+            $zohoService = new ZohoService('crm');
+            $result = $zohoService->makeRequest('PUT', "/Deals/{$id}", [
+                'data' => [['Stage' => $request->stage]],
+            ]);
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho moveDealStage failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // ZOHO MAIL - EMAIL INTEGRATION
+    // ═══════════════════════════════════════════════════════════════════
+
+    public function getMailAccounts(): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('mail');
+            $result = $zohoService->makeRequest('GET', '/accounts');
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho getMailAccounts failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getMailFolders(Request $request): JsonResponse
+    {
+        $accountId = $request->get('accountId');
+        if (!$accountId) {
+            return response()->json(['success' => false, 'message' => 'accountId is required'], 422);
+        }
+        try {
+            $zohoService = new ZohoService('mail');
+            $result = $zohoService->makeRequest('GET', "/accounts/{$accountId}/folders");
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho getMailFolders failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getMailMessages(Request $request): JsonResponse
+    {
+        $accountId = $request->get('accountId');
+        $folderId = $request->get('folderId', 'inbox');
+        $page = $request->get('page', 1);
+        $perPage = $request->get('limit', 50);
+
+        if (!$accountId) {
+            return response()->json(['success' => false, 'message' => 'accountId is required'], 422);
+        }
+        try {
+            $zohoService = new ZohoService('mail');
+            $result = $zohoService->makeRequest('GET', "/accounts/{$accountId}/folders/{$folderId}/messages?page={$page}&limit={$perPage}");
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho getMailMessages failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getMailMessage(Request $request, string $accountId, string $messageId): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('mail');
+            $result = $zohoService->makeRequest('GET', "/accounts/{$accountId}/messages/{$messageId}");
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho getMailMessage failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function sendMail(Request $request): JsonResponse
+    {
+        $request->validate([
+            'accountId' => 'required|string',
+            'fromAddress' => 'required|email',
+            'toAddress' => 'required|string',
+            'subject' => 'required|string',
+            'content' => 'required|string',
+        ]);
+
+        try {
+            $zohoService = new ZohoService('mail');
+            $result = $zohoService->makeRequest('POST', "/accounts/{$request->accountId}/messages/send", [
+                'fromAddress' => $request->fromAddress,
+                'toAddress' => [$request->toAddress],
+                'subject' => $request->subject,
+                'content' => $request->content,
+            ]);
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho sendMail failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function replyMail(Request $request, string $accountId, string $messageId): JsonResponse
+    {
+        $request->validate([
+            'fromAddress' => 'required|email',
+            'content' => 'required|string',
+        ]);
+
+        try {
+            $zohoService = new ZohoService('mail');
+            $result = $zohoService->makeRequest('POST', "/accounts/{$accountId}/messages/{$messageId}/reply", [
+                'fromAddress' => $request->fromAddress,
+                'content' => $request->content,
+            ]);
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho replyMail failed", ['error' => $e->getMessage()]);
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }

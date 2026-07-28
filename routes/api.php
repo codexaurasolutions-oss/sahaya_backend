@@ -1114,6 +1114,8 @@ Route::group(['prefix' => 'zoho', 'middleware' => 'auth:api'], function () {
         Route::delete('/contacts/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'deleteContact']);
         Route::get('/deals', [\App\Http\Controllers\Api\ZohoController::class, 'getDeals']);
         Route::get('/deals/search', [\App\Http\Controllers\Api\ZohoController::class, 'searchDeals']);
+        Route::get('/deals/pipeline', [\App\Http\Controllers\Api\ZohoController::class, 'getDealsPipeline']);
+        Route::put('/deals/{id}/stage', [\App\Http\Controllers\Api\ZohoController::class, 'moveDealStage']);
         Route::post('/deals', [\App\Http\Controllers\Api\ZohoController::class, 'createDeal']);
         Route::put('/deals/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'updateDeal']);
         Route::delete('/deals/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'deleteDeal']);
@@ -1140,11 +1142,22 @@ Route::group(['prefix' => 'zoho', 'middleware' => 'auth:api'], function () {
         Route::get('/knowledgebase/articles', [\App\Http\Controllers\Api\ZohoController::class, 'getKBArticles']);
         Route::get('/cannedresponses', [\App\Http\Controllers\Api\ZohoController::class, 'getCannedResponses']);
     });
+
+    // ── MAIL ──
+    Route::prefix('mail')->group(function () {
+        Route::get('/accounts', [\App\Http\Controllers\Api\ZohoController::class, 'getMailAccounts']);
+        Route::get('/folders', [\App\Http\Controllers\Api\ZohoController::class, 'getMailFolders']);
+        Route::get('/messages', [\App\Http\Controllers\Api\ZohoController::class, 'getMailMessages']);
+        Route::get('/messages/{accountId}/{messageId}', [\App\Http\Controllers\Api\ZohoController::class, 'getMailMessage']);
+        Route::post('/send', [\App\Http\Controllers\Api\ZohoController::class, 'sendMail']);
+        Route::post('/reply/{accountId}/{messageId}', [\App\Http\Controllers\Api\ZohoController::class, 'replyMail']);
+    });
 });
 
 // OAuth callbacks — OUTSIDE auth middleware (Zoho redirects browser directly)
 Route::get('/zoho/crm/callback', [\App\Http\Controllers\Api\ZohoController::class, 'oauthCallback']);
 Route::get('/zoho/desk/callback', [\App\Http\Controllers\Api\ZohoController::class, 'oauthCallback']);
+Route::get('/zoho/mail/callback', [\App\Http\Controllers\Api\ZohoController::class, 'oauthCallback']);
 
 
 Route::get('/debug-db', function () {
