@@ -16,37 +16,24 @@ class ZohoController extends Controller
 
     public function authStatus(): JsonResponse
     {
+        $authorized = false;
         try {
-            if (!\Illuminate\Support\Facades\Schema::hasTable('zoho_tokens')) {
-                return response()->json([
-                    'success' => true,
-                    'data' => [
-                        'crm' => ['authorized' => false],
-                        'desk' => ['authorized' => false],
-                    ],
-                ]);
+            if (\Illuminate\Support\Facades\Schema::hasTable('zoho_tokens')) {
+                $authorized = \App\Models\ZohoToken::where('service', 'crm')
+                    ->whereNotNull('refresh_token')
+                    ->exists();
             }
-
-            $crmService = new ZohoService('crm');
-            $deskService = new ZohoService('desk');
-
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'crm' => ['authorized' => $crmService->isAuthorized()],
-                    'desk' => ['authorized' => $deskService->isAuthorized()],
-                ],
-            ]);
         } catch (\Throwable $e) {
             Log::error('Zoho authStatus error', ['error' => $e->getMessage()]);
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'crm' => ['authorized' => false],
-                    'desk' => ['authorized' => false],
-                ],
-            ]);
         }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'crm' => ['authorized' => $authorized],
+                'desk' => ['authorized' => false],
+            ],
+        ]);
     }
 
     // ═══════════════════════════════════════════════════════════════════
@@ -62,6 +49,17 @@ class ZohoController extends Controller
         }
 
         try {
+            $clientId = config("zoho.{$service}.client_id");
+            $redirectUri = config("zoho.{$service}.redirect_uri");
+            $dataCenter = config("zoho.{$service}.data_center", 'in');
+
+            if (empty($clientId)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Zoho CRM credentials not configured on the server. Please set ZOHO_CRM_CLIENT_ID in Railway environment.',
+                ], 500);
+            }
+
             $zohoService = new ZohoService($service);
             $url = $zohoService->getAuthorizationUrl();
 
@@ -73,7 +71,7 @@ class ZohoController extends Controller
             Log::error('Zoho getAuthUrl error', ['service' => $service, 'error' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to generate auth URL. Zoho credentials may not be configured on the server.',
+                'message' => 'Failed to generate auth URL: ' . $e->getMessage(),
             ], 500);
         }
     }
