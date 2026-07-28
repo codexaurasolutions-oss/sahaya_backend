@@ -2,6 +2,8 @@
 
 return [
 
+    'admin_panel_url' => env('ADMIN_PANEL_URL', 'https://sahayya-admin.vercel.app'),
+
     'crm' => [
         'client_id' => env('ZOHO_CRM_CLIENT_ID'),
         'client_secret' => env('ZOHO_CRM_CLIENT_SECRET'),

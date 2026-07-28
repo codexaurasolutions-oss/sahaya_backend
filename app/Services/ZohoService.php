@@ -161,6 +161,12 @@ class ZohoService
 
     public function fetchDeskOrgId(string $token): ?string
     {
+        $cached = \Illuminate\Support\Facades\Cache::get('zoho_desk_org_id');
+        if ($cached) {
+            $this->orgId = $cached;
+            return $cached;
+        }
+
         try {
             $domain = $this->dataCenter === 'in' ? 'zoho.in' : "zoho.{$this->dataCenter}";
             $response = Http::withHeaders([

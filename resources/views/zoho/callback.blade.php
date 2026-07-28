@@ -26,9 +26,9 @@
         <h2>{{ $success ? ucfirst($service) . ' Connected!' : 'Connection Failed' }}</h2>
         <p>{{ $message }}</p>
         @if($success)
-            <a href="{{ env('ADMIN_PANEL_URL', 'https://sahayya-admin.vercel.app') }}/admin/zoho-{{ $service }}" class="btn btn-primary">Go to Admin Panel</a>
+            <a href="{{ config('zoho.admin_panel_url', 'https://sahayya-admin.vercel.app') }}/admin/zoho-{{ $service }}" class="btn btn-primary">Go to Admin Panel</a>
         @else
-            <a href="{{ env('ADMIN_PANEL_URL', 'https://sahayya-admin.vercel.app') }}/admin/zoho-{{ $service }}" class="btn btn-primary">Try Again</a>
+            <a href="{{ config('zoho.admin_panel_url', 'https://sahayya-admin.vercel.app') }}/admin/zoho-{{ $service }}" class="btn btn-primary">Try Again</a>
         @endif
     </div>
     <script>

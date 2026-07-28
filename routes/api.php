@@ -1085,10 +1085,14 @@ Route::group(['middleware' => 'auth:api'], function() {
 // ZOHO CRM + DESK INTEGRATION
 // ═══════════════════════════════════════════════════════════════════
 
-// Zoho auth-url + status + debug — OUTSIDE auth middleware (needed for OAuth flow + debugging)
+// Zoho auth-url + status — OUTSIDE auth middleware (needed for OAuth flow)
 Route::group(['prefix' => 'zoho'], function () {
     Route::get('/status', [\App\Http\Controllers\Api\ZohoController::class, 'authStatus']);
     Route::get('/auth-url', [\App\Http\Controllers\Api\ZohoController::class, 'getAuthUrl']);
+});
+
+// Debug endpoint — admin only
+Route::group(['prefix' => 'zoho', 'middleware' => 'auth:api'], function () {
     Route::get('/debug', [\App\Http\Controllers\Api\ZohoController::class, 'debugZoho']);
 });
 

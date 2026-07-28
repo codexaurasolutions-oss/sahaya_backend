@@ -66,6 +66,10 @@ class ZohoController extends Controller
         $code = $request->get('code');
         $state = $request->get('state', 'crm');
 
+        if (!in_array($state, ['crm', 'desk'])) {
+            $state = 'crm';
+        }
+
         if (!$code) {
             return response()->view('zoho.callback', [
                 'success' => false,
@@ -83,12 +87,12 @@ class ZohoController extends Controller
                 'service' => $state,
                 'message' => ucfirst($state) . ' connected successfully! You can close this window and return to the admin panel.',
             ]);
-        } catch (\Exception $e) {
-            Log::error("Zoho {$state} OAuth callback failed", ['error' => $e->getMessage()]);
+        } catch (\Throwable $e) {
+            Log::error("Zoho {$state} OAuth callback failed", ['error' => $e->getMessage(), 'file' => $e->getFile(), 'line' => $e->getLine()]);
             return response()->view('zoho.callback', [
                 'success' => false,
                 'service' => $state,
-                'message' => 'Failed to connect: ' . $e->getMessage(),
+                'message' => 'Failed to connect. Please try again or contact support.',
             ]);
         }
     }
@@ -290,8 +294,10 @@ class ZohoController extends Controller
             $contactCount = $contacts['ok'] ? ($contacts['data']['info']['total_count'] ?? 0) : 0;
             $dealCount = $deals['ok'] ? ($deals['data']['info']['total_count'] ?? 0) : 0;
 
+            $allOk = $leads['ok'] && $contacts['ok'] && $deals['ok'];
+
             return response()->json([
-                'success' => true,
+                'success' => $allOk,
                 'data' => [
                     'leads' => $leadCount,
                     'contacts' => $contactCount,
@@ -477,21 +483,16 @@ class ZohoController extends Controller
         try {
             $zohoService = new ZohoService('desk');
 
-            // Single call for all tickets — count client-side
-            $result = $zohoService->makeRequest('GET', '/tickets?limit=100');
-            $tickets = $result['data']['data'] ?? [];
-            $totalCount = $result['data']['info']['total_count'] ?? 0;
+            $openResult = $zohoService->makeRequest('GET', '/tickets?status=Open&limit=1');
+            $open = $openResult['data']['info']['total_count'] ?? 0;
 
-            $open = 0;
-            $inProgress = 0;
-            $closed = 0;
+            $inProgressResult = $zohoService->makeRequest('GET', '/tickets?status=In%20Progress&limit=1');
+            $inProgress = $inProgressResult['data']['info']['total_count'] ?? 0;
 
-            foreach ($tickets as $t) {
-                $status = $t['status'] ?? '';
-                if ($status === 'Open') $open++;
-                elseif ($status === 'In Progress') $inProgress++;
-                elseif ($status === 'Closed') $closed++;
-            }
+            $closedResult = $zohoService->makeRequest('GET', '/tickets?status=Closed&limit=1');
+            $closed = $closedResult['data']['info']['total_count'] ?? 0;
+
+            $totalCount = $open + $inProgress + $closed;
 
             return response()->json([
                 'success' => true,
@@ -662,7 +663,6 @@ class ZohoController extends Controller
             $deals = $zohoService->makeRequest('GET', '/Deals?per_page=200');
 
             $leadStatusCounts = [];
-            $contactCount = $leads['ok'] ? count($leads['data']['data'] ?? []) : 0;
             $dealStageCounts = [];
             $totalDealAmount = 0;
 
@@ -673,9 +673,7 @@ class ZohoController extends Controller
                 }
             }
 
-            if ($contacts['ok']) {
-                $contactCount = count($contacts['data']['data'] ?? []);
-            }
+            $contactCount = $contacts['ok'] ? count($contacts['data']['data'] ?? []) : 0;
 
             if ($deals['ok']) {
                 foreach ($deals['data']['data'] ?? [] as $deal) {
@@ -809,7 +807,7 @@ class ZohoController extends Controller
 
             foreach ($staff as $member) {
                 try {
-                    $phone = $member->phone_number_country_code . $member->phone_number;
+                    $phone = ($member->phone_number_country_code ?? '') . ($member->phone_number ?? '');
                     $result = $zohoService->makeRequest('POST', '/Leads/upsert', [
                         'data' => [[
                             'First_Name' => $member->first_name,
@@ -859,14 +857,13 @@ class ZohoController extends Controller
 
             foreach ($owners as $owner) {
                 try {
-                    $phone = $owner->phone_number_country_code . $owner->phone_number;
+                    $phone = ($owner->phone_number_country_code ?? '') . ($owner->phone_number ?? '');
                     $result = $zohoService->makeRequest('POST', '/Contacts/upsert', [
                         'data' => [[
                             'First_Name' => $owner->first_name,
                             'Last_Name' => $owner->last_name,
                             'Email' => $owner->email,
                             'Phone' => $phone,
-                            'Lead_Source' => 'Sahayya App',
                             'Description' => "House owner synced from Sahayya (User ID: {$owner->id})",
                         ]],
                         'trigger' => ['approval', 'workflow', 'blueprint'],
