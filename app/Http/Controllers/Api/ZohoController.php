@@ -27,8 +27,15 @@ class ZohoController extends Controller
                     'desk' => ['authorized' => $deskService->isAuthorized()],
                 ],
             ]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        } catch (\Throwable $e) {
+            Log::error('Zoho authStatus error', ['error' => $e->getMessage()]);
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'crm' => ['authorized' => false],
+                    'desk' => ['authorized' => false],
+                ],
+            ]);
         }
     }
 
@@ -52,8 +59,12 @@ class ZohoController extends Controller
                 'success' => true,
                 'data' => ['url' => $url],
             ]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        } catch (\Throwable $e) {
+            Log::error('Zoho getAuthUrl error', ['service' => $service, 'error' => $e->getMessage()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate auth URL. Zoho credentials may not be configured on the server.',
+            ], 500);
         }
     }
 
