@@ -1097,13 +1097,23 @@ Route::group(['prefix' => 'zoho', 'middleware' => 'auth:api'], function () {
     Route::prefix('crm')->group(function () {
         Route::get('/summary', [\App\Http\Controllers\Api\ZohoController::class, 'getCrmModulesSummary']);
         Route::get('/modules', [\App\Http\Controllers\Api\ZohoController::class, 'getCrmModules']);
+        Route::get('/reports', [\App\Http\Controllers\Api\ZohoController::class, 'getCrmReports']);
         Route::get('/leads', [\App\Http\Controllers\Api\ZohoController::class, 'getLeads']);
         Route::get('/leads/search', [\App\Http\Controllers\Api\ZohoController::class, 'searchLeads']);
         Route::post('/leads', [\App\Http\Controllers\Api\ZohoController::class, 'createLead']);
+        Route::put('/leads/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'updateLead']);
+        Route::delete('/leads/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'deleteLead']);
         Route::get('/contacts', [\App\Http\Controllers\Api\ZohoController::class, 'getContacts']);
+        Route::get('/contacts/search', [\App\Http\Controllers\Api\ZohoController::class, 'searchContacts']);
         Route::post('/contacts', [\App\Http\Controllers\Api\ZohoController::class, 'createContact']);
+        Route::put('/contacts/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'updateContact']);
+        Route::delete('/contacts/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'deleteContact']);
         Route::get('/deals', [\App\Http\Controllers\Api\ZohoController::class, 'getDeals']);
+        Route::get('/deals/search', [\App\Http\Controllers\Api\ZohoController::class, 'searchDeals']);
         Route::post('/deals', [\App\Http\Controllers\Api\ZohoController::class, 'createDeal']);
+        Route::put('/deals/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'updateDeal']);
+        Route::delete('/deals/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'deleteDeal']);
+        Route::get('/{module}/{id}/timeline', [\App\Http\Controllers\Api\ZohoController::class, 'getCrmTimeline']);
         Route::post('/sync/staff', [\App\Http\Controllers\Api\ZohoController::class, 'syncStaffToCrm']);
         Route::post('/sync/owners', [\App\Http\Controllers\Api\ZohoController::class, 'syncOwnersToCrm']);
     });
@@ -1115,10 +1125,16 @@ Route::group(['prefix' => 'zoho', 'middleware' => 'auth:api'], function () {
         Route::get('/tickets/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'getTicket']);
         Route::post('/tickets', [\App\Http\Controllers\Api\ZohoController::class, 'createTicket']);
         Route::put('/tickets/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'updateTicket']);
+        Route::delete('/tickets/{id}', [\App\Http\Controllers\Api\ZohoController::class, 'deleteTicket']);
+        Route::put('/tickets/{id}/reassign', [\App\Http\Controllers\Api\ZohoController::class, 'reassignTicket']);
+        Route::get('/tickets/{id}/comments', [\App\Http\Controllers\Api\ZohoController::class, 'getTicketComments']);
         Route::post('/tickets/{id}/comments', [\App\Http\Controllers\Api\ZohoController::class, 'addTicketComment']);
         Route::get('/departments', [\App\Http\Controllers\Api\ZohoController::class, 'getDepartments']);
         Route::get('/agents', [\App\Http\Controllers\Api\ZohoController::class, 'getAgents']);
         Route::get('/contacts', [\App\Http\Controllers\Api\ZohoController::class, 'getDeskContacts']);
+        Route::get('/knowledgebase/categories', [\App\Http\Controllers\Api\ZohoController::class, 'getKnowledgeBase']);
+        Route::get('/knowledgebase/articles', [\App\Http\Controllers\Api\ZohoController::class, 'getKBArticles']);
+        Route::get('/cannedresponses', [\App\Http\Controllers\Api\ZohoController::class, 'getCannedResponses']);
     });
 });
 

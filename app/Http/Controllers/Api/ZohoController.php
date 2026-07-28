@@ -508,6 +508,288 @@ class ZohoController extends Controller
     }
 
     // ═══════════════════════════════════════════════════════════════════
+    // ZOHO CRM - LEAD UPDATE/DELETE
+    // ═══════════════════════════════════════════════════════════════════
+
+    public function updateLead(Request $request, string $id): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('crm');
+            $fields = $request->only(['First_Name', 'Last_Name', 'Email', 'Phone', 'Company', 'Lead_Source', 'Lead_Status', 'Description']);
+            $result = $zohoService->makeRequest('PUT', "/Leads/{$id}", ['data' => [$fields]]);
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho updateLead failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function deleteLead(string $id): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('crm');
+            $result = $zohoService->makeRequest('DELETE', "/Leads/{$id}");
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho deleteLead failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // ZOHO CRM - CONTACT UPDATE/DELETE + SEARCH
+    // ═══════════════════════════════════════════════════════════════════
+
+    public function updateContact(Request $request, string $id): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('crm');
+            $fields = $request->only(['First_Name', 'Last_Name', 'Email', 'Phone', 'Account_Name', 'Description']);
+            $result = $zohoService->makeRequest('PUT', "/Contacts/{$id}", ['data' => [$fields]]);
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho updateContact failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function deleteContact(string $id): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('crm');
+            $result = $zohoService->makeRequest('DELETE', "/Contacts/{$id}");
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho deleteContact failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function searchContacts(Request $request): JsonResponse
+    {
+        $criteria = $request->get('criteria');
+        if (!$criteria) {
+            return response()->json(['success' => false, 'message' => 'Search criteria is required'], 422);
+        }
+
+        try {
+            $zohoService = new ZohoService('crm');
+            $encoded = urlencode($criteria);
+            $result = $zohoService->makeRequest('GET', "/Contacts/search?criteria={$encoded}");
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // ZOHO CRM - DEAL UPDATE/DELETE + SEARCH + PIPELINE
+    // ═══════════════════════════════════════════════════════════════════
+
+    public function updateDeal(Request $request, string $id): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('crm');
+            $fields = $request->only(['Deal_Name', 'Amount', 'Stage', 'Closing_Date', 'Contact_Name', 'Description']);
+            $result = $zohoService->makeRequest('PUT', "/Deals/{$id}", ['data' => [$fields]]);
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho updateDeal failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function deleteDeal(string $id): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('crm');
+            $result = $zohoService->makeRequest('DELETE', "/Deals/{$id}");
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho deleteDeal failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function searchDeals(Request $request): JsonResponse
+    {
+        $criteria = $request->get('criteria');
+        if (!$criteria) {
+            return response()->json(['success' => false, 'message' => 'Search criteria is required'], 422);
+        }
+
+        try {
+            $zohoService = new ZohoService('crm');
+            $encoded = urlencode($criteria);
+            $result = $zohoService->makeRequest('GET', "/Deals/search?criteria={$encoded}");
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getCrmTimeline(Request $request, string $module, string $id): JsonResponse
+    {
+        $validModules = ['Leads', 'Contacts', 'Deals'];
+        if (!in_array($module, $validModules)) {
+            return response()->json(['success' => false, 'message' => 'Invalid module'], 422);
+        }
+
+        try {
+            $zohoService = new ZohoService('crm');
+            $result = $zohoService->makeRequest('GET', "/{$module}/{$id}/timeline");
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getCrmReports(): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('crm');
+            $leads = $zohoService->makeRequest('GET', '/Leads?per_page=200');
+            $contacts = $zohoService->makeRequest('GET', '/Contacts?per_page=200');
+            $deals = $zohoService->makeRequest('GET', '/Deals?per_page=200');
+
+            $leadStatusCounts = [];
+            $contactCount = $leads['ok'] ? count($leads['data']['data'] ?? []) : 0;
+            $dealStageCounts = [];
+            $totalDealAmount = 0;
+
+            if ($leads['ok']) {
+                foreach ($leads['data']['data'] ?? [] as $lead) {
+                    $status = $lead['Lead_Status'] ?? 'Unknown';
+                    $leadStatusCounts[$status] = ($leadStatusCounts[$status] ?? 0) + 1;
+                }
+            }
+
+            if ($contacts['ok']) {
+                $contactCount = count($contacts['data']['data'] ?? []);
+            }
+
+            if ($deals['ok']) {
+                foreach ($deals['data']['data'] ?? [] as $deal) {
+                    $stage = $deal['Stage'] ?? 'Unknown';
+                    $dealStageCounts[$stage] = ($dealStageCounts[$stage] ?? 0) + 1;
+                    $totalDealAmount += (float) ($deal['Amount'] ?? 0);
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'leads' => ['total' => $leads['data']['info']['total_count'] ?? 0, 'by_status' => $leadStatusCounts],
+                    'contacts' => ['total' => $contactCount],
+                    'deals' => ['total' => $deals['data']['info']['total_count'] ?? 0, 'by_stage' => $dealStageCounts, 'total_amount' => $totalDealAmount],
+                ],
+            ]);
+        } catch (\Throwable $e) {
+            Log::error("Zoho getCrmReports failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // ZOHO DESK - DELETE, REASSIGN, COMMENTS HISTORY
+    // ═══════════════════════════════════════════════════════════════════
+
+    public function deleteTicket(string $id): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('desk');
+            $result = $zohoService->makeRequest('DELETE', "/tickets/{$id}");
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho deleteTicket failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function reassignTicket(Request $request, string $id): JsonResponse
+    {
+        $request->validate(['assigneeId' => 'required|string']);
+
+        try {
+            $zohoService = new ZohoService('desk');
+            $result = $zohoService->makeRequest('PUT', "/tickets/{$id}", [
+                'assigneeId' => $request->assigneeId,
+            ]);
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho reassignTicket failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getTicketComments(string $id): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('desk');
+            $result = $zohoService->makeRequest('GET', "/tickets/{$id}/comments");
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho getTicketComments failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getKnowledgeBase(): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('desk');
+            $result = $zohoService->makeRequest('GET', '/knowledgebase/categories');
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho getKnowledgeBase failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getKBArticles(Request $request): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('desk');
+            $params = http_build_query(array_filter([
+                'limit' => $request->get('limit', 50),
+                'from' => $request->get('from', 1),
+            ]));
+            $result = $zohoService->makeRequest('GET', "/knowledgebase/articles?{$params}");
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho getKBArticles failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getCannedResponses(): JsonResponse
+    {
+        try {
+            $zohoService = new ZohoService('desk');
+            $result = $zohoService->makeRequest('GET', '/cannedresponses');
+
+            return response()->json(['success' => $result['ok'], 'data' => $result['data']], $result['status']);
+        } catch (\Throwable $e) {
+            Log::error("Zoho getCannedResponses failed", ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
     // PUSH SAHAYYA DATA TO ZOHO CRM
     // ═══════════════════════════════════════════════════════════════════
 
