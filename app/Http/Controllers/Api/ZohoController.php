@@ -677,6 +677,23 @@ class ZohoController extends Controller
             $results['desk_init_error'] = $e->getMessage();
         }
 
+        // Test actual API calls
+        try {
+            $crmService = new ZohoService('crm');
+            $leadsResult = $crmService->makeRequest('GET', '/Leads?per_page=1');
+            $results['crm_leads_test'] = ['status' => $leadsResult['status'], 'ok' => $leadsResult['ok'], 'data' => $leadsResult['data']];
+        } catch (\Throwable $e) {
+            $results['crm_leads_error'] = $e->getMessage();
+        }
+
+        try {
+            $deskService = new ZohoService('desk');
+            $ticketsResult = $deskService->makeRequest('GET', '/tickets?from=1&limit=1');
+            $results['desk_tickets_test'] = ['status' => $ticketsResult['status'], 'ok' => $ticketsResult['ok'], 'data' => $ticketsResult['data']];
+        } catch (\Throwable $e) {
+            $results['desk_tickets_error'] = $e->getMessage();
+        }
+
         return response()->json(['success' => true, 'data' => $results]);
     }
 }
