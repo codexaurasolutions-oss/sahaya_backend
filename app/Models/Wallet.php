@@ -16,6 +16,9 @@ class Wallet extends Model
     protected $fillable = [
         'user_id',
         'amount',
+        'base_amount',
+        'gst_amount',
+        'total_amount',
         'type',
         'transaction_id',
         'payment_id',
@@ -24,6 +27,9 @@ class Wallet extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
+        'base_amount' => 'decimal:2',
+        'gst_amount' => 'decimal:2',
+        'total_amount' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime'

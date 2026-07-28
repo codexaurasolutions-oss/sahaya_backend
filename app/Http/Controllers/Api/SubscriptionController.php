@@ -222,8 +222,13 @@ class SubscriptionController extends Controller
 
         try {
             $walletBalance = (float) ($user->wallet_balance ?? 0);
-            $payable_amount = max(0, $subscription->price - $walletBalance);
-            $wallet_used = min($walletBalance, $subscription->price);
+            $subscriptionPrice = (float) $subscription->price;
+            $gst = \App\Services\GstService::calculate($subscriptionPrice);
+            $baseAmount = $gst['base_amount'];
+            $gstAmount = $gst['gst_amount'];
+            $totalAmount = $gst['total_amount'];
+            $payable_amount = max(0, $totalAmount - $walletBalance);
+            $wallet_used = min($walletBalance, $totalAmount);
 
             if($payable_amount == 0){
                 $subscriptionUser = SubscriptionUser::create([
@@ -232,6 +237,9 @@ class SubscriptionController extends Controller
                     'order_id' => 'SUB' . time() . $user->id,
                     'order_number' => 'SUB' . time() . $user->id,
                     'amount' => 0,
+                    'base_amount' => $baseAmount,
+                    'gst_amount' => $wallet_used >= $totalAmount ? $gstAmount : round($wallet_used * 18 / 100, 2),
+                    'total_amount' => $totalAmount,
                     'wallet_used' => $wallet_used,
                     'currency' => 'INR',
                     'payment_status' => 'completed',
@@ -255,20 +263,22 @@ class SubscriptionController extends Controller
                 $api_secret = config('services.razorpay.secret');
                 
                 $razorpayData = [
-                    "amount" => (int) ($payable_amount * 100), // in paise
+                    "amount" => (int) ($payable_amount * 100),
                     "currency" => "INR",
                     "receipt" => "sub_" . uniqid(),
                     "payment_capture" => 1
                 ];
                 $api = new \Razorpay\Api\Api($api_key, $api_secret);
                 $order = $api->order->create($razorpayData);
-                // Create subscription user record
                 $subscriptionUser = SubscriptionUser::create([
                     'user_id' => $user->id,
                     'subscription_id' => $subscription->id,
                     'order_id' => $order['id'],
                     'order_number' => 'SUB' . time() . $user->id,
                     'amount' => $payable_amount,
+                    'base_amount' => $baseAmount,
+                    'gst_amount' => $gstAmount,
+                    'total_amount' => $totalAmount,
                     'wallet_used' => $wallet_used,
                     'currency' => 'INR',
                     'payment_status' => 'pending',
@@ -285,6 +295,9 @@ class SubscriptionController extends Controller
                     'message' => 'Order created successfully',
                     'order_id' => $order['id'],
                     'amount' => $payable_amount,
+                    'base_amount' => $baseAmount,
+                    'gst_amount' => $gstAmount,
+                    'total_amount' => $totalAmount,
                     'currency' => 'INR',
                     'subscription_user_id' => $subscriptionUser->id,
                     'razorpay_key' => $api_key,
@@ -372,6 +385,9 @@ class SubscriptionController extends Controller
 
             // Send notifications
             $this->sendSubscriptionNotifications($user, $subscriptionUser);
+
+            // Send WhatsApp invoice
+            $this->sendWhatsAppInvoice($user, $subscriptionUser, $subscription);
 
             DB::commit();
 
@@ -551,6 +567,32 @@ class SubscriptionController extends Controller
         );
     }
 
+    private function sendWhatsAppInvoice($user, $subscriptionUser, $subscription)
+    {
+        try {
+            $phone = $user->phone_number_country_code . $user->phone_number;
+            if (empty($phone)) return;
+
+            $baseAmount = (float) ($subscriptionUser->base_amount ?? $subscription->price);
+            $gstAmount = (float) ($subscriptionUser->gst_amount ?? 0);
+            $totalAmount = (float) ($subscriptionUser->total_amount ?? $subscriptionUser->amount);
+
+            $invoiceText = \App\Services\GstService::formatInvoiceText(
+                $subscription->subscription_name ?? 'Subscription Plan',
+                $baseAmount,
+                $gstAmount,
+                $totalAmount,
+                $subscriptionUser->order_number,
+                now()->format('d M Y, h:i A')
+            );
+
+            $whatsapp = new \App\Services\WhatsAppService();
+            $whatsapp->sendTextMessage($phone, $invoiceText);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error("WhatsApp invoice failed", ['error' => $e->getMessage()]);
+        }
+    }
+
     public function subscriptionByRole(Request $request)
     {
         $roleId = $this->normalizeRoleId($request->input('role_id'));
@@ -725,11 +767,12 @@ class SubscriptionController extends Controller
         }
 
         try {
+            $gst = \App\Services\GstService::calculate($price);
             $api_key = config('services.razorpay.key');
             $api_secret = config('services.razorpay.secret');
             
             $razorpayData = [
-                "amount" => (int) ($price * 100), // in paise
+                "amount" => (int) ($gst['total_amount'] * 100),
                 "currency" => "INR",
                 "receipt" => "extra_job_" . uniqid(),
                 "payment_capture" => 1
@@ -737,7 +780,6 @@ class SubscriptionController extends Controller
             $api = new Api($api_key, $api_secret);
             $order = $api->order->create($razorpayData);
 
-            // Save pending transaction record for audit trail
             Transaction::create([
                 'user_id'         => $user->id,
                 'role'            => $user->user_role_id,
@@ -747,6 +789,9 @@ class SubscriptionController extends Controller
                 'order_number'    => 'EXTJOB' . time() . $user->id,
                 'reference_id'    => $activeSubscription->id,
                 'amount'          => $price,
+                'base_amount'     => $gst['base_amount'],
+                'gst_amount'      => $gst['gst_amount'],
+                'total_amount'    => $gst['total_amount'],
                 'currency'        => 'INR',
                 'payment_mode'    => 'razorpay',
                 'payment_status'  => 'pending',
@@ -758,7 +803,9 @@ class SubscriptionController extends Controller
                 'status' => true,
                 'message' => 'Extra job order created successfully',
                 'order_id' => $order['id'],
-                'amount' => $price,
+                'amount' => $gst['total_amount'],
+                'base_amount' => $gst['base_amount'],
+                'gst_amount' => $gst['gst_amount'],
                 'currency' => 'INR',
                 'razorpay_key' => $api_key,
             ]);
@@ -910,11 +957,12 @@ class SubscriptionController extends Controller
         }
 
         try {
+            $gst = \App\Services\GstService::calculate((float) $price);
             $api_key = config('services.razorpay.key');
             $api_secret = config('services.razorpay.secret');
             
             $razorpayData = [
-                "amount" => (int) ($price * 100), // in paise
+                "amount" => (int) ($gst['total_amount'] * 100),
                 "currency" => "INR",
                 "receipt" => "extra_staff_" . uniqid(),
                 "payment_capture" => 1
@@ -926,7 +974,9 @@ class SubscriptionController extends Controller
                 'status' => true,
                 'message' => 'Extra staff order created successfully',
                 'order_id' => $order['id'],
-                'amount' => $price,
+                'amount' => $gst['total_amount'],
+                'base_amount' => $gst['base_amount'],
+                'gst_amount' => $gst['gst_amount'],
                 'currency' => 'INR',
                 'razorpay_key' => $api_key,
             ]);

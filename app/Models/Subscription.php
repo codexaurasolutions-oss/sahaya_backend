@@ -15,6 +15,9 @@ class Subscription extends Model
         'subscription_name',
         'description',
         'price',
+        'base_price',
+        'gst_rate',
+        'gst_amount',
         'validity',
         'type',
         'razorpay_order_id',
@@ -28,6 +31,9 @@ class Subscription extends Model
     ];
 
     protected $casts = [
-        'extra' => 'array', // JSON column as array
+        'extra' => 'array',
+        'base_price' => 'decimal:2',
+        'gst_rate' => 'decimal:2',
+        'gst_amount' => 'decimal:2',
     ];
 }

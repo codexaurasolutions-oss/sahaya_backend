@@ -22,6 +22,9 @@ class SubscriptionUser extends Model
         'order_number',
         'reference_id',
         'amount',
+        'base_amount',
+        'gst_amount',
+        'total_amount',
         'wallet_used',
         'currency',
         'payment_mode',
@@ -40,6 +43,9 @@ class SubscriptionUser extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
+        'base_amount' => 'decimal:2',
+        'gst_amount' => 'decimal:2',
+        'total_amount' => 'decimal:2',
         'start_date' => 'datetime',
         'end_date' => 'datetime',
         'payment_response' => 'array',

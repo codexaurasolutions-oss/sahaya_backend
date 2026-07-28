@@ -77,8 +77,10 @@ $totalAmount = Wallet::where('user_id', $user->id)
     }
 
     $amount = $request->amount;
+    $gst = \App\Services\GstService::calculate((float) $amount);
+    $totalAmount = $gst['total_amount'];
     $data = [
-        "amount" => $amount * 100, 
+        "amount" => $totalAmount * 100,
         "currency" => "INR",
         "receipt" => "wallet_recharge_" . uniqid(),
         "payment_capture" => 1
@@ -105,6 +107,9 @@ $totalAmount = Wallet::where('user_id', $user->id)
     $wallet = Wallet::create([
         'user_id'        => $user->id,
         'amount'         => $amount,
+        'base_amount'    => $gst['base_amount'],
+        'gst_amount'     => $gst['gst_amount'],
+        'total_amount'   => $totalAmount,
         'type'           => $request->type,
         'transaction_id' => $order['id'],   
         'payment_id'     => null,        
@@ -117,6 +122,9 @@ $totalAmount = Wallet::where('user_id', $user->id)
         'order_id'     => $order['id'],
         'razorpay_key' => $api_key,
         'amount'       => $amount,
+        'base_amount'  => $gst['base_amount'],
+        'gst_amount'   => $gst['gst_amount'],
+        'total_amount' => $totalAmount,
         'transaction'  => $wallet,
         'user' => [
             'name'  => $user->name,
@@ -202,10 +210,29 @@ $totalAmount = Wallet::where('user_id', $user->id)
 		DB::table('notifications')->insert([
 			'user_id' => $user->id,
 			'title' =>'Wallet Recharge',
-			'message' => 'Your wallet was recharge successfully',
+			'message' => 'Your wallet was recharged successfully. Amount: ₹' . number_format($request->amount, 2),
 			'created_at' => now(),
 			'updated_at' => now(),
 		]);
+
+		try {
+			$phone = ($user->phone_number_country_code ?? '') . ($user->phone_number ?? '');
+			if (!empty($phone)) {
+				$gst = \App\Services\GstService::calculate((float) $request->amount);
+				$invoiceText = \App\Services\GstService::formatInvoiceText(
+					'Wallet Top-Up',
+					$gst['base_amount'],
+					$gst['gst_amount'],
+					$gst['total_amount'],
+					'WALLET-' . $request->razorpay_order_id,
+					now()->format('d M Y, h:i A')
+				);
+				$whatsapp = new \App\Services\WhatsAppService();
+				$whatsapp->sendTextMessage($phone, $invoiceText);
+			}
+		} catch (\Throwable $e) {
+			\Illuminate\Support\Facades\Log::error("WhatsApp wallet invoice failed", ['error' => $e->getMessage()]);
+		}
 
 		return response()->json([
 			'status' => 'success',

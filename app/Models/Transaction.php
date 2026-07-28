@@ -14,16 +14,17 @@ class Transaction extends Model
 
     protected $fillable = [
         'user_id', 'role', 'transaction_id', 'type', 'order_id', 
-        'order_number', 'reference_id', 'amount', 'currency',
+        'order_number', 'reference_id', 'amount', 'base_amount',
+        'gst_amount', 'total_amount', 'currency',
         'payment_mode', 'payment_status', 'payment_response', 'for_entry',
-        'created_by','transaction_id','type','order_number','reference_id','currency','payment_mode','payment_status','payment_response','for_entry'
-
-
-        
+        'created_by'
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
+        'base_amount' => 'decimal:2',
+        'gst_amount' => 'decimal:2',
+        'total_amount' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
