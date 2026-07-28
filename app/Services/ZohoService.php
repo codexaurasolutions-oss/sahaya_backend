@@ -170,11 +170,13 @@ class ZohoService
             $data = $response->json();
             if (isset($data['organizations'][0]['id'])) {
                 $orgId = $data['organizations'][0]['id'];
-                config(["zoho.desk.org_id" => $orgId]);
                 $this->orgId = $orgId;
+                \Illuminate\Support\Facades\Cache::remember('zoho_desk_org_id', 86400, fn() => $orgId);
                 Log::info("Auto-fetched Desk org ID", ['org_id' => $orgId]);
                 return $orgId;
             }
+
+            Log::error("Desk org ID not found in response", ['response' => $data]);
         } catch (\Throwable $e) {
             Log::error("Failed to fetch Desk org ID", ['error' => $e->getMessage()]);
         }
@@ -194,10 +196,7 @@ class ZohoService
         ], $headers);
 
         if ($this->service === 'desk') {
-            $orgId = $this->orgId;
-            if (!$orgId) {
-                $orgId = $this->fetchDeskOrgId($token);
-            }
+            $orgId = $this->fetchDeskOrgId($token);
             $defaultHeaders['orgId'] = $orgId;
         }
 
