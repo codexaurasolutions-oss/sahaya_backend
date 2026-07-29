@@ -1201,8 +1201,8 @@ Route::post('/test-create-ticket', function (\Illuminate\Http\Request $request) 
 
                 if ($departmentId) {
                     $body = "Category: {$ticket->category}\nPriority: {$ticket->priority}\n\n{$ticket->description}";
-                    $body .= "\n\nUser: {$user->name} ({$user->email ?? 'no email'})";
-                    $body .= "\nUser Phone: {$user->phone_number ?? 'N/A'}";
+                    $body .= "\n\nUser: {$user->name} (" . ($user->email ?? 'no email') . ")";
+                    $body .= "\nUser Phone: " . ($user->phone_number ?? 'N/A');
 
                     $result = $zohoService->makeRequest('POST', '/tickets', [
                         'subject' => $ticket->subject,
