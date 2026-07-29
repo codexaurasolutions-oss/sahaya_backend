@@ -11,7 +11,7 @@ class WhatsAppService
 
     public function __construct()
     {
-        $this->d360ApiKey = env('D360_API_KEY', '');
+        $this->d360ApiKey = config('whatsapp.d360_api_key', env('D360_API_KEY', ''));
     }
 
     public function isConfigured()

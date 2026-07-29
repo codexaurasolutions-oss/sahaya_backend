@@ -21,7 +21,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('user_id');
             $table->index('status');
             $table->index('zoho_ticket_id');
         });
