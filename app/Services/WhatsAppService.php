@@ -6,30 +6,26 @@ use Illuminate\Support\Facades\Log;
 
 class WhatsAppService
 {
-    protected $apiKey;
-    protected $customerId;
-    protected $botKey;
-    protected $apiUrl = 'https://waba-v2.360dialog.io';
+    protected $d360ApiKey;
+    protected $apiUrl = 'https://waba-v2.360dialog.io/messages';
 
     public function __construct()
     {
-        $this->apiKey = env('TELEBU_API_KEY', '');
-        $this->customerId = env('TELEBU_CUSTOMER_ID', '');
-        $this->botKey = env('TELEBU_BOT_KEY', '');
+        $this->d360ApiKey = env('D360_API_KEY', '');
     }
 
     public function isConfigured()
     {
-        return !empty($this->apiKey);
+        return !empty($this->d360ApiKey);
     }
 
     /**
-     * Send a WhatsApp template message via 360dialog (Telebu backend)
+     * Send a WhatsApp template message via360dialog API
      */
-    public function sendTemplate($to, $templateName, $parameters = [], $languageCode = 'en')
+    public function sendTemplate($to, $templateName, $parameters = [], $languageCode = 'en_US')
     {
         if (!$this->isConfigured()) {
-            Log::warning('WhatsApp (Telebu/360dialog) credentials not configured');
+            Log::warning('WhatsApp360dialog credentials not configured (D360_API_KEY missing)');
             return false;
         }
 
@@ -41,30 +37,31 @@ class WhatsAppService
 
         $components = [];
         if (!empty($parameters)) {
+            $bodyParams = array_map(function ($param) {
+                return ['type' => 'text', 'text' => (string) $param];
+            }, $parameters);
+
             $components[] = [
                 'type' => 'body',
-                'parameters' => array_map(function ($param) {
-                    return ['type' => 'text', 'text' => (string) $param];
-                }, $parameters),
+                'parameters' => $bodyParams,
             ];
         }
 
         $payload = [
             'messaging_product' => 'whatsapp',
-            'recipient_type' => 'individual',
             'to' => $phone,
             'type' => 'template',
             'template' => [
                 'name' => $templateName,
                 'language' => [
-                    'policy' => 'deterministic',
                     'code' => $languageCode,
+                    'policy' => 'deterministic',
                 ],
                 'components' => $components,
             ],
         ];
 
-        return $this->sendRequest($payload);
+        return $this->sendRequest($payload, $phone);
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -142,19 +139,17 @@ class WhatsAppService
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // CORE API REQUEST - 360dialog
+    // CORE API REQUEST -360dialog
     // ═══════════════════════════════════════════════════════════════
 
-    protected function sendRequest($payload)
+    protected function sendRequest($payload, $phone)
     {
-        $url = $this->apiUrl . '/v1/messages';
-
         $ch = curl_init();
         curl_setopt_array($ch, [
-            CURLOPT_URL => $url,
+            CURLOPT_URL => $this->apiUrl,
             CURLOPT_POST => true,
             CURLOPT_HTTPHEADER => [
-                'D360-API-KEY: ' . $this->apiKey,
+                'D360-API-KEY: ' . $this->d360ApiKey,
                 'Content-Type: application/json',
             ],
             CURLOPT_RETURNTRANSFER => true,
@@ -169,18 +164,22 @@ class WhatsAppService
         curl_close($ch);
 
         if ($error) {
-            Log::error("WhatsApp (360dialog) cURL error: $error");
+            Log::error("WhatsApp360dialog cURL error: $error");
             return false;
         }
 
         $result = json_decode($response, true);
 
         if ($httpCode >= 200 && $httpCode < 300) {
-            Log::info("WhatsApp sent to {$payload['to']} via 360dialog");
-            return true;
+            if (isset($result['messages'][0]['id'])) {
+                Log::info("WhatsApp sent to $phone via360dialog. Message ID: {$result['messages'][0]['id']}");
+                return true;
+            }
+            Log::warning("WhatsApp360dialog unexpected response: " . json_encode($result));
+            return false;
         }
 
-        Log::error("WhatsApp (360dialog) HTTP $httpCode: " . json_encode($result));
+        Log::error("WhatsApp360dialog HTTP $httpCode: " . json_encode($result));
         return false;
     }
 
@@ -192,12 +191,19 @@ class WhatsAppService
 
         if (strlen($phone) < 10) return null;
 
+        // Remove leading zero (e.g., 03101234567 -> 3101234567)
         if (strlen($phone) === 11 && $phone[0] === '0') {
             $phone = substr($phone, 1);
         }
 
+        // 10-digit number without country code
         if (strlen($phone) === 10) {
-            $phone = '91' . $phone;
+            // Pakistani numbers start with 3 (e.g., 301xxxxxxx, 310xxxxxxx)
+            if ($phone[0] === '3') {
+                $phone = '92' . $phone;
+            } else {
+                $phone = '91' . $phone;
+            }
         }
 
         return $phone;

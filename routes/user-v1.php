@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\Api\SupportTicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\frontend\UserController;
@@ -147,5 +148,12 @@ Route::middleware(['UserAuthApi', 'ResponseMiddleware'])->group(function () {
     Route::post('block-users', [App\Http\Controllers\frontend\NotificationController::class, 'blockUserProduct'])->name('block-users');
     Route::get('block-users-list', [App\Http\Controllers\frontend\NotificationController::class, 'blockUserList'])->name('block-users-list');
     Route::post('un-block-users', [App\Http\Controllers\frontend\NotificationController::class, 'UnBlockUsers'])->name('un-block-users');
+
+    // Support Tickets (syncs to Zoho Desk)
+    Route::post('support/tickets', [SupportTicketController::class, 'store']);
+    Route::get('support/tickets', [SupportTicketController::class, 'index']);
+    Route::get('support/tickets/{id}', [SupportTicketController::class, 'show']);
+    Route::post('support/tickets/{id}/comment', [SupportTicketController::class, 'addComment']);
+    Route::get('support/categories', [SupportTicketController::class, 'categories']);
 
 });
