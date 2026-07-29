@@ -570,9 +570,6 @@ class SubscriptionController extends Controller
     private function sendWhatsAppInvoice($user, $subscriptionUser, $subscription)
     {
         try {
-            $phone = $user->phone_number_country_code . $user->phone_number;
-            if (empty($phone)) return;
-
             $baseAmount = (float) ($subscriptionUser->base_amount ?? $subscription->price);
             $gstAmount = (float) ($subscriptionUser->gst_amount ?? 0);
             $totalAmount = (float) ($subscriptionUser->total_amount ?? $subscriptionUser->amount);
@@ -586,8 +583,7 @@ class SubscriptionController extends Controller
                 now()->format('d M Y, h:i A')
             );
 
-            $whatsapp = new \App\Services\WhatsAppService();
-            $whatsapp->sendTextMessage($phone, $invoiceText);
+            \App\Services\NotificationService::send($user->id, 'Payment Receipt', $invoiceText, 'payment_receipt');
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error("WhatsApp invoice failed", ['error' => $e->getMessage()]);
         }

@@ -125,6 +125,24 @@ class NotificationService extends Controller
     }
 
     /**
+     * Send WhatsApp template message to a user
+     */
+    protected static function sendWhatsAppTemplate($userId, $methodName, $params = [])
+    {
+        try {
+            $phone = User::where('id', $userId)->value('phone_number');
+            if (empty($phone)) return;
+
+            $whatsapp = self::getWhatsApp();
+            if (!$whatsapp->isConfigured()) return;
+
+            $whatsapp->$methodName($phone, ...$params);
+        } catch (\Exception $e) {
+            \Log::warning("WhatsApp template failed for user $userId: " . $e->getMessage());
+        }
+    }
+
+    /**
      * Send SMS to a user
      */
     protected static function sendSMSMessage($userId, $message)
@@ -177,6 +195,7 @@ class NotificationService extends Controller
     {
         $message = "Welcome to Sahayya! You have been added as staff by {$ownerName}.";
         self::send($staffId, 'Welcome to Sahayya!', $message, 'staff_added');
+        self::sendWhatsAppTemplate($staffId, 'staffAdded', [$ownerName]);
     }
 
     /**
@@ -186,6 +205,7 @@ class NotificationService extends Controller
     {
         $message = "Your salary of ₹{$amount} has been paid by {$ownerName}.";
         self::send($staffId, 'Salary Paid', $message, 'salary_paid');
+        self::sendWhatsAppTemplate($staffId, 'salaryPaid', [$amount, $ownerName]);
     }
 
     /**
@@ -195,6 +215,7 @@ class NotificationService extends Controller
     {
         $message = "You have been terminated from your position by {$ownerName}.";
         self::send($staffId, 'Termination Notice', $message, 'termination');
+        self::sendWhatsAppTemplate($staffId, 'staffTerminated', [$ownerName]);
     }
 
     /**
@@ -204,6 +225,7 @@ class NotificationService extends Controller
     {
         $message = "Your leave request has been approved by {$ownerName}.";
         self::send($staffId, 'Leave Approved', $message, 'leave_approved');
+        self::sendWhatsAppTemplate($staffId, 'leaveApproved', [$ownerName]);
     }
 
     /**
@@ -213,6 +235,7 @@ class NotificationService extends Controller
     {
         $message = "Your leave request has been rejected by {$ownerName}.";
         self::send($staffId, 'Leave Rejected', $message, 'leave_rejected');
+        self::sendWhatsAppTemplate($staffId, 'leaveRejected', [$ownerName]);
     }
 
     /**
@@ -222,6 +245,7 @@ class NotificationService extends Controller
     {
         $message = "A new job application has been received from {$staffName} for \"{$jobTitle}\".";
         self::send($ownerId, 'New Job Application', $message, 'job_application', $extra);
+        self::sendWhatsAppTemplate($ownerId, 'jobApplied', [$staffName, $jobTitle]);
     }
 
     /**
@@ -231,5 +255,6 @@ class NotificationService extends Controller
     {
         $message = "{$staffName} has applied for leave on {$dates}.";
         self::send($ownerId, 'Leave Application', $message, 'leave_application', $extra);
+        self::sendWhatsAppTemplate($ownerId, 'leaveApplied', [$staffName, $dates, $dates]);
     }
 }

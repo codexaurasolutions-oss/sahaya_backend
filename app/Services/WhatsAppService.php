@@ -6,100 +6,159 @@ use Illuminate\Support\Facades\Log;
 
 class WhatsAppService
 {
-    protected $phoneNumberId;
-    protected $accessToken;
-    protected $apiUrl = 'https://graph.facebook.com/v18.0';
+    protected $apiKey;
+    protected $customerId;
+    protected $botKey;
+    protected $apiUrl = 'https://api.engati.ai';
 
     public function __construct()
     {
-        $this->phoneNumberId = env('WHATSAPP_PHONE_NUMBER_ID', '');
-        $this->accessToken = env('WHATSAPP_ACCESS_TOKEN', '');
+        $this->apiKey = env('TELEBU_API_KEY', '');
+        $this->customerId = env('TELEBU_CUSTOMER_ID', '');
+        $this->botKey = env('TELEBU_BOT_KEY', '');
+    }
+
+    public function isConfigured()
+    {
+        return !empty($this->apiKey) && !empty($this->customerId) && !empty($this->botKey);
     }
 
     /**
-     * Send a free-form text message via WhatsApp
+     * Send a WhatsApp template message via Telebu/Engati API
      */
-    public function sendTextMessage($to, $message)
+    public function sendTemplate($to, $templateName, $parameters = [], $languageCode = 'en')
     {
-        if (empty($this->phoneNumberId) || empty($this->accessToken)) {
-            Log::warning('WhatsApp credentials not configured');
+        if (!$this->isConfigured()) {
+            Log::warning('WhatsApp (Telebu) credentials not configured');
             return false;
         }
 
-        $to = $this->formatPhone($to);
-        if (!$to) {
-            Log::warning('WhatsApp: Invalid phone number');
+        $phone = $this->formatPhone($to);
+        if (!$phone) {
+            Log::warning("WhatsApp: Invalid phone number: $to");
             return false;
         }
 
-        $payload = [
-            'messaging_product' => 'whatsapp',
-            'to' => $to,
-            'type' => 'text',
-            'text' => ['body' => $message],
-        ];
-
-        return $this->sendRequest($payload);
-    }
-
-    /**
-     * Send a template message via WhatsApp (for pre-approved templates)
-     */
-    public function sendTemplateMessage($to, $templateName, $languageCode = 'en', $parameters = [])
-    {
-        if (empty($this->phoneNumberId) || empty($this->accessToken)) {
-            Log::warning('WhatsApp credentials not configured');
-            return false;
-        }
-
-        $to = $this->formatPhone($to);
-        if (!$to) {
-            Log::warning('WhatsApp: Invalid phone number');
-            return false;
-        }
-
-        $template = [
-            'name' => $templateName,
-            'language' => ['code' => $languageCode],
-        ];
-
+        $components = [];
         if (!empty($parameters)) {
-            $template['components'] = [[
+            $components[] = [
                 'type' => 'body',
                 'parameters' => array_map(function ($param) {
-                    return ['type' => 'text', 'text' => $param];
+                    return ['type' => 'text', 'text' => (string) $param];
                 }, $parameters),
-            ]];
+            ];
         }
 
         $payload = [
-            'messaging_product' => 'whatsapp',
-            'to' => $to,
-            'type' => 'template',
-            'template' => $template,
+            'language' => [
+                'policy' => 'deterministic',
+                'code' => $languageCode,
+            ],
+            'name' => $templateName,
+            'components' => $components,
         ];
 
-        return $this->sendRequest($payload);
+        $body = [
+            'phonenumber' => '+' . $phone,
+            'payload' => $payload,
+        ];
+
+        return $this->sendRequest($body);
     }
 
-    /**
-     * Send request to WhatsApp API
-     */
-    protected function sendRequest($payload)
+    // ═══════════════════════════════════════════════════════════════
+    // TEMPLATE HELPER METHODS - One per template
+    // ═══════════════════════════════════════════════════════════════
+
+    public function staffAdded($phone, $ownerName)
     {
-        $url = "{$this->apiUrl}/{$this->phoneNumberId}/messages";
+        return $this->sendTemplate($phone, 'staff_added', [$ownerName]);
+    }
+
+    public function jobApplied($phone, $staffName, $jobTitle)
+    {
+        return $this->sendTemplate($phone, 'job_applied', [$staffName, $jobTitle]);
+    }
+
+    public function jobAccepted($phone, $jobTitle)
+    {
+        return $this->sendTemplate($phone, 'job_accepted', [$jobTitle]);
+    }
+
+    public function jobRejected($phone, $jobTitle)
+    {
+        return $this->sendTemplate($phone, 'job_rejected', [$jobTitle]);
+    }
+
+    public function leaveApplied($phone, $staffName, $fromDate, $toDate)
+    {
+        return $this->sendTemplate($phone, 'leave_applied', [$staffName, $fromDate, $toDate]);
+    }
+
+    public function leaveApproved($phone, $approvedBy)
+    {
+        return $this->sendTemplate($phone, 'leave_approved', [$approvedBy]);
+    }
+
+    public function leaveRejected($phone, $rejectedBy)
+    {
+        return $this->sendTemplate($phone, 'leave_rejected', [$rejectedBy]);
+    }
+
+    public function salaryPaid($phone, $amount, $paidBy)
+    {
+        return $this->sendTemplate($phone, 'salary_paid', [$amount, $paidBy]);
+    }
+
+    public function staffTerminated($phone, $terminatedBy)
+    {
+        return $this->sendTemplate($phone, 'staff_terminated', [$terminatedBy]);
+    }
+
+    public function quitJobRequest($phone, $staffName, $jobTitle)
+    {
+        return $this->sendTemplate($phone, 'quit_job_request', [$staffName, $jobTitle]);
+    }
+
+    public function kycApproved($phone)
+    {
+        return $this->sendTemplate($phone, 'kyc_approved', []);
+    }
+
+    public function kycRejected($phone)
+    {
+        return $this->sendTemplate($phone, 'kyc_rejected', []);
+    }
+
+    public function salarySlip($phone, $month, $amount)
+    {
+        return $this->sendTemplate($phone, 'salary_slip', [$month, $amount]);
+    }
+
+    public function leaveMarked($phone, $date, $status)
+    {
+        return $this->sendTemplate($phone, 'leave_marked', [$date, $status]);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // CORE API REQUEST
+    // ═══════════════════════════════════════════════════════════════
+
+    protected function sendRequest($body)
+    {
+        $url = "{$this->apiUrl}/whatsapp-api/v1.0/customer/{$this->customerId}/bot/{$this->botKey}/template";
 
         $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_URL => $url,
             CURLOPT_POST => true,
             CURLOPT_HTTPHEADER => [
-                'Authorization: Bearer ' . $this->accessToken,
+                'Authorization: Basic ' . $this->apiKey,
                 'Content-Type: application/json',
             ],
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => !env('APP_DEBUG', true),
-            CURLOPT_POSTFIELDS => json_encode($payload),
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_POSTFIELDS => json_encode($body),
             CURLOPT_TIMEOUT => 30,
         ]);
 
@@ -109,24 +168,26 @@ class WhatsAppService
         curl_close($ch);
 
         if ($error) {
-            Log::error("WhatsApp API cURL error: $error");
+            Log::error("WhatsApp (Telebu) cURL error: $error");
             return false;
         }
 
         $result = json_decode($response, true);
 
         if ($httpCode >= 200 && $httpCode < 300) {
-            Log::info("WhatsApp message sent successfully to {$payload['to']}");
-            return true;
+            $status = $result['status'] ?? [];
+            if (($status['code'] ?? 0) === 1000) {
+                Log::info("WhatsApp sent to {$body['phonenumber']} via Telebu");
+                return true;
+            }
+            Log::warning("WhatsApp (Telebu) API error: " . json_encode($status));
+            return false;
         }
 
-        Log::error("WhatsApp API error (HTTP $httpCode): " . json_encode($result));
+        Log::error("WhatsApp (Telebu) HTTP $httpCode: " . json_encode($result));
         return false;
     }
 
-    /**
-     * Format phone number to E.164 (remove spaces, dashes, plus sign)
-     */
     protected function formatPhone($phone)
     {
         if (empty($phone)) return null;
@@ -135,7 +196,6 @@ class WhatsAppService
 
         if (strlen($phone) < 10) return null;
 
-        // Remove leading zero (e.g., 01234567890 -> 1234567890)
         if (strlen($phone) === 11 && $phone[0] === '0') {
             $phone = substr($phone, 1);
         }

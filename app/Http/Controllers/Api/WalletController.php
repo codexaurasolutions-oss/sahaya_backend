@@ -216,20 +216,16 @@ $totalAmount = Wallet::where('user_id', $user->id)
 		]);
 
 		try {
-			$phone = ($user->phone_number_country_code ?? '') . ($user->phone_number ?? '');
-			if (!empty($phone)) {
-				$gst = \App\Services\GstService::calculate((float) $request->amount);
-				$invoiceText = \App\Services\GstService::formatInvoiceText(
-					'Wallet Top-Up',
-					$gst['base_amount'],
-					$gst['gst_amount'],
-					$gst['total_amount'],
-					'WALLET-' . $request->razorpay_order_id,
-					now()->format('d M Y, h:i A')
-				);
-				$whatsapp = new \App\Services\WhatsAppService();
-				$whatsapp->sendTextMessage($phone, $invoiceText);
-			}
+			$gst = \App\Services\GstService::calculate((float) $request->amount);
+			$invoiceText = \App\Services\GstService::formatInvoiceText(
+				'Wallet Top-Up',
+				$gst['base_amount'],
+				$gst['gst_amount'],
+				$gst['total_amount'],
+				'WALLET-' . $request->razorpay_order_id,
+				now()->format('d M Y, h:i A')
+			);
+			\App\Services\NotificationService::send($user->id, 'Wallet Top-Up', $invoiceText, 'wallet_topup');
 		} catch (\Throwable $e) {
 			\Illuminate\Support\Facades\Log::error("WhatsApp wallet invoice failed", ['error' => $e->getMessage()]);
 		}
