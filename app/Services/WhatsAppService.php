@@ -9,7 +9,7 @@ class WhatsAppService
     protected $apiKey;
     protected $customerId;
     protected $botKey;
-    protected $apiUrl = 'https://api.engati.ai';
+    protected $apiUrl = 'https://waba-v2.360dialog.io';
 
     public function __construct()
     {
@@ -20,16 +20,16 @@ class WhatsAppService
 
     public function isConfigured()
     {
-        return !empty($this->apiKey) && !empty($this->customerId) && !empty($this->botKey);
+        return !empty($this->apiKey);
     }
 
     /**
-     * Send a WhatsApp template message via Telebu/Engati API
+     * Send a WhatsApp template message via 360dialog (Telebu backend)
      */
     public function sendTemplate($to, $templateName, $parameters = [], $languageCode = 'en')
     {
         if (!$this->isConfigured()) {
-            Log::warning('WhatsApp (Telebu) credentials not configured');
+            Log::warning('WhatsApp (Telebu/360dialog) credentials not configured');
             return false;
         }
 
@@ -50,24 +50,25 @@ class WhatsAppService
         }
 
         $payload = [
-            'language' => [
-                'policy' => 'deterministic',
-                'code' => $languageCode,
+            'messaging_product' => 'whatsapp',
+            'recipient_type' => 'individual',
+            'to' => $phone,
+            'type' => 'template',
+            'template' => [
+                'name' => $templateName,
+                'language' => [
+                    'policy' => 'deterministic',
+                    'code' => $languageCode,
+                ],
+                'components' => $components,
             ],
-            'name' => $templateName,
-            'components' => $components,
         ];
 
-        $body = [
-            'phonenumber' => '+' . $phone,
-            'payload' => $payload,
-        ];
-
-        return $this->sendRequest($body);
+        return $this->sendRequest($payload);
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // TEMPLATE HELPER METHODS - One per template
+    // TEMPLATE HELPER METHODS
     // ═══════════════════════════════════════════════════════════════
 
     public function staffAdded($phone, $ownerName)
@@ -141,24 +142,24 @@ class WhatsAppService
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // CORE API REQUEST
+    // CORE API REQUEST - 360dialog
     // ═══════════════════════════════════════════════════════════════
 
-    protected function sendRequest($body)
+    protected function sendRequest($payload)
     {
-        $url = "{$this->apiUrl}/whatsapp-api/v1.0/customer/{$this->customerId}/bot/{$this->botKey}/template";
+        $url = $this->apiUrl . '/v1/messages';
 
         $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_URL => $url,
             CURLOPT_POST => true,
             CURLOPT_HTTPHEADER => [
-                'Authorization: Basic ' . $this->apiKey,
+                'D360-API-KEY: ' . $this->apiKey,
                 'Content-Type: application/json',
             ],
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_POSTFIELDS => json_encode($body),
+            CURLOPT_POSTFIELDS => json_encode($payload),
             CURLOPT_TIMEOUT => 30,
         ]);
 
@@ -168,23 +169,18 @@ class WhatsAppService
         curl_close($ch);
 
         if ($error) {
-            Log::error("WhatsApp (Telebu) cURL error: $error");
+            Log::error("WhatsApp (360dialog) cURL error: $error");
             return false;
         }
 
         $result = json_decode($response, true);
 
         if ($httpCode >= 200 && $httpCode < 300) {
-            $status = $result['status'] ?? [];
-            if (($status['code'] ?? 0) === 1000) {
-                Log::info("WhatsApp sent to {$body['phonenumber']} via Telebu");
-                return true;
-            }
-            Log::warning("WhatsApp (Telebu) API error: " . json_encode($status));
-            return false;
+            Log::info("WhatsApp sent to {$payload['to']} via 360dialog");
+            return true;
         }
 
-        Log::error("WhatsApp (Telebu) HTTP $httpCode: " . json_encode($result));
+        Log::error("WhatsApp (360dialog) HTTP $httpCode: " . json_encode($result));
         return false;
     }
 
