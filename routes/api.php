@@ -1171,6 +1171,76 @@ Route::get('/debug-db', function () {
     ]);
 });
 
+// TEMP: Test ticket creation for Zoho Desk sync testing
+Route::post('/test-create-ticket', function (\Illuminate\Http\Request $request) {
+    try {
+        $user = \App\Models\User::where('is_deleted', 0)->first();
+        if (!$user) {
+            return response()->json(['error' => 'No users found in DB'], 404);
+        }
+
+        $ticket = \App\Models\Ticket::create([
+            'user_id' => $user->id,
+            'subject' => $request->input('subject', 'Test Support Ticket - Ankit'),
+            'description' => $request->input('description', 'This is a test support ticket created by Ankit to verify Zoho Desk integration. Please ignore.'),
+            'category' => $request->input('category', 'General'),
+            'priority' => $request->input('priority', 'Medium'),
+            'status' => 'Open',
+        ]);
+
+        $zohoTicketId = null;
+        $zohoError = null;
+        try {
+            $zohoService = new \App\Services\ZohoService('desk');
+            if ($zohoService->isAuthorized()) {
+                $deptResult = $zohoService->makeRequest('GET', '/departments');
+                $departmentId = null;
+                if ($deptResult['ok'] && !empty($deptResult['data']['departments'])) {
+                    $departmentId = $deptResult['data']['departments'][0]['id'];
+                }
+
+                if ($departmentId) {
+                    $body = "Category: {$ticket->category}\nPriority: {$ticket->priority}\n\n{$ticket->description}";
+                    $body .= "\n\nUser: {$user->name} ({$user->email ?? 'no email'})";
+                    $body .= "\nUser Phone: {$user->phone_number ?? 'N/A'}";
+
+                    $result = $zohoService->makeRequest('POST', '/tickets', [
+                        'subject' => $ticket->subject,
+                        'description' => $body,
+                        'departmentId' => $departmentId,
+                        'priority' => $ticket->priority,
+                        'status' => 'Open',
+                        'channel' => 'Sahayya App',
+                    ]);
+
+                    if ($result['ok'] && isset($result['data']['id'])) {
+                        $zohoTicketId = $result['data']['id'];
+                        $ticket->update(['zoho_ticket_id' => $zohoTicketId]);
+                    } else {
+                        $zohoError = $result;
+                    }
+                } else {
+                    $zohoError = 'No Zoho Desk departments found';
+                }
+            } else {
+                $zohoError = 'Zoho Desk not authorized - set ZOHO_DESK_REFRESH_TOKEN in Railway env';
+            }
+        } catch (\Exception $e) {
+            $zohoError = $e->getMessage();
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'ticket' => $ticket->fresh(),
+            'zoho_ticket_id' => $zohoTicketId,
+            'zoho_error' => $zohoError,
+            'user' => ['id' => $user->id, 'name' => $user->name],
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
+
 
 
 
