@@ -1244,3 +1244,28 @@ Route::post('/test-create-ticket', function (\Illuminate\Http\Request $request) 
 
 
 
+
+// Debug Zoho Desk status
+Route::get('/debug-zoho-desk', function () {
+    try {
+         = new \App\Services\ZohoService('desk');
+         = ->isAuthorized();
+        
+         = ['authorized' => ];
+        
+        if () {
+             = ->getAccessToken();
+            ['token_obtained'] = !empty();
+            
+             = ->fetchDeskOrgId();
+            ['org_id'] = ;
+            
+             = ->makeRequest('GET', '/departments');
+            ['departments'] = ;
+        }
+        
+        return response()->json();
+    } catch (\Exception ) {
+        return response()->json(['error' => ->getMessage(), 'trace' => ->getTraceAsString()]);
+    }
+});
