@@ -1,8 +1,8 @@
 <?php 
 config(["Commission.admin_commission_amount"=>"40"]);
 config(["contact.address"=>"Calle 123, Madrid - España"]);
-config(["Contact.admin_email"=>"admin@gmail.com"]);
-config(["Contact.email_address"=>"dummy@mailinator.com"]);
+config(["Contact.admin_email"=>"Support@sahayya.co.in"]);
+config(["Contact.email_address"=>"Support@sahayya.co.in"]);
 config(["Contact.phone"=>"00 (123) 456 78 90"]);
 config(["Reading.date_format"=>"m-d-Y"]);
 config(["Reading.date_time_format"=>"m-d-Y h:i A"]);
