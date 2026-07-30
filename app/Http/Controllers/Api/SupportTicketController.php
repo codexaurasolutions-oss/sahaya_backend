@@ -313,8 +313,21 @@ class SupportTicketController extends Controller
             $zohoService = new ZohoService('desk');
             $result = $zohoService->makeRequest('GET', "/tickets/{$zohoTicketId}/comments");
 
+            Log::info('Zoho Desk comments response', ['ticket_id' => $zohoTicketId, 'result' => $result]);
+
             if ($result['ok'] && isset($result['data'])) {
-                return $result['data']['comments'] ?? [];
+                $zohoData = $result['data'];
+                $rawComments = $zohoData['data'] ?? $zohoData['comments'] ?? [];
+
+                return array_map(function ($comment) {
+                    return [
+                        'id' => $comment['id'] ?? null,
+                        'content' => $comment['content'] ?? '',
+                        'author' => $comment['authorName'] ?? $comment['authorId'] ?? 'Support Team',
+                        'isPublic' => $comment['isPublic'] ?? true,
+                        'created_at' => $comment['createdTime'] ?? $comment['created_time'] ?? null,
+                    ];
+                }, $rawComments);
             }
             return [];
         } catch (\Exception $e) {
