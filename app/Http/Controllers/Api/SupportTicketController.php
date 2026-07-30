@@ -203,8 +203,11 @@ class SupportTicketController extends Controller
             // Get departments to find default
             $deptResult = $zohoService->makeRequest('GET', '/departments');
             $departmentId = null;
-            if ($deptResult['ok'] && !empty($deptResult['data']['departments'])) {
-                $departmentId = $deptResult['data']['departments'][0]['id'];
+            if ($deptResult['ok']) {
+                $departments = $deptResult['data']['departments'] ?? $deptResult['data']['data'] ?? [];
+                if (!empty($departments)) {
+                    $departmentId = $departments[0]['id'];
+                }
             }
 
             if (!$departmentId) {
@@ -212,22 +215,31 @@ class SupportTicketController extends Controller
                 return null;
             }
 
+            // Create or find contact in Zoho Desk
+            $contactId = $this->getOrCreateZohoContact($zohoService, $user);
+
             $body = "Category: {$ticket->category}\nPriority: {$ticket->priority}\n\n{$ticket->description}";
             if ($user->email) {
                 $body .= "\n\nUser Email: {$user->email}";
             }
-            if ($user->phone) {
-                $body .= "\nUser Phone: {$user->phone}";
+            if ($user->phone_number) {
+                $body .= "\nUser Phone: {$user->phone_number}";
             }
 
-            $result = $zohoService->makeRequest('POST', '/tickets', [
+            $ticketData = [
                 'subject' => $ticket->subject,
                 'description' => $body,
                 'departmentId' => $departmentId,
                 'priority' => $ticket->priority,
                 'status' => 'Open',
                 'channel' => 'Sahayya App',
-            ]);
+            ];
+
+            if ($contactId) {
+                $ticketData['contactId'] = $contactId;
+            }
+
+            $result = $zohoService->makeRequest('POST', '/tickets', $ticketData);
 
             if ($result['ok'] && isset($result['data']['id'])) {
                 Log::info("Zoho Desk ticket created: {$result['data']['id']}");
@@ -238,6 +250,59 @@ class SupportTicketController extends Controller
             return null;
         } catch (\Exception $e) {
             Log::error('Zoho Desk ticket sync error: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    private function getOrCreateZohoContact(ZohoService $zohoService, $user): ?string
+    {
+        try {
+            // Search existing contact by email or phone
+            $searchEmail = $user->email;
+            $searchPhone = $user->phone_number;
+
+            if ($searchEmail) {
+                $result = $zohoService->makeRequest('GET', '/contacts', ['email' => $searchEmail]);
+                if ($result['ok']) {
+                    $contacts = $result['data']['data'] ?? $result['data']['contacts'] ?? [];
+                    if (!empty($contacts)) {
+                        return $contacts[0]['id'];
+                    }
+                }
+            }
+
+            if ($searchPhone) {
+                $result = $zohoService->makeRequest('GET', '/contacts', ['phone' => $searchPhone]);
+                if ($result['ok']) {
+                    $contacts = $result['data']['data'] ?? $result['data']['contacts'] ?? [];
+                    if (!empty($contacts)) {
+                        return $contacts[0]['id'];
+                    }
+                }
+            }
+
+            // Create new contact
+            $contactData = [
+                'firstName' => !empty($user->first_name) ? trim($user->first_name) : trim($user->name ?? 'Sahayya'),
+                'lastName' => !empty($user->last_name) ? trim($user->last_name) : 'Kumar',
+            ];
+            if ($searchEmail) {
+                $contactData['email'] = $searchEmail;
+            }
+            if ($searchPhone) {
+                $contactData['phone'] = $searchPhone;
+            }
+
+            $createResult = $zohoService->makeRequest('POST', '/contacts', $contactData);
+            if ($createResult['ok'] && isset($createResult['data']['id'])) {
+                Log::info("Zoho Desk contact created: {$createResult['data']['id']}");
+                return $createResult['data']['id'];
+            }
+
+            Log::error('Zoho Desk contact creation failed', $createResult);
+            return null;
+        } catch (\Exception $e) {
+            Log::error('Zoho Desk contact error: ' . $e->getMessage());
             return null;
         }
     }

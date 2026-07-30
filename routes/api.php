@@ -1061,7 +1061,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/leave-type-list', [JobApplicationController::class, 'leaveTypeList']);
     Route::post('/leave-reject/{id}', [JobApplicationController::class, 'reject']);
     Route::post('/leave-approve/{id}', [JobApplicationController::class, 'approve']);
-    Route::post('/quit-job-request', [JobApplicationController::class, 'requestQuitJob']);
+    Route::match(['get', 'post'], '/quit-job-request', [JobApplicationController::class, 'requestQuitJob']);
+    Route::get('/quit-job-list', [JobApplicationController::class, 'listQuitJobs']);
 
     Route::get('/earnings/summary', [SalaryController::class, 'getEarningsSummary']);
     Route::get('/earnings/summary/{job_id}', [SalaryController::class, 'getEarningsSummary']);
@@ -1245,27 +1246,146 @@ Route::post('/test-create-ticket', function (\Illuminate\Http\Request $request) 
 
 
 
-// Debug Zoho Desk status
+// Debug Zoho Desk status (temporary - remove after testing)
 Route::get('/debug-zoho-desk', function () {
     try {
-         = new \App\Services\ZohoService('desk');
-         = ->isAuthorized();
-        
-         = ['authorized' => ];
-        
-        if () {
-             = ->getAccessToken();
-            ['token_obtained'] = !empty();
-            
-             = ->fetchDeskOrgId();
-            ['org_id'] = ;
-            
-             = ->makeRequest('GET', '/departments');
-            ['departments'] = ;
+        $zohoService = new \App\Services\ZohoService('desk');
+        $authorized = $zohoService->isAuthorized();
+        $result = ['authorized' => $authorized, 'service' => 'desk'];
+
+        if ($authorized) {
+            try {
+                $token = $zohoService->getAccessToken();
+                $result['token_obtained'] = !empty($token);
+                $result['token_length'] = strlen($token ?? '');
+            } catch (\Exception $e) {
+                $result['token_error'] = $e->getMessage();
+            }
+        } else {
+            $result['hint'] = 'Zoho Desk not authorized. Set ZOHO_DESK_CLIENT_ID, ZOHO_DESK_CLIENT_SECRET, ZOHO_DESK_REFRESH_TOKEN in Railway env, then authorize via /api/zoho/desk/callback';
         }
-        
-        return response()->json();
-    } catch (\Exception ) {
-        return response()->json(['error' => ->getMessage(), 'trace' => ->getTraceAsString()]);
+
+        return response()->json($result);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()]);
+    }
+});
+
+// Quick test - create ticket with Zoho sync
+Route::post('/debug-create-zoho-ticket', function (\Illuminate\Http\Request $request) {
+    try {
+        $user = \App\Models\User::where('is_deleted', 0)->first();
+        if (!$user) {
+            return response()->json(['error' => 'No users found'], 404);
+        }
+
+        $ticket = \App\Models\Ticket::create([
+            'user_id' => $user->id,
+            'subject' => $request->input('subject', 'Test Ticket - Zoho Desk'),
+            'description' => $request->input('description', 'Testing Zoho Desk integration'),
+            'category' => $request->input('category', 'General'),
+            'priority' => $request->input('priority', 'Medium'),
+            'status' => 'Open',
+        ]);
+
+        $zohoResult = null;
+        $zohoError = null;
+        try {
+            $zohoService = new \App\Services\ZohoService('desk');
+            if ($zohoService->isAuthorized()) {
+                $accessToken = $zohoService->getAccessToken();
+                $zohoResult = ['token_ok' => true];
+
+                $deptResult = $zohoService->makeRequest('GET', '/departments');
+                $zohoResult['departments_response'] = $deptResult;
+
+                $departmentId = null;
+                if ($deptResult['ok']) {
+                    $departments = $deptResult['data']['departments'] ?? $deptResult['data']['data'] ?? [];
+                    if (!empty($departments)) {
+                        $departmentId = $departments[0]['id'];
+                    }
+                }
+
+                if ($departmentId) {
+                    // First create/find contact
+                    $contactId = null;
+                    try {
+                        $searchPhone = $user->phone_number;
+                        if ($searchPhone) {
+                            $contactSearch = $zohoService->makeRequest('GET', '/contacts', ['phone' => $searchPhone]);
+                            $contacts = $contactSearch['data']['data'] ?? $contactSearch['data']['contacts'] ?? [];
+                            if (!empty($contacts)) {
+                                $contactId = $contacts[0]['id'];
+                            }
+                        }
+                        if (!$contactId && $user->email) {
+                            $contactSearch = $zohoService->makeRequest('GET', '/contacts', ['email' => $user->email]);
+                            $contacts = $contactSearch['data']['data'] ?? $contactSearch['data']['contacts'] ?? [];
+                            if (!empty($contacts)) {
+                                $contactId = $contacts[0]['id'];
+                            }
+                        }
+                        if (!$contactId) {
+                            $lastName = !empty($user->last_name) ? trim($user->last_name) : 'Kumar';
+                            $firstName = !empty($user->first_name) ? trim($user->first_name) : trim($user->name ?? '');
+                            if (empty($firstName)) $firstName = 'Sahayya';
+                            $newContact = $zohoService->makeRequest('POST', '/contacts', [
+                                'firstName' => $firstName,
+                                'lastName' => $lastName,
+                                'phone' => $searchPhone ?? '',
+                                'email' => $user->email ?? '',
+                            ]);
+                            if ($newContact['ok'] && isset($newContact['data']['id'])) {
+                                $contactId = $newContact['data']['id'];
+                            }
+                            $zohoResult['contact_create'] = $newContact;
+                        }
+                        $zohoResult['contact_id'] = $contactId;
+                    } catch (\Exception $e) {
+                        $zohoResult['contact_error'] = $e->getMessage();
+                    }
+
+                    $body = "Category: {$ticket->category}\nPriority: {$ticket->priority}\n\n{$ticket->description}";
+                    $body .= "\n\nUser: {$user->name}";
+                    $body .= "\nPhone: {$user->phone_number}";
+
+                    $ticketData = [
+                        'subject' => $ticket->subject,
+                        'description' => $body,
+                        'departmentId' => $departmentId,
+                        'priority' => $ticket->priority,
+                        'status' => 'Open',
+                        'channel' => 'Sahayya App',
+                    ];
+                    if ($contactId) {
+                        $ticketData['contactId'] = $contactId;
+                    }
+
+                    $result = $zohoService->makeRequest('POST', '/tickets', $ticketData);
+
+                    $zohoResult['create_response'] = $result;
+
+                    if ($result['ok'] && isset($result['data']['id'])) {
+                        $ticket->update(['zoho_ticket_id' => $result['data']['id']]);
+                        $zohoResult['zoho_ticket_id'] = $result['data']['id'];
+                    }
+                } else {
+                    $zohoError = 'No departments found';
+                }
+            } else {
+                $zohoError = 'Zoho Desk not authorized - need OAuth first';
+            }
+        } catch (\Exception $e) {
+            $zohoError = $e->getMessage();
+        }
+
+        return response()->json([
+            'ticket' => $ticket->fresh(),
+            'zoho_result' => $zohoResult,
+            'zoho_error' => $zohoError,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
 });

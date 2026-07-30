@@ -511,6 +511,17 @@ class JobApplicationController extends Controller
 
     public function requestQuitJob(Request $request)
     {
+        if ($request->isMethod('get')) {
+            $userId = Auth::guard('api')->user()->id;
+            $quitJobs = QuitJob::where('user_id', $userId)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            return response()->json([
+                'status' => true,
+                'data' => $quitJobs
+            ]);
+        }
+
         $request->validate([
             "job_id" => "required|exists:jobs,id",
             "end_date" => "required|date",
@@ -553,6 +564,18 @@ class JobApplicationController extends Controller
             "message" => "Quit request submitted successfully",
             "data" => $quit
         ], 201);
+    }
+
+    public function listQuitJobs(Request $request)
+    {
+        $userId = Auth::guard('api')->user()->id;
+        $quitJobs = QuitJob::where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return response()->json([
+            'status' => true,
+            'data' => $quitJobs
+        ]);
     }
 
 
