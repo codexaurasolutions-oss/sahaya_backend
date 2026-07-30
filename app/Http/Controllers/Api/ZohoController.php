@@ -16,10 +16,14 @@ class ZohoController extends Controller
 
     public function authStatus(): JsonResponse
     {
-        $authorized = false;
+        $crmAuthorized = false;
+        $deskAuthorized = false;
         try {
             if (\Illuminate\Support\Facades\Schema::hasTable('zoho_tokens')) {
-                $authorized = \App\Models\ZohoToken::where('service', 'crm')
+                $crmAuthorized = \App\Models\ZohoToken::where('service', 'crm')
+                    ->whereNotNull('refresh_token')
+                    ->exists();
+                $deskAuthorized = \App\Models\ZohoToken::where('service', 'desk')
                     ->whereNotNull('refresh_token')
                     ->exists();
             }
@@ -30,8 +34,8 @@ class ZohoController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'crm' => ['authorized' => $authorized],
-                'desk' => ['authorized' => false],
+                'crm' => ['authorized' => $crmAuthorized],
+                'desk' => ['authorized' => $deskAuthorized],
             ],
         ]);
     }

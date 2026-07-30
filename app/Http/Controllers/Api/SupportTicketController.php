@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use App\Models\TicketComment;
 use App\Services\ZohoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -112,18 +113,50 @@ class SupportTicketController extends Controller
                 ], 404);
             }
 
+            // Fetch local comments
+            $localComments = TicketComment::where('ticket_id', $ticket->id)
+                ->orderBy('created_at', 'asc')
+                ->get()
+                ->map(fn($c) => [
+                    'id' => $c->id,
+                    'content' => $c->content,
+                    'author' => $c->author,
+                    'isPublic' => true,
+                    'created_at' => $c->created_at->toIso8601String(),
+                    'source' => 'local',
+                ])
+                ->toArray();
+
             // Fetch comments from Zoho Desk if connected
-            $comments = [];
+            $zohoComments = [];
             if ($ticket->zoho_ticket_id) {
-                $comments = $this->getZohoComments($ticket->zoho_ticket_id);
+                $zohoComments = $this->getZohoComments($ticket->zoho_ticket_id);
             }
+
+            // Merge: local comments first, then Zoho comments not already synced
+            $localZohoIds = array_filter(array_map(fn($c) => $c['zoho_comment_id'] ?? null, $localComments));
+            $uniqueZohoComments = array_filter($zohoComments, fn($c) => !in_array($c['id'] ?? null, $localZohoIds));
+
+            $allComments = array_merge($localComments, array_map(fn($c) => [
+                'id' => $c['id'] ?? null,
+                'content' => $c['content'] ?? '',
+                'author' => $c['author'] ?? 'Support Team',
+                'isPublic' => $c['isPublic'] ?? true,
+                'created_at' => $c['created_at'] ?? null,
+                'source' => 'zoho',
+            ], $uniqueZohoComments));
+
+            // Sort by created_at
+            usort($allComments, function ($a, $b) {
+                return strtotime($a['created_at'] ?? 'now') - strtotime($b['created_at'] ?? 'now');
+            });
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ticket retrieved successfully',
                 'data' => [
                     'ticket' => $ticket,
-                    'comments' => $comments,
+                    'comments' => $allComments,
                 ],
             ]);
         } catch (\Exception $e) {
@@ -161,7 +194,20 @@ class SupportTicketController extends Controller
                 ], 404);
             }
 
-            // Add comment to Zoho Desk
+            // Store comment locally
+            $authorName = $user->first_name
+                ? trim($user->first_name . ' ' . ($user->last_name ?? ''))
+                : ($user->name ?? 'User');
+
+            $localComment = TicketComment::create([
+                'ticket_id' => $ticket->id,
+                'user_id' => $user->id,
+                'content' => $request->comment,
+                'author' => $authorName,
+                'is_local' => true,
+            ]);
+
+            // Also send to Zoho Desk if connected
             if ($ticket->zoho_ticket_id) {
                 $this->addZohoComment($ticket->zoho_ticket_id, $request->comment, $user);
             }
@@ -169,6 +215,12 @@ class SupportTicketController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Comment added successfully',
+                'data' => [
+                    'id' => $localComment->id,
+                    'content' => $localComment->content,
+                    'author' => $localComment->author,
+                    'created_at' => $localComment->created_at->toIso8601String(),
+                ],
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -257,12 +309,12 @@ class SupportTicketController extends Controller
     private function getOrCreateZohoContact(ZohoService $zohoService, $user): ?string
     {
         try {
-            // Search existing contact by email or phone
             $searchEmail = $user->email;
             $searchPhone = $user->phone_number;
 
+            // Search by email using the search endpoint
             if ($searchEmail) {
-                $result = $zohoService->makeRequest('GET', '/contacts', ['email' => $searchEmail]);
+                $result = $zohoService->makeRequest('GET', '/contacts/search', ['email' => $searchEmail]);
                 if ($result['ok']) {
                     $contacts = $result['data']['data'] ?? $result['data']['contacts'] ?? [];
                     if (!empty($contacts)) {
@@ -271,8 +323,9 @@ class SupportTicketController extends Controller
                 }
             }
 
+            // Search by phone using the search endpoint
             if ($searchPhone) {
-                $result = $zohoService->makeRequest('GET', '/contacts', ['phone' => $searchPhone]);
+                $result = $zohoService->makeRequest('GET', '/contacts/search', ['phone' => $searchPhone]);
                 if ($result['ok']) {
                     $contacts = $result['data']['data'] ?? $result['data']['contacts'] ?? [];
                     if (!empty($contacts)) {
@@ -281,7 +334,7 @@ class SupportTicketController extends Controller
                 }
             }
 
-            // Create new contact
+            // Create new contact if not found
             $contactData = [
                 'firstName' => !empty($user->first_name) ? trim($user->first_name) : trim($user->name ?? 'Sahayya'),
                 'lastName' => !empty($user->last_name) ? trim($user->last_name) : 'Kumar',
