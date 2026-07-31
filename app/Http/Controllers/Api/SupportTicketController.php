@@ -18,6 +18,29 @@ class SupportTicketController extends Controller
 
     private $categories = ['Payment', 'Staff', 'App Bug', 'Attendance', 'Leave', 'Salary', 'KYC', 'General'];
 
+    private function stripHtml(string $html): string
+    {
+        $text = strip_tags($html, "\n");
+        $text = str_replace(["<br>", "<br/>", "<br />", "<p>", "</p>", "<div>", "</div>"], "\n", $text);
+        $text = strip_tags($text);
+        $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
+        $text = preg_replace('/\n{3,}/', "\n\n", $text);
+        return trim($text);
+    }
+
+    private function mapZohoStatus(string $zohoStatus): string
+    {
+        $map = [
+            'open' => 'Open',
+            'on hold' => 'In Progress',
+            'in progress' => 'In Progress',
+            'escalated' => 'In Progress',
+            'closed' => 'Closed',
+            'cancelled' => 'Closed',
+        ];
+        return $map[strtolower($zohoStatus)] ?? 'Open';
+    }
+
     public function store(Request $request)
     {
         try {
@@ -111,6 +134,26 @@ class SupportTicketController extends Controller
                     'status' => 'error',
                     'message' => 'Ticket not found',
                 ], 404);
+            }
+
+            // Sync status from Zoho Desk if connected
+            if ($ticket->zoho_ticket_id) {
+                try {
+                    $zohoService = new ZohoService('desk');
+                    $result = $zohoService->makeRequest('GET', "/tickets/{$ticket->zoho_ticket_id}");
+                    if ($result['ok'] && isset($result['data'])) {
+                        $zohoStatus = $result['data']['status'] ?? null;
+                        if ($zohoStatus) {
+                            $mappedStatus = $this->mapZohoStatus($zohoStatus);
+                            if ($ticket->status !== $mappedStatus) {
+                                $ticket->update(['status' => $mappedStatus]);
+                                $ticket->refresh();
+                            }
+                        }
+                    }
+                } catch (\Exception $e) {
+                    Log::warning('Zoho status sync failed: ' . $e->getMessage());
+                }
             }
 
             // Fetch local comments
@@ -373,9 +416,10 @@ class SupportTicketController extends Controller
                 $rawComments = $zohoData['data'] ?? $zohoData['comments'] ?? [];
 
                 return array_map(function ($comment) {
+                    $rawContent = $comment['content'] ?? '';
                     return [
                         'id' => $comment['id'] ?? null,
-                        'content' => $comment['content'] ?? '',
+                        'content' => $this->stripHtml($rawContent),
                         'author' => $comment['authorName'] ?? $comment['authorId'] ?? 'Support Team',
                         'isPublic' => $comment['isPublic'] ?? true,
                         'created_at' => $comment['createdTime'] ?? $comment['created_time'] ?? null,
