@@ -704,45 +704,57 @@ class JobApplicationController extends Controller
      */
     public function approve($id)
     {
-        $user = Auth::guard('api')->user();
-        $leave = LeaveRequest::find($id);
-        if (!$leave) {
+        try {
+            $user = Auth::guard('api')->user();
+            $leave = LeaveRequest::find($id);
+            if (!$leave) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Leave request not found'
+                ], 404);
+            }
+
+            $canManageLeave = (int) $user->user_role_id === 1
+                || ((int) $user->user_role_id === 3 && (int) $leave->houseowner_id === (int) $user->id);
+            if (!$canManageLeave) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'You are not allowed to manage this leave request.'
+                ], 403);
+            }
+
+            if (strtolower((string) $leave->status) !== 'pending') {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'This leave request has already been processed.'
+                ], 422);
+            }
+
+            $leave->status = 'approved';
+            $leave->save();
+
+            try {
+                $owner = User::find($leave->houseowner_id);
+                \App\Services\NotificationService::leaveApproved(
+                    $leave->user_id,
+                    $owner ? $owner->name : 'Admin'
+                );
+            } catch (\Exception $e) {
+                \Log::warning('Leave approved notification failed: ' . $e->getMessage());
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Leave request approved successfully',
+                'data' => $leave
+            ], 200);
+        } catch (\Exception $e) {
+            \Log::error('approveLeave error: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ' | Line: ' . $e->getLine());
             return response()->json([
                 'status' => false,
-                'message' => 'Leave request not found'
-            ], 404);
+                'message' => 'Failed to approve leave: ' . $e->getMessage()
+            ], 500);
         }
-
-        $canManageLeave = (int) $user->user_role_id === 1
-            || ((int) $user->user_role_id === 3 && (int) $leave->houseowner_id === (int) $user->id);
-        if (!$canManageLeave) {
-            return response()->json([
-                'status' => false,
-                'message' => 'You are not allowed to manage this leave request.'
-            ], 403);
-        }
-
-        if (strtolower((string) $leave->status) !== 'pending') {
-            return response()->json([
-                'status' => false,
-                'message' => 'This leave request has already been processed.'
-            ], 422);
-        }
-
-        $leave->status = 'approved';
-        $leave->save();
-
-        $owner = User::find($leave->houseowner_id);
-        \App\Services\NotificationService::leaveApproved(
-            $leave->user_id,
-            $owner ? $owner->name : 'Admin'
-        );
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Leave request approved successfully',
-            'data' => $leave
-        ], 200);
     }
 
     /**
@@ -750,45 +762,57 @@ class JobApplicationController extends Controller
      */
     public function reject($id)
     {
-        $user = Auth::guard('api')->user();
-        $leave = LeaveRequest::find($id);
-        if (!$leave) {
+        try {
+            $user = Auth::guard('api')->user();
+            $leave = LeaveRequest::find($id);
+            if (!$leave) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Leave request not found'
+                ], 404);
+            }
+
+            $canManageLeave = (int) $user->user_role_id === 1
+                || ((int) $user->user_role_id === 3 && (int) $leave->houseowner_id === (int) $user->id);
+            if (!$canManageLeave) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'You are not allowed to manage this leave request.'
+                ], 403);
+            }
+
+            if (strtolower((string) $leave->status) !== 'pending') {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'This leave request has already been processed.'
+                ], 422);
+            }
+
+            $leave->status = 'rejected';
+            $leave->save();
+
+            try {
+                $owner = User::find($leave->houseowner_id);
+                \App\Services\NotificationService::leaveRejected(
+                    $leave->user_id,
+                    $owner ? $owner->name : 'Admin'
+                );
+            } catch (\Exception $e) {
+                \Log::warning('Leave rejected notification failed: ' . $e->getMessage());
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Leave request rejected successfully',
+                'data' => $leave
+            ], 200);
+        } catch (\Exception $e) {
+            \Log::error('rejectLeave error: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ' | Line: ' . $e->getLine());
             return response()->json([
                 'status' => false,
-                'message' => 'Leave request not found'
-            ], 404);
+                'message' => 'Failed to reject leave: ' . $e->getMessage()
+            ], 500);
         }
-
-        $canManageLeave = (int) $user->user_role_id === 1
-            || ((int) $user->user_role_id === 3 && (int) $leave->houseowner_id === (int) $user->id);
-        if (!$canManageLeave) {
-            return response()->json([
-                'status' => false,
-                'message' => 'You are not allowed to manage this leave request.'
-            ], 403);
-        }
-
-        if (strtolower((string) $leave->status) !== 'pending') {
-            return response()->json([
-                'status' => false,
-                'message' => 'This leave request has already been processed.'
-            ], 422);
-        }
-
-        $leave->status = 'rejected';
-        $leave->save();
-
-        $owner = User::find($leave->houseowner_id);
-        \App\Services\NotificationService::leaveRejected(
-            $leave->user_id,
-            $owner ? $owner->name : 'Admin'
-        );
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Leave request rejected successfully',
-            'data' => $leave
-        ], 200);
     }
 
 

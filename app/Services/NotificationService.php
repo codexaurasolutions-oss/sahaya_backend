@@ -194,8 +194,16 @@ class NotificationService extends Controller
     public static function staffAdded($staffId, $ownerName)
     {
         $message = "Welcome to Sahayya! You have been added as staff by {$ownerName}.";
-        self::send($staffId, 'Welcome to Sahayya!', $message, 'staff_added');
-        self::sendWhatsAppTemplate($staffId, 'staffAdded', [$ownerName]);
+        try {
+            self::send($staffId, 'Welcome to Sahayya!', $message, 'staff_added');
+        } catch (\Throwable $e) {
+            \Log::warning('staffAdded send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'staffAdded', [$ownerName]);
+        } catch (\Throwable $e) {
+            \Log::warning('staffAdded WhatsApp failed: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -204,8 +212,16 @@ class NotificationService extends Controller
     public static function salaryPaid($staffId, $amount, $ownerName)
     {
         $message = "Your salary of ₹{$amount} has been paid by {$ownerName}.";
-        self::send($staffId, 'Salary Paid', $message, 'salary_paid');
-        self::sendWhatsAppTemplate($staffId, 'salaryPaid', [$amount, $ownerName]);
+        try {
+            self::send($staffId, 'Salary Paid', $message, 'salary_paid');
+        } catch (\Throwable $e) {
+            \Log::warning('salaryPaid send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'salaryPaid', [$amount, $ownerName]);
+        } catch (\Throwable $e) {
+            \Log::warning('salaryPaid WhatsApp failed: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -214,8 +230,16 @@ class NotificationService extends Controller
     public static function staffTerminated($staffId, $ownerName)
     {
         $message = "You have been terminated from your position by {$ownerName}.";
-        self::send($staffId, 'Termination Notice', $message, 'termination');
-        self::sendWhatsAppTemplate($staffId, 'staffTerminated', [$ownerName]);
+        try {
+            self::send($staffId, 'Termination Notice', $message, 'termination');
+        } catch (\Throwable $e) {
+            \Log::warning('staffTerminated send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'staffTerminated', [$ownerName]);
+        } catch (\Throwable $e) {
+            \Log::warning('staffTerminated WhatsApp failed: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -224,8 +248,16 @@ class NotificationService extends Controller
     public static function leaveApproved($staffId, $ownerName)
     {
         $message = "Your leave request has been approved by {$ownerName}.";
-        self::send($staffId, 'Leave Approved', $message, 'leave_approved');
-        self::sendWhatsAppTemplate($staffId, 'leaveApproved', [$ownerName]);
+        try {
+            self::send($staffId, 'Leave Approved', $message, 'leave_approved');
+        } catch (\Throwable $e) {
+            \Log::warning('leaveApproved send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'leaveApproved', [$ownerName]);
+        } catch (\Throwable $e) {
+            \Log::warning('leaveApproved WhatsApp failed: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -234,8 +266,16 @@ class NotificationService extends Controller
     public static function leaveRejected($staffId, $ownerName)
     {
         $message = "Your leave request has been rejected by {$ownerName}.";
-        self::send($staffId, 'Leave Rejected', $message, 'leave_rejected');
-        self::sendWhatsAppTemplate($staffId, 'leaveRejected', [$ownerName]);
+        try {
+            self::send($staffId, 'Leave Rejected', $message, 'leave_rejected');
+        } catch (\Throwable $e) {
+            \Log::warning('leaveRejected send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'leaveRejected', [$ownerName]);
+        } catch (\Throwable $e) {
+            \Log::warning('leaveRejected WhatsApp failed: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -244,8 +284,16 @@ class NotificationService extends Controller
     public static function jobApplied($ownerId, $staffName, $jobTitle, $extra = [])
     {
         $message = "A new job application has been received from {$staffName} for \"{$jobTitle}\".";
-        self::send($ownerId, 'New Job Application', $message, 'job_application', $extra);
-        self::sendWhatsAppTemplate($ownerId, 'jobApplied', [$staffName, $jobTitle]);
+        try {
+            self::send($ownerId, 'New Job Application', $message, 'job_application', $extra);
+        } catch (\Throwable $e) {
+            \Log::warning('jobApplied send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($ownerId, 'jobApplied', [$staffName, $jobTitle]);
+        } catch (\Throwable $e) {
+            \Log::warning('jobApplied WhatsApp failed: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -254,7 +302,15 @@ class NotificationService extends Controller
     public static function leaveApplied($ownerId, $staffName, $dates, $extra = [])
     {
         $message = "{$staffName} has applied for leave on {$dates}.";
-        self::send($ownerId, 'Leave Application', $message, 'leave_application', $extra);
-        self::sendWhatsAppTemplate($ownerId, 'leaveApplied', [$staffName, $dates, $dates]);
+        try {
+            self::send($ownerId, 'Leave Application', $message, 'leave_application', $extra);
+        } catch (\Throwable $e) {
+            \Log::warning('leaveApplied send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($ownerId, 'leaveApplied', [$staffName, $dates, $dates]);
+        } catch (\Throwable $e) {
+            \Log::warning('leaveApplied WhatsApp failed: ' . $e->getMessage());
+        }
     }
 }
