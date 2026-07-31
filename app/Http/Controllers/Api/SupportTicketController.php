@@ -48,6 +48,7 @@ class SupportTicketController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'subject' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
                 'description' => 'required|string',
                 'category' => 'nullable|string|in:Payment,Staff,App Bug,Attendance,Leave,Salary,KYC,General',
                 'priority' => 'nullable|string|in:Low,Medium,High,Urgent',
@@ -61,7 +62,7 @@ class SupportTicketController extends Controller
                 ], 422);
             }
 
-            $data = $request->only(['subject', 'description', 'category', 'priority']);
+            $data = $request->only(['subject', 'email', 'description', 'category', 'priority']);
             $data['user_id'] = $user->id;
             $data['priority'] = $data['priority'] ?? 'Medium';
             $data['status'] = 'Open';
@@ -310,12 +311,12 @@ class SupportTicketController extends Controller
                 return null;
             }
 
-            // Create or find contact in Zoho Desk
-            $contactId = $this->getOrCreateZohoContact($zohoService, $user);
+            // Create or find contact in Zoho Desk using ticket email
+            $contactId = $this->getOrCreateZohoContact($zohoService, $user, $ticket->email);
 
             $body = "Category: {$ticket->category}\nPriority: {$ticket->priority}\n\n{$ticket->description}";
-            if ($user->email) {
-                $body .= "\n\nUser Email: {$user->email}";
+            if ($ticket->email) {
+                $body .= "\n\nContact Email: {$ticket->email}";
             }
             if ($user->phone_number) {
                 $body .= "\nUser Phone: {$user->phone_number}";
@@ -349,10 +350,10 @@ class SupportTicketController extends Controller
         }
     }
 
-    private function getOrCreateZohoContact(ZohoService $zohoService, $user): ?string
+    private function getOrCreateZohoContact(ZohoService $zohoService, $user, $ticketEmail = null): ?string
     {
         try {
-            $searchEmail = $user->email;
+            $searchEmail = $ticketEmail ?: $user->email;
             $searchPhone = $user->phone_number;
 
             // Search by email using the search endpoint

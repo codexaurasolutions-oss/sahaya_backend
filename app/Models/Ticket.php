@@ -13,6 +13,7 @@ class Ticket extends Model
         'user_id',
         'zoho_ticket_id',
         'subject',
+        'email',
         'description',
         'category',
         'priority',
