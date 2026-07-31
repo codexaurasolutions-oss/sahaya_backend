@@ -547,50 +547,66 @@ class JobApplicationController extends Controller
             $jobId = $activeApplication;
         }
 
-        $quit = QuitJob::create([
-            "job_id" => $jobId,
-            "user_id" => $userId,
-            "end_date" => $request->end_date,
-            "reason" => $request->reason,
-            "status" => "pending"
-        ]);
-        
-        // Get job and house owner details
-        $job = $jobId ? Job::find($jobId) : null;
-        $staff = Auth::guard('api')->user();
-        
-        // Send notification to house owner
-        if ($job && $job->created_by) {
-            \App\Services\NotificationService::send(
-                $job->created_by,
-                'Job Quit Request',
-                $staff->name . ' has requested to quit the job: ' . $job->title,
-                'job_quit',
-                ['job_id' => $job->id]
-            );
-        } elseif ($staff->added_by) {
-            \App\Services\NotificationService::send(
-                $staff->added_by,
-                'Job Quit Request',
-                $staff->name . ' has requested to quit their job',
-                'job_quit',
-                ['job_id' => $jobId]
-            );
+        try {
+            $quit = QuitJob::create([
+                "job_id" => $jobId,
+                "user_id" => $userId,
+                "end_date" => $request->end_date,
+                "reason" => $request->reason,
+                "status" => "pending"
+            ]);
+
+            // Get job and house owner details
+            $job = $jobId ? Job::find($jobId) : null;
+            $staff = Auth::guard('api')->user();
+
+            // Send notification to house owner
+            try {
+                if ($job && $job->created_by) {
+                    \App\Services\NotificationService::send(
+                        $job->created_by,
+                        'Job Quit Request',
+                        $staff->name . ' has requested to quit the job: ' . $job->title,
+                        'job_quit',
+                        ['job_id' => $job->id]
+                    );
+                } elseif ($staff->added_by) {
+                    \App\Services\NotificationService::send(
+                        $staff->added_by,
+                        'Job Quit Request',
+                        $staff->name . ' has requested to quit their job',
+                        'job_quit',
+                        ['job_id' => $jobId]
+                    );
+                }
+            } catch (\Throwable $e) {
+                \Log::warning('Quit job notification failed: ' . $e->getMessage());
+            }
+
+            // Send notification to staff (self, skip WhatsApp/SMS)
+            try {
+                \App\Services\NotificationService::send(
+                    $userId,
+                    'Quit Request Submitted',
+                    'Your quit request for ' . ($job ? $job->title : 'the job') . ' has been submitted',
+                    'job_quit',
+                    ['job_id' => $job?->id, 'skip_whatsapp' => true, 'skip_sms' => true]
+                );
+            } catch (\Throwable $e) {
+                \Log::warning('Quit job self-notification failed: ' . $e->getMessage());
+            }
+
+            return response()->json([
+                "message" => "Quit request submitted successfully",
+                "data" => $quit
+            ], 201);
+        } catch (\Throwable $e) {
+            \Log::error('Quit job create failed: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to submit quit job request. Please try again.',
+            ], 500);
         }
-        
-        // Send notification to staff (self, skip WhatsApp/SMS)
-        \App\Services\NotificationService::send(
-            $userId,
-            'Quit Request Submitted',
-            'Your quit request for ' . ($job ? $job->title : 'the job') . ' has been submitted',
-            'job_quit',
-            ['job_id' => $job?->id, 'skip_whatsapp' => true, 'skip_sms' => true]
-        );
-        
-        return response()->json([
-            "message" => "Quit request submitted successfully",
-            "data" => $quit
-        ], 201);
     }
 
     public function listQuitJobs(Request $request)
