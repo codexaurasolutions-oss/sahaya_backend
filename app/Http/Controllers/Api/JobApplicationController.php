@@ -581,68 +581,95 @@ class JobApplicationController extends Controller
 
     public function applyLeave(Request $request)
     {
-        $request->validate([
-            "houseowner_id" => "required|exists:users,id",
-            "leave_type_id" => "required|exists:leave_types,id",
-            "start_date" => "required|date",
-            "end_date" => "required|date",
-            "reason" => "required|string",
-            "supporting_document" => "nullable|file|mimes:jpg,jpeg,png,pdf|max:2048"
-        ]);
+        try {
+            $validator = \Validator::make($request->all(), [
+                "houseowner_id" => "required|exists:users,id",
+                "leave_type_id" => "required|exists:leave_types,id",
+                "start_date" => "required|date",
+                "end_date" => "required|date",
+                "reason" => "required|string",
+                "supporting_document" => "nullable|file|mimes:jpg,jpeg,png,pdf|max:2048"
+            ]);
 
-        $user = Auth::guard('api')->user();
+            if ($validator->fails()) {
+                return response()->json([
+                    "status" => false,
+                    "message" => $validator->errors()->first(),
+                    "errors" => $validator->errors()
+                ], 422);
+            }
 
-        $filePath = null;
+            $user = Auth::guard('api')->user();
 
-        if ($request->hasFile('supporting_document')) {
+            if (!$user) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Unauthorized. Please login again."
+                ], 401);
+            }
+
+            $filePath = null;
+
+            if ($request->hasFile('supporting_document')) {
                 $directory = "uploads/leave_documents";
-                // if (!file_exists(public_path($directory))) mkdir(public_path($directory), 0755, true);
-                // $image = $request->file('supporting_document');
-                // $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                // $image->move(public_path($directory), $fileName);
-                // $path = $directory . '/' . $fileName;
-                // if ($user->image && file_exists(public_path($user->image))) unlink(public_path($user->image));
                 $path = $this->uploadCloudary($request,"supporting_document",$directory);
                 $filePath = $path;
+            }
+
+            $leave = LeaveRequest::create([
+                "user_id" => $user->id,
+                'houseowner_id' => $request->houseowner_id,
+                "leave_type_id" => $request->leave_type_id,
+                "start_date" => $request->start_date,
+                "end_date" => $request->end_date,
+                "reason" => $request->reason,
+                "status" => "pending",
+                "supporting_document" => $filePath,
+                "created_by" => $user->id
+            ]);
+
+            // Notify staff (self, skip WhatsApp/SMS)
+            try {
+                \App\Services\NotificationService::send(
+                    $user->id,
+                    'Leave Applied',
+                    'Your leave request has been submitted successfully.',
+                    'leave_application',
+                    ['skip_whatsapp' => true, 'skip_sms' => true]
+                );
+            } catch (\Exception $e) {
+                \Log::warning('Leave notification failed: ' . $e->getMessage());
+            }
+
+            // Notify house owner (WhatsApp + Push)
+            if ($request->houseowner_id) {
+                try {
+                    $staffName = $user->first_name ? $user->first_name . ' ' . ($user->last_name ?? '') : ($user->name ?? 'A staff member');
+                    $dates = $request->start_date . ' to ' . $request->end_date;
+                    \App\Services\NotificationService::leaveApplied(
+                        $request->houseowner_id,
+                        $staffName,
+                        $dates,
+                        ['application_id' => $leave->id]
+                    );
+                } catch (\Exception $e) {
+                    \Log::warning('Leave owner notification failed: ' . $e->getMessage());
+                }
+            }
+
+            return response()->json([
+                "status" => true,
+                "message" => "Leave request submitted successfully",
+                "data" => $leave
+            ], 201);
+
+        } catch (\Exception $e) {
+            \Log::error('applyLeave error: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ' | Line: ' . $e->getLine());
+            return response()->json([
+                "status" => false,
+                "message" => "Failed to submit leave request: " . $e->getMessage()
+            ], 500);
         }
-        $leave = LeaveRequest::create([
-            "user_id" => $user->id,
-            'houseowner_id' => $request->houseowner_id,
-            "leave_type_id" => $request->leave_type_id,
-            "start_date" => $request->start_date,
-            "end_date" => $request->end_date,
-            "reason" => $request->reason,
-            "status" => "pending",
-            "supporting_document" => $filePath,
-            "created_by" => $user->id
-        ]);
-
-        // Notify staff (self, skip WhatsApp/SMS)
-        \App\Services\NotificationService::send(
-            $user->id,
-            'Leave Applied',
-            'Your leave request has been submitted successfully.',
-            'leave_application',
-            ['skip_whatsapp' => true, 'skip_sms' => true]
-        );
-
-        // Notify house owner (WhatsApp + Push)
-        if ($request->houseowner_id) {
-            $staffName = $user->first_name ? $user->first_name . ' ' . ($user->last_name ?? '') : ($user->name ?? 'A staff member');
-            $dates = $request->start_date . ' to ' . $request->end_date;
-            \App\Services\NotificationService::leaveApplied(
-                $request->houseowner_id,
-                $staffName,
-                $dates,
-                ['application_id' => $leave->id]
-            );
-        }
-
-        return response()->json([
-            "status" => true,
-            "message" => "Leave request submitted successfully",
-            "data" => $leave
-        ], 201);
     }
 
 
