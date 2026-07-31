@@ -522,14 +522,33 @@ class JobApplicationController extends Controller
             ]);
         }
 
-        $request->validate([
-            "job_id" => "required|exists:jobs,id",
+        $validator = \Validator::make($request->all(), [
+            "job_id" => "nullable|integer|exists:jobs,id",
             "end_date" => "required|date",
-            "reason" => "required|string"
+            "reason" => "required|string|min:10"
         ]);
-        $userId =  Auth::guard('api')->user()->id;
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
+
+        $userId = Auth::guard('api')->user()->id;
+
+        // If no job_id provided, try to find it from job applications
+        $jobId = $request->job_id;
+        if (!$jobId) {
+            $activeApplication = \DB::table('job_applications')
+                ->where('user_id', $userId)
+                ->whereIn('application_status', ['accepted', 'approved', 'active', 'hired'])
+                ->value('job_id');
+            $jobId = $activeApplication;
+        }
+
         $quit = QuitJob::create([
-            "job_id" => $request->job_id,
+            "job_id" => $jobId,
             "user_id" => $userId,
             "end_date" => $request->end_date,
             "reason" => $request->reason,
@@ -537,7 +556,7 @@ class JobApplicationController extends Controller
         ]);
         
         // Get job and house owner details
-        $job = Job::find($request->job_id);
+        $job = $jobId ? Job::find($jobId) : null;
         $staff = Auth::guard('api')->user();
         
         // Send notification to house owner
@@ -548,6 +567,14 @@ class JobApplicationController extends Controller
                 $staff->name . ' has requested to quit the job: ' . $job->title,
                 'job_quit',
                 ['job_id' => $job->id]
+            );
+        } elseif ($staff->added_by) {
+            \App\Services\NotificationService::send(
+                $staff->added_by,
+                'Job Quit Request',
+                $staff->name . ' has requested to quit their job',
+                'job_quit',
+                ['job_id' => $jobId]
             );
         }
         
