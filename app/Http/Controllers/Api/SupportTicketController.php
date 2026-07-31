@@ -32,13 +32,13 @@ class SupportTicketController extends Controller
     {
         $map = [
             'open' => 'Open',
-            'on hold' => 'In Progress',
-            'in progress' => 'In Progress',
-            'escalated' => 'In Progress',
+            'on hold' => 'On Hold',
+            'in progress' => 'On Hold',
+            'escalated' => 'Escalated',
             'closed' => 'Closed',
             'cancelled' => 'Closed',
         ];
-        return $map[strtolower($zohoStatus)] ?? 'Open';
+        return $map[strtolower($zohoStatus)] ?? ucfirst(strtolower($zohoStatus));
     }
 
     public function store(Request $request)
@@ -107,6 +107,31 @@ class SupportTicketController extends Controller
             }
 
             $tickets = $query->orderBy('created_at', 'desc')->get();
+
+            // Sync status from Zoho Desk for each ticket
+            $zohoService = null;
+            foreach ($tickets as $ticket) {
+                if ($ticket->zoho_ticket_id) {
+                    try {
+                        if (!$zohoService) {
+                            $zohoService = new ZohoService('desk');
+                        }
+                        $result = $zohoService->makeRequest('GET', "/tickets/{$ticket->zoho_ticket_id}");
+                        if ($result['ok'] && isset($result['data'])) {
+                            $zohoStatus = $result['data']['status'] ?? null;
+                            if ($zohoStatus) {
+                                $mappedStatus = $this->mapZohoStatus($zohoStatus);
+                                if ($ticket->status !== $mappedStatus) {
+                                    $ticket->update(['status' => $mappedStatus]);
+                                    $ticket->refresh();
+                                }
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        Log::warning("Zoho sync failed for ticket {$ticket->id}: " . $e->getMessage());
+                    }
+                }
+            }
 
             return response()->json([
                 'status' => 'success',
