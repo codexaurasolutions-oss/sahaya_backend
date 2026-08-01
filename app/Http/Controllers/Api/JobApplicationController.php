@@ -391,13 +391,11 @@ class JobApplicationController extends Controller
             // Do NOT automatically add as staff here. The owner must go through
             // the NewStaffFrom screen and verify via Aadhar OTP to add them.
             
-            // Send notification to staff (in-app + FCM push)
+            // Send notification to staff (in-app + FCM push + SMS + WhatsApp)
             if ($staff) {
-                \App\Services\NotificationService::send(
+                \App\Services\NotificationService::jobAccepted(
                     $staff->id,
-                    'Application Accepted',
-                    'Congratulations! Your application for ' . ($job ? $job->title : 'the job') . ' has been accepted',
-                    'job_application_accepted'
+                    $job ? $job->title : 'the job'
                 );
             }
         }

@@ -138,6 +138,11 @@ class WhatsAppService
         return $this->sendTemplate($phone, 'leave_marked', [$date, $status]);
     }
 
+    public function sendOtp($phone, $otp)
+    {
+        return $this->sendTemplate($phone, 'otp_verification', [$otp]);
+    }
+
     // ═══════════════════════════════════════════════════════════════
     // CORE API REQUEST -360dialog
     // ═══════════════════════════════════════════════════════════════

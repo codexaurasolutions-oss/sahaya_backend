@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 class NotificationService extends Controller
 {
     protected static $whatsapp;
-    protected static $sms;
 
     /**
      * Get WhatsApp service instance
@@ -21,17 +20,6 @@ class NotificationService extends Controller
             self::$whatsapp = new WhatsAppService();
         }
         return self::$whatsapp;
-    }
-
-    /**
-     * Get SMS service instance
-     */
-    protected static function getSMS()
-    {
-        if (!self::$sms) {
-            self::$sms = new SMSService();
-        }
-        return self::$sms;
     }
 
     /**
@@ -143,17 +131,70 @@ class NotificationService extends Controller
     }
 
     /**
-     * Send SMS to a user
+     * Send SMS to a user via SMSCountry API
      */
     protected static function sendSMSMessage($userId, $message)
     {
         try {
             $phone = User::where('id', $userId)->value('phone_number');
-            if (!empty($phone)) {
-                self::getSMS()->sendTextMessage($phone, $message);
+            if (empty($phone)) return;
+
+            $authKey = config('services.smscountry.auth_key');
+            $authToken = config('services.smscountry.auth_token');
+
+            if (empty($authKey) || empty($authToken)) {
+                Log::warning("SMS skipped — SMSCountry credentials not configured");
+                return;
             }
+
+            // Format phone: strip +, leading 0; ensure 91 prefix for 10-digit numbers
+            $phone = ltrim(trim($phone), '0');
+            $phone = preg_replace('/[^0-9]/', '', $phone);
+            if (strlen($phone) === 10) {
+                $phone = '91' . $phone;
+            }
+
+            $url = "https://restapi.smscountry.com/v0.1/Accounts/{$authKey}/SMSes/";
+            $auth = base64_encode($authKey . ':' . $authToken);
+
+            $payload = json_encode([
+                "Text" => $message,
+                "Number" => $phone,
+                "SenderId" => "SAHAYYA",
+                "DRNotifyUrl" => "",
+                "DRNotifyHttpMethod" => "POST",
+                "Tool" => "API",
+            ]);
+
+            $curl = curl_init();
+            curl_setopt_array($curl, [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => 8,
+                CURLOPT_CONNECTTIMEOUT => 3,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => $payload,
+                CURLOPT_HTTPHEADER => [
+                    'Content-Type: application/json',
+                    'Authorization: Basic ' . $auth,
+                ],
+            ]);
+
+            $response = curl_exec($curl);
+            $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $error = curl_errno($curl) ? curl_error($curl) : null;
+            curl_close($curl);
+
+            Log::info('SMSCountry Transactional SMS', [
+                'user_id' => $userId,
+                'phone' => $phone,
+                'http_code' => $httpCode,
+                'success' => ($httpCode >= 200 && $httpCode < 300),
+                'error' => $error,
+                'response' => json_decode($response, true) ?? $response,
+            ]);
         } catch (\Exception $e) {
-            \Log::warning("SMS failed for user $userId: " . $e->getMessage());
+            Log::warning("SMS failed for user $userId: " . $e->getMessage());
         }
     }
 
@@ -311,6 +352,24 @@ class NotificationService extends Controller
             self::sendWhatsAppTemplate($ownerId, 'leaveApplied', [$staffName, $dates, $dates]);
         } catch (\Throwable $e) {
             \Log::warning('leaveApplied WhatsApp failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Job Application Accepted - WhatsApp + SMS + Push to staff
+     */
+    public static function jobAccepted($staffId, $jobTitle)
+    {
+        $message = "Congratulations! Your application for \"{$jobTitle}\" has been accepted.";
+        try {
+            self::send($staffId, 'Application Accepted', $message, 'job_application_accepted');
+        } catch (\Throwable $e) {
+            \Log::warning('jobAccepted send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'jobAccepted', [$jobTitle]);
+        } catch (\Throwable $e) {
+            \Log::warning('jobAccepted WhatsApp failed: ' . $e->getMessage());
         }
     }
 }

@@ -46,6 +46,18 @@ class UserController extends Controller
 {
     use ImageUpload,SmsCountryTrait;
 
+    private function sendWhatsAppOtp($phone, $otp)
+    {
+        try {
+            $whatsapp = new \App\Services\WhatsAppService();
+            if ($whatsapp->isConfigured()) {
+                $whatsapp->sendOtp($phone, $otp);
+            }
+        } catch (\Throwable $e) {
+            \Log::warning('WhatsApp OTP failed: ' . $e->getMessage());
+        }
+    }
+
     private const OTP_VALID_MINUTES = 30;
 
     public function signUp(Request $request)
@@ -65,6 +77,7 @@ class UserController extends Controller
             if (!$smsResult['success']) {
                 Log::warning('Signup SMS failed (existing staff)', ['number' => $to, 'api' => $smsResult['api']]);
             }
+            $this->sendWhatsAppOtp($request->phone_number, $otp);
 
             // Update existing user with OTP
             $existingUser->update([
@@ -98,6 +111,8 @@ class UserController extends Controller
         $response = $this->sendOtp(str_replace('+', '', $to), $otp);
         if (!$response['success']) {
             Log::warning('Signup SMS failed (new user)', ['number' => $to, 'api' => $response['api']]);
+        }
+        $this->sendWhatsAppOtp($request->phone_number, $otp);
         }
         
         // Create new user
@@ -272,6 +287,7 @@ public function loginCustomer(Request $request)
     if (!$response['success']) {
         \Log::warning('Login SMS failed', ['number' => $to, 'api' => $response['api']]);
     }
+    $this->sendWhatsAppOtp($user->phone_number, $verificationCode);
     
     // Update verification code and time
     $user->update([
@@ -345,6 +361,7 @@ public function signUpCustomer(Request $request)
     if (!$response['success']) {
         \Log::warning('signUpCustomer SMS failed', ['number' => $to, 'api' => $response['api']]);
     }
+    $this->sendWhatsAppOtp($request->phone_number, $otp);
     
     // Create new user (validation ensures phone is unique)
     $user = User::create([
@@ -943,6 +960,7 @@ public function getProfile(Request $request)
         if (!$response['success']) {
             \Log::warning('Resend OTP SMS failed', ['number' => $to, 'api' => $response['api']]);
         }
+        $this->sendWhatsAppOtp($user->phone_number, $otp);
         
 
         // Update user with new code
