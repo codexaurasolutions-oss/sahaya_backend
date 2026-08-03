@@ -163,6 +163,12 @@ class WhatsAppService
                 ],
                 'components' => [
                     [
+                        'type' => 'body',
+                        'parameters' => [
+                            ['type' => 'text', 'text' => (string) $otp],
+                        ],
+                    ],
+                    [
                         'type' => 'button',
                         'sub_type' => 'COPY_CODE',
                         'index' => 0,
