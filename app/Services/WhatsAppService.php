@@ -168,14 +168,6 @@ class WhatsAppService
                             ['type' => 'text', 'text' => (string) $otp],
                         ],
                     ],
-                    [
-                        'type' => 'button',
-                        'sub_type' => 'COPY_CODE',
-                        'index' => 0,
-                        'parameters' => [
-                            ['type' => 'payload', 'payload' => (string) $otp],
-                        ],
-                    ],
                 ],
             ],
         ];
