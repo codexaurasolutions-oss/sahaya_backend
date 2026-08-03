@@ -4620,11 +4620,16 @@ public function addStaff(Request $request)
             'phone_number_country_code' => 'required|string|max:5',
             'gender' => 'required|in:male,female,other',
             'dob' => 'required|date',
-            // Address fields
+            // Present address fields
             'street' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'pincode' => 'required|string|max:10',
+            // Permanent address fields (optional)
+            'perm_street' => 'nullable|string|max:255',
+            'perm_city' => 'nullable|string|max:255',
+            'perm_state' => 'nullable|string|max:255',
+            'perm_pincode' => 'nullable|string|max:10',
             // Work details
             'role_designation' => 'array',
             'joining_date' => 'nullable|date',
@@ -4818,6 +4823,8 @@ public function addStaff(Request $request)
 
                 $address = UserAddress::create([
                     'user_id' => $staff->id,
+                    'name' => 'Present Address',
+                    'address_type' => 'present',
                     'street' => $request->street,
                     'city' => $request->city,
                     'state' => $request->state,
@@ -4828,6 +4835,20 @@ public function addStaff(Request $request)
                     'longitude' => $request->long,
                     'is_primary' => true
                 ]);
+
+                // Create permanent address if provided
+                if ($request->perm_street || $request->perm_city || $request->perm_state || $request->perm_pincode) {
+                    UserAddress::create([
+                        'user_id' => $staff->id,
+                        'name' => 'Permanent Address',
+                        'address_type' => 'permanent',
+                        'street' => $request->perm_street,
+                        'city' => $request->perm_city,
+                        'state' => $request->perm_state,
+                        'pincode' => $request->perm_pincode,
+                        'is_primary' => false
+                    ]);
+                }
 
                 \Log::info('Staff address record created successfully', [
                     'action' => $logAction,
