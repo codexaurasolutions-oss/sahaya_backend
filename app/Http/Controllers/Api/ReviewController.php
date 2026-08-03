@@ -12,21 +12,26 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'service_id'       => 'nullable|exists:services,id',
-            'given_by_type'    => 'required|in:user,vendor',
-            'received_by_id'   => 'required|integer',
-            'received_by_type' => 'required|in:user,vendor',
-            'rating'           => 'required|integer|min:1|max:5',
-            'review'           => 'nullable|string',
+            'staff_id'  => 'required|integer|exists:users,id',
+            'rating'    => 'required|integer|min:1|max:5',
+            'review'    => 'nullable|string',
         ]);
-                $userId = Auth::guard('api')->user()->id;
-        $validated['given_by_id'] = $userId;
-        $review = Review::create($validated);
+
+        $userId = Auth::guard('api')->user()->id;
+
+        $review = Review::create([
+            'given_by_id'      => $userId,
+            'given_by_type'    => 'user',
+            'received_by_id'   => $validated['staff_id'],
+            'received_by_type' => 'user',
+            'rating'           => $validated['rating'],
+            'review'           => $validated['review'] ?? null,
+        ]);
 
         return response()->json([
-            'status' => true,
+            'status'  => true,
             'message' => 'Review added successfully',
-            'data' => $review
+            'data'    => $review,
         ]);
     }
 
@@ -39,25 +44,28 @@ class ReviewController extends Controller
             ->get();
 
         return response()->json([
-            'status' => true,
+            'status'  => true,
             'message' => 'Reviews fetched successfully',
-            'data' => $reviews
+            'data'    => $reviews,
         ]);
     }
 
-      public function selfIndex(Request $request)
+    public function selfIndex(Request $request)
     {
-                        $userId = Auth::guard('api')->user()->id;
+        $userId = Auth::guard('api')->user()->id;
+
         $reviews = Review::with(['service'])
-            ->when($request->given_by_id, fn($q) => $q->where('given_by_id', $userId))
-            ->when($request->received_by_id, fn($q) => $q->where('received_by_id', $request->received_by_id))
+            ->where(function ($q) use ($userId) {
+                $q->where('given_by_id', $userId)
+                  ->orWhere('received_by_id', $userId);
+            })
             ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json([
-            'status' => true,
+            'status'  => true,
             'message' => 'Reviews fetched successfully',
-            'data' => $reviews
+            'data'    => $reviews,
         ]);
     }
 
@@ -67,7 +75,7 @@ class ReviewController extends Controller
 
         if (!$review) {
             return response()->json([
-                'status' => false,
+                'status'  => false,
                 'message' => 'Review not found',
             ], 404);
         }
@@ -75,7 +83,7 @@ class ReviewController extends Controller
         $review->delete();
 
         return response()->json([
-            'status' => true,
+            'status'  => true,
             'message' => 'Review deleted successfully',
         ]);
     }

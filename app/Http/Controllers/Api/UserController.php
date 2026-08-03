@@ -397,7 +397,7 @@ public function getProfile(Request $request)
                 'message' => 'User not authenticated'
             ], 401);
         }
-        $userDetails = User::with(['addresses.householdInformation','addresses.petDetails','petDetails','lastExp','householdInformation','kycInformation','userWorkInfo','addedByUser', 'addedByUser.addresses.householdInformation', 'addedByUser.addresses.petDetails',
+        $userDetails = User::with(['addresses.householdInformation','addresses.petDetails','petDetails','lastExp','householdInformation','kycInformation','userWorkInfo','reviewsReceived','addedByUser', 'addedByUser.addresses.householdInformation', 'addedByUser.addresses.petDetails',
             'addedByUser.petDetails',
             'addedByUser.lastExp',
             'addedByUser.householdInformation',
