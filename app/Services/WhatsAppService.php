@@ -158,7 +158,7 @@ class WhatsAppService
             'template' => [
                 'name' => 'otp_verify',
                 'language' => [
-                    'code' => 'en',
+                    'code' => 'en_US',
                     'policy' => 'deterministic',
                 ],
                 'components' => [
