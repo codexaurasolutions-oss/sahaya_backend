@@ -140,7 +140,7 @@ class WhatsAppService
 
     public function sendOtp($phone, $otp)
     {
-        return $this->sendTemplate($phone, 'otp_verification', [$otp]);
+        return $this->sendTemplate($phone, 'otp_verify', [$otp]);
     }
 
     // ═══════════════════════════════════════════════════════════════
