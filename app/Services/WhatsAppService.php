@@ -154,11 +154,29 @@ class WhatsAppService
         $payload = [
             'messaging_product' => 'whatsapp',
             'to' => $formattedPhone,
-            'type' => 'authentication',
-            'authentication' => [
-                'otp_policy' => 'NONE',
-                'add_security_recommendation' => false,
-                'code' => (string) $otp,
+            'type' => 'template',
+            'template' => [
+                'name' => 'otp_code',
+                'language' => [
+                    'code' => 'en_US',
+                    'policy' => 'deterministic',
+                ],
+                'components' => [
+                    [
+                        'type' => 'body',
+                        'parameters' => [
+                            ['type' => 'text', 'text' => (string) $otp],
+                        ],
+                    ],
+                    [
+                        'type' => 'button',
+                        'sub_type' => 'COPY_CODE',
+                        'index' => 0,
+                        'parameters' => [
+                            ['type' => 'text', 'text' => (string) $otp],
+                        ],
+                    ],
+                ],
             ],
         ];
 

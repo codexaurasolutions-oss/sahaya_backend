@@ -262,6 +262,19 @@ Route::get('/migrate-plans', function (\Illuminate\Http\Request $request) {
 
 // Route::get('apitestttt', [UserController::class, 'otptest']);
 
+Route::get('test-otp', function (Request $request) {
+    $phone = $request->input('phone', '03101058254');
+    $otp = $request->input('otp', '123456');
+    try {
+        $whatsapp = new \App\Services\WhatsAppService();
+        if (!$whatsapp->isConfigured()) return response()->json(['error' => 'not configured']);
+        $result = $whatsapp->sendOtp($phone, $otp);
+        return response()->json(['sent' => $result, 'phone' => $phone, 'otp' => $otp, 'template' => 'otp_code']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()]);
+    }
+});
+
 
 Route::get('/', function () {
     return response()->json(['message' => 'API is working successfully', 'status' => 200]);
