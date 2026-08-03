@@ -140,7 +140,47 @@ class WhatsAppService
 
     public function sendOtp($phone, $otp)
     {
-        return $this->sendTemplate($phone, 'otp_verify', [$otp]);
+        if (!$this->isConfigured()) {
+            Log::warning('WhatsApp360dialog credentials not configured');
+            return false;
+        }
+
+        $formattedPhone = $this->formatPhone($phone);
+        if (!$formattedPhone) {
+            Log::warning("WhatsApp OTP: Invalid phone: $phone");
+            return false;
+        }
+
+        $payload = [
+            'messaging_product' => 'whatsapp',
+            'to' => $formattedPhone,
+            'type' => 'template',
+            'template' => [
+                'name' => 'otp_verify',
+                'language' => [
+                    'code' => 'en',
+                    'policy' => 'deterministic',
+                ],
+                'components' => [
+                    [
+                        'type' => 'body',
+                        'parameters' => [
+                            ['type' => 'text', 'text' => (string) $otp],
+                        ],
+                    ],
+                    [
+                        'type' => 'button',
+                        'sub_type' => 'otp',
+                        'index' => 0,
+                        'parameters' => [
+                            ['type' => 'otp', 'otp' => (string) $otp],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        return $this->sendRequest($payload, $formattedPhone);
     }
 
     // ═══════════════════════════════════════════════════════════════
