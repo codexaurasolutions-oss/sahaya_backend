@@ -2,100 +2,39 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 trait SmsCountryTrait
 {
     public function sendSms($number, $otp, $retryCount = 0)
     {
-        $twilioSid    = config('services.twilio.account_sid');
-        $twilioToken  = config('services.twilio.auth_token');
-        $twilioFrom   = config('services.twilio.from_number');
-
-        if ($twilioSid && $twilioToken && $twilioFrom) {
-            return $this->sendViaTwilio($number, $otp, $retryCount);
-        }
-
-        Log::warning('Twilio not configured, falling back to SMSCountry', ['number' => $number]);
         return $this->sendViaSmsCountry($number, $otp, $retryCount);
-    }
-
-    private function sendViaTwilio($number, $otp, $retryCount = 0)
-    {
-        $sid   = config('services.twilio.account_sid');
-        $token = config('services.twilio.auth_token');
-        $from  = config('services.twilio.from_number');
-        $to    = $this->formatPhoneNumber($number);
-        $url   = "https://api.twilio.com/2010-04-01/Accounts/{$sid}/Messages.json";
-
-        try {
-            $response = Http::withBasicAuth($sid, $token)
-                ->timeout(8)
-                ->asForm()
-                ->post($url, [
-                    'From' => $from,
-                    'To'   => $to,
-                    'Body' => "Your Sahayya verification code is {$otp}. Valid for 30 minutes. Do not share this code.",
-                ]);
-
-            $data = $response->json();
-            $success = $response->successful();
-
-            Log::info('Twilio SMS Response', [
-                'number'   => $to,
-                'status'   => $response->status(),
-                'success'  => $success,
-                'sid'      => $data['sid'] ?? null,
-                'error'    => $data['message'] ?? null,
-                'retry'    => $retryCount,
-            ]);
-
-            if (!$success && $retryCount < 1) {
-                sleep(1);
-                return $this->sendViaTwilio($number, $otp, $retryCount + 1);
-            }
-
-            return [
-                'success' => $success,
-                'status'  => $response->status(),
-                'body'    => $data,
-            ];
-        } catch (\Exception $e) {
-            Log::error('Twilio Exception', [
-                'number' => $number,
-                'error'  => $e->getMessage(),
-                'retry'  => $retryCount,
-            ]);
-
-            if ($retryCount < 1) {
-                sleep(1);
-                return $this->sendViaTwilio($number, $otp, $retryCount + 1);
-            }
-
-            return [
-                'success' => false,
-                'status'  => 500,
-                'body'    => $e->getMessage(),
-            ];
-        }
     }
 
     private function sendViaSmsCountry($number, $otp, $retryCount = 0)
     {
         try {
-            $url = "https://restapi.smscountry.com/v0.1/Accounts/"
-                . config('services.smscountry.auth_key')
-                . "/SMSes/";
+            $authKey   = config('services.smscountry.auth_key');
+            $authToken = config('services.smscountry.auth_token');
+            $senderId  = config('services.smscountry.sender_id', 'SAHYYA');
 
-            $auth = base64_encode(
-                config('services.smscountry.auth_key') . ':' . config('services.smscountry.auth_token')
-            );
+            if (empty($authKey) || empty($authToken)) {
+                Log::warning('SMSCountry credentials not configured', ['number' => $number]);
+                return [
+                    'success' => false,
+                    'status'  => 500,
+                    'body'    => 'SMSCountry credentials missing',
+                ];
+            }
+
+            $url = "https://restapi.smscountry.com/v0.1/Accounts/{$authKey}/SMSes/";
+
+            $auth = base64_encode($authKey . ':' . $authToken);
 
             $payload = json_encode([
                 "Text" => "Welcome to Sahayya! Your verification code is {$otp}. Valid for 30 minutes. Please do not share this code with anyone.",
                 "Number" => (string) $number,
-                "SenderId" => "SAHYYA",
+                "SenderId" => $senderId,
                 "DRNotifyUrl" => "https://www.domainname.com/notifyurl",
                 "DRNotifyHttpMethod" => "POST",
                 "Tool" => "API"
@@ -170,8 +109,7 @@ trait SmsCountryTrait
         } catch (\Exception $e) {
             Log::error('SMSCountry Exception', [
                 'number' => $number,
-                'error' => $e->getMessage(),
-                'retry' => $retryCount,
+                'error'  => $e->getMessage(),
             ]);
 
             return [
@@ -180,18 +118,6 @@ trait SmsCountryTrait
                 'body'    => $e->getMessage(),
             ];
         }
-    }
-
-    private function formatPhoneNumber($number)
-    {
-        $number = ltrim($number, '0');
-        if (strpos($number, '+') === 0) {
-            return $number;
-        }
-        if (strlen($number) === 10) {
-            return '+91' . $number;
-        }
-        return '+' . $number;
     }
 
     public function sendOtp($number, $otp)
