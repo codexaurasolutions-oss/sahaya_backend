@@ -262,6 +262,21 @@ Route::get('/migrate-plans', function (\Illuminate\Http\Request $request) {
 
 // Route::get('apitestttt', [UserController::class, 'otptest']);
 
+Route::get('test-whatsapp-otp', function (Request $request) {
+    $phone = $request->input('phone', '919100197091');
+    $otp = '123456';
+    try {
+        $whatsapp = new \App\Services\WhatsAppService();
+        if (!$whatsapp->isConfigured()) {
+            return response()->json(['error' => 'WhatsApp not configured - D360_API_KEY missing']);
+        }
+        $result = $whatsapp->sendOtp($phone, $otp);
+        return response()->json(['sent' => $result, 'phone' => $phone, 'otp' => $otp]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()]);
+    }
+});
+
 
 Route::get('/', function () {
     return response()->json(['message' => 'API is working successfully', 'status' => 200]);
