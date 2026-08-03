@@ -269,8 +269,8 @@ Route::get('test-whatsapp-otp', function (Request $request) {
         if (!$whatsapp->isConfigured()) {
             return response()->json(['error' => 'WhatsApp not configured - D360_API_KEY missing']);
         }
-        $result = $whatsapp->staffAdded($phone, 'Ahmed');
-        return response()->json(['sent' => $result, 'phone' => $phone, 'template' => 'staff_added']);
+        $result = $whatsapp->sendOtp($phone, '123456');
+        return response()->json(['sent' => $result, 'phone' => $phone, 'template' => 'otp_verify', 'otp' => '123456']);
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()]);
     }
