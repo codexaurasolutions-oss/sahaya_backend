@@ -113,7 +113,6 @@ class UserController extends Controller
             Log::warning('Signup SMS failed (new user)', ['number' => $to, 'api' => $response['api']]);
         }
         $this->sendWhatsAppOtp($request->phone_number, $otp);
-        }
         
         // Create new user
         $user = User::create([
