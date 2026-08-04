@@ -4786,6 +4786,8 @@ public function addStaff(Request $request)
                 'is_active' => 1,
                 'is_verified' => 1,
                 'relation' => $request->relation,
+                'prev_owner_name' => $request->prev_owner_name,
+                'prev_owner_phone' => $request->prev_owner_phone,
                 'upi_id' => $request->upi_id ?? null,
                 'is_deleted' => 0,
                 'status' => 'active',

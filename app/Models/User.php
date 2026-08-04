@@ -37,6 +37,8 @@ class User extends Authenticatable
         'is_job_seeking',
         'added_by',
         'relation',
+        'prev_owner_name',
+        'prev_owner_phone',
         'step',
         'is_deleted',
         'is_admin_panel_user',
