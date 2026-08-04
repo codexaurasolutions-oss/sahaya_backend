@@ -274,7 +274,13 @@ class StaffController extends Controller
                 $workQuery->orWhere('preferred_work_location', 'like', '%pan india%');
             })->orWhere(function ($userQuery) use ($searchTerms) {
                 foreach ($searchTerms as $term) {
-                    $userQuery->orWhere('location', 'like', '%' . $term . '%');
+                    $userQuery->orWhere('location', 'like', '%' . $term . '%')
+                        ->orWhere('current_city', 'like', '%' . $term . '%')
+                        ->orWhere('current_state', 'like', '%' . $term . '%')
+                        ->orWhere('current_street', 'like', '%' . $term . '%')
+                        ->orWhere('current_pincode', 'like', '%' . $term . '%')
+                        ->orWhere('area_locality', 'like', '%' . $term . '%')
+                        ->orWhere('google_location', 'like', '%' . $term . '%');
                 }
             });
         });
@@ -287,13 +293,17 @@ class StaffController extends Controller
             return $query;
         }
 
-        return $query->where(function ($locationQuery) use ($location) {
-            $locationQuery->where('city', 'like', '%' . $location . '%')
-                ->orWhere('state', 'like', '%' . $location . '%')
-                ->orWhere('area_locality', 'like', '%' . $location . '%')
-                ->orWhere('street_address', 'like', '%' . $location . '%')
-                ->orWhere('zip_code', 'like', '%' . $location . '%')
-                ->orWhere('google_location', 'like', '%' . $location . '%');
+        $searchTerms = $this->expandLocationWithAliases($location);
+
+        return $query->where(function ($locationQuery) use ($searchTerms) {
+            foreach ($searchTerms as $term) {
+                $locationQuery->orWhere('city', 'like', '%' . $term . '%')
+                    ->orWhere('state', 'like', '%' . $term . '%')
+                    ->orWhere('area_locality', 'like', '%' . $term . '%')
+                    ->orWhere('street_address', 'like', '%' . $term . '%')
+                    ->orWhere('zip_code', 'like', '%' . $term . '%')
+                    ->orWhere('google_location', 'like', '%' . $term . '%');
+            }
         });
     }
 
@@ -363,6 +373,19 @@ class StaffController extends Controller
             : strlen($normalized);
         if ($this->detectCanonicalRole($normalized) === null && $queryLength <= 80) {
             return trim($normalized, " \t\n\r\0\x0B,.;");
+        }
+
+        $canonicalRole = $this->detectCanonicalRole($normalized);
+        if ($canonicalRole !== null) {
+            $aliases = $this->roleAliases()[$canonicalRole] ?? [$canonicalRole];
+            $remaining = $normalized;
+            foreach ($aliases as $alias) {
+                $remaining = preg_replace('/\b' . preg_quote($alias, '/') . '\b/iu', ' ', $remaining);
+            }
+            $remaining = trim(preg_replace('/\s+/', ' ', $remaining), " \t\n\r\0\x0B,.;");
+            if ($remaining !== '' && $queryLength <= 80) {
+                return $remaining;
+            }
         }
 
         return null;
