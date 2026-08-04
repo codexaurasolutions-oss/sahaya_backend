@@ -4785,6 +4785,7 @@ public function addStaff(Request $request)
                 'added_by' => $authUser->id,
                 'is_active' => 1,
                 'is_verified' => 1,
+                'is_job_seeking' => 1,
                 'relation' => $request->relation,
                 'prev_owner_name' => $request->prev_owner_name,
                 'prev_owner_phone' => $request->prev_owner_phone,
