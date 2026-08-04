@@ -5589,7 +5589,18 @@ private function updateExistingStaff(User $existingUser, Request $request)
                           ->orWhere('last_name', 'like', "%{$search}%")
                           ->orWhere('email', 'like', "%{$search}%")
                           ->orWhere('phone_number', 'like', "%{$search}%")
-                          ->orWhere('aadhar_number', 'like', "%{$search}%");
+                          ->orWhere('aadhar_number', 'like', "%{$search}%")
+                          ->orWhere('current_city', 'like', "%{$search}%")
+                          ->orWhere('current_street', 'like', "%{$search}%")
+                          ->orWhere('current_state', 'like', "%{$search}%")
+                          ->orWhere('area_locality', 'like', "%{$search}%")
+                          ->orWhereHas('addresses', function($q) use ($search) {
+                              $q->where('street', 'like', "%{$search}%")
+                                ->orWhere('city', 'like', "%{$search}%")
+                                ->orWhere('state', 'like', "%{$search}%")
+                                ->orWhere('pincode', 'like', "%{$search}%")
+                                ->orWhere('locality', 'like', "%{$search}%");
+                          });
                 });
             }
 
