@@ -5589,12 +5589,14 @@ private function updateExistingStaff(User $existingUser, Request $request)
                           ->orWhere('last_name', 'like', "%{$search}%")
                           ->orWhere('email', 'like', "%{$search}%")
                           ->orWhere('phone_number', 'like', "%{$search}%")
-                          ->orWhere('aadhar_number', 'like', "%{$search}%")
-                          ->orWhere('current_city', 'like', "%{$search}%")
-                          ->orWhere('current_street', 'like', "%{$search}%")
-                          ->orWhere('current_state', 'like', "%{$search}%")
-                          ->orWhere('area_locality', 'like', "%{$search}%")
-                          ->orWhereHas('addresses', function($q) use ($search) {
+                          ->orWhere('aadhar_number', 'like', "%{$search}%");
+                    if (\Illuminate\Support\Facades\Schema::hasColumn('users', 'current_city')) {
+                        $query->orWhere('current_city', 'like', "%{$search}%")
+                              ->orWhere('current_street', 'like', "%{$search}%")
+                              ->orWhere('current_state', 'like', "%{$search}%")
+                              ->orWhere('area_locality', 'like', "%{$search}%");
+                    }
+                    $query->orWhereHas('addresses', function($q) use ($search) {
                               $q->where('street', 'like', "%{$search}%")
                                 ->orWhere('city', 'like', "%{$search}%")
                                 ->orWhere('state', 'like', "%{$search}%")

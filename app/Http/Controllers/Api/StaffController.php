@@ -283,13 +283,17 @@ class StaffController extends Controller
                 $workQuery->orWhere('preferred_work_location', 'like', '%pan india%');
             })->orWhere(function ($userQuery) use ($searchTerms) {
                 foreach ($searchTerms as $term) {
-                    $userQuery->orWhere('location', 'like', '%' . $term . '%')
-                        ->orWhere('current_city', 'like', '%' . $term . '%')
-                        ->orWhere('current_state', 'like', '%' . $term . '%')
-                        ->orWhere('current_street', 'like', '%' . $term . '%')
-                        ->orWhere('current_pincode', 'like', '%' . $term . '%')
-                        ->orWhere('area_locality', 'like', '%' . $term . '%')
-                        ->orWhere('google_location', 'like', '%' . $term . '%');
+                    $userQuery->orWhere('location', 'like', '%' . $term . '%');
+                }
+                if (Schema::hasColumn('users', 'current_city')) {
+                    foreach ($searchTerms as $term) {
+                        $userQuery->orWhere('current_city', 'like', '%' . $term . '%')
+                            ->orWhere('current_state', 'like', '%' . $term . '%')
+                            ->orWhere('current_street', 'like', '%' . $term . '%')
+                            ->orWhere('current_pincode', 'like', '%' . $term . '%')
+                            ->orWhere('area_locality', 'like', '%' . $term . '%')
+                            ->orWhere('google_location', 'like', '%' . $term . '%');
+                    }
                 }
             });
         });
@@ -1078,31 +1082,37 @@ class StaffController extends Controller
                 ->where('is_job_seeking', 1);
 
             // 🔹 DEBUG: Dump ALL job-seeking staff with their key fields
-            $allJobSeeking = User::select('id', 'first_name', 'last_name', 'phone_number', 'current_city', 'area_locality', 'is_job_seeking', 'is_available')
+            $allJobSeeking = User::select('id', 'first_name', 'last_name', 'phone_number', 'location', 'is_job_seeking', 'is_available')
                 ->with(['userWorkInfo:user_id,primary_role,preferred_work_location', 'addresses:user_id,city,state,area_locality,street,pincode,address_type'])
                 ->where('user_role_id', 2)
                 ->where('is_job_seeking', 1)
                 ->get();
             \Log::info('AI_SEARCH_DEBUG all_job_seeking_staff', [
                 'count' => $allJobSeeking->count(),
-                'staff' => $allJobSeeking->map(fn($s) => [
-                    'id' => $s->id,
-                    'name' => $s->first_name . ' ' . $s->last_name,
-                    'phone' => $s->phone_number,
-                    'current_city' => $s->current_city,
-                    'area_locality' => $s->area_locality,
-                    'is_job_seeking' => $s->is_job_seeking,
-                    'is_available' => $s->is_available,
-                    'primary_role' => $s->userWorkInfo?->primary_role,
-                    'preferred_work_location' => $s->userWorkInfo?->preferred_work_location,
-                    'addresses' => $s->addresses->map(fn($a) => [
-                        'type' => $a->address_type,
-                        'city' => $a->city,
-                        'state' => $a->state,
-                        'area' => $a->area_locality,
-                        'street' => $a->street,
-                    ])->toArray(),
-                ])->toArray(),
+                'staff' => $allJobSeeking->map(function ($s) {
+                    $data = [
+                        'id' => $s->id,
+                        'name' => $s->first_name . ' ' . $s->last_name,
+                        'phone' => $s->phone_number,
+                        'location' => $s->location,
+                        'is_job_seeking' => $s->is_job_seeking,
+                        'is_available' => $s->is_available,
+                        'primary_role' => $s->userWorkInfo ? $s->userWorkInfo->primary_role : null,
+                        'preferred_work_location' => $s->userWorkInfo ? $s->userWorkInfo->preferred_work_location : null,
+                    ];
+                    if ($s->addresses) {
+                        $data['addresses'] = $s->addresses->map(function ($a) {
+                            return [
+                                'type' => $a->address_type,
+                                'city' => $a->city,
+                                'state' => $a->state,
+                                'area' => $a->area_locality,
+                                'street' => $a->street,
+                            ];
+                        })->toArray();
+                    }
+                    return $data;
+                })->toArray(),
             ]);
 
             // Also check ALL staff (regardless of is_job_seeking) for comparison
