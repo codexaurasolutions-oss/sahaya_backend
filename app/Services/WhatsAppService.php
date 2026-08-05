@@ -212,7 +212,7 @@ class WhatsAppService
                 'Content-Type: application/json',
             ],
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_POSTFIELDS => json_encode($payload),
             CURLOPT_TIMEOUT => 30,
         ]);
