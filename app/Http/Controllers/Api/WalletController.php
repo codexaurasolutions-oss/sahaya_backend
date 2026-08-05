@@ -205,27 +205,33 @@ $totalAmount = Wallet::where('user_id', $user->id)
 			return response()->json(['status' => 'error', 'msg' => 'Invalid payment signature']);
 		}
 		$user = Auth::guard('api')->user();
-		$user->wallet += $request->amount;
+
+		$gst = \App\Services\GstService::extractGst((float) $request->amount);
+		$user->wallet_balance = $user->wallet_balance + $gst['base_amount'];
 		$user->save();
 		DB::table('notifications')->insert([
 			'user_id' => $user->id,
 			'title' =>'Wallet Recharge',
-			'message' => 'Your wallet was recharged successfully. Amount: ₹' . number_format($request->amount, 2),
+			'message' => 'Your wallet was recharged successfully. Balance: ₹' . number_format($user->wallet_balance, 2),
 			'created_at' => now(),
 			'updated_at' => now(),
 		]);
 
 		try {
-			$gst = \App\Services\GstService::calculate((float) $request->amount);
-			$invoiceText = \App\Services\GstService::formatInvoiceText(
-				'Wallet Top-Up',
-				$gst['base_amount'],
-				$gst['gst_amount'],
-				$gst['total_amount'],
-				'WALLET-' . $request->razorpay_order_id,
-				now()->format('d M Y, h:i A')
-			);
-			\App\Services\NotificationService::send($user->id, 'Wallet Top-Up', $invoiceText, 'wallet_topup');
+			$whatsapp = app(\App\Services\WhatsAppService::class);
+			if ($whatsapp->isConfigured() && !empty($user->phone_number)) {
+				$whatsapp->paymentInvoice(
+					$user->phone_number,
+					$user->first_name ?? $user->name ?? 'Customer',
+					'WALLET-' . $request->razorpay_order_id,
+					now()->format('d M Y'),
+					'Wallet Top-Up',
+					$gst['base_amount'],
+					$gst['gst_amount'],
+					$gst['total_amount'],
+					$request->razorpay_payment_id
+				);
+			}
 		} catch (\Throwable $e) {
 			\Illuminate\Support\Facades\Log::error("WhatsApp wallet invoice failed", ['error' => $e->getMessage()]);
 		}
@@ -233,7 +239,7 @@ $totalAmount = Wallet::where('user_id', $user->id)
 		return response()->json([
 			'status' => 'success',
 			'msg' => 'Wallet recharged successfully',
-			'wallet_balance' => $user->wallet
+			'wallet_balance' => $user->wallet_balance
 		]);
 	}
     /**
