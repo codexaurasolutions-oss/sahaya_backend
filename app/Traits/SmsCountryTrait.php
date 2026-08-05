@@ -32,7 +32,7 @@ trait SmsCountryTrait
             $auth = base64_encode($authKey . ':' . $authToken);
 
             $payload = json_encode([
-                "Text" => "Welcome to Sahayya! Your verification code is {$otp}. Valid for 30 minutes. Please do not share this code with anyone.",
+                "Text" => "Your login verification code for QuickMySlot (QMS) is {$otp}. It expires in 10 minutes.",
                 "Number" => (string) $number,
                 "SenderId" => $senderId,
                 "DRNotifyUrl" => "https://www.domainname.com/notifyurl",

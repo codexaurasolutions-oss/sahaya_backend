@@ -735,8 +735,33 @@ public function getEarningsSummary(Request $request, $job_id = null)
                 ->sortByDesc('date')
                 ->values()
                 ->take(3);
-            $startDate = date('Y-m-01', strtotime($month));
-            $endDate = date('Y-m-t', strtotime($month));
+            // Get salary closing date from user work info
+            $userWorkInfoForClosing = UserWorkInfo::where('user_id', $user->id)->first();
+            $closingDate = $userWorkInfoForClosing->salary_closing_date ?? null;
+
+            // Calculate salary period and next pay date based on closing date
+            $now = Carbon::now();
+            if ($closingDate && $closingDate >= 1 && $closingDate <= 28) {
+                // Salary period: from (previous closing date + 1) to (current closing date)
+                // e.g., closing_date = 25, today = Aug 5 -> period: Jul 26 to Aug 25, next pay: Aug 25
+                // e.g., closing_date = 25, today = Aug 26 -> period: Aug 26 to Sep 25, next pay: Sep 25
+                if ($now->day > $closingDate) {
+                    $periodStart = $now->copy()->day($closingDate + 1);
+                    $periodEnd = $now->copy()->addMonth()->day($closingDate);
+                } else {
+                    $periodStart = $now->copy()->subMonth()->day($closingDate + 1);
+                    $periodEnd = $now->copy()->day($closingDate);
+                }
+                $startDate = $periodStart->format('Y-m-d');
+                $endDate = $periodEnd->format('Y-m-d');
+                $nextPayDate = $periodEnd->copy()->format('d/m/Y');
+            } else {
+                // Default: calendar month
+                $startDate = $now->copy()->startOfMonth()->format('Y-m-d');
+                $endDate = $now->copy()->endOfMonth()->format('Y-m-d');
+                $nextPayDate = $now->copy()->endOfMonth()->format('d/m/Y');
+            }
+            $daysInPeriod = Carbon::parse($startDate)->diffInDays(Carbon::parse($endDate)) + 1;
             
             $attendanceRecords = Attendance::where('staff_id', $user->id)
                 ->whereBetween('date', [$startDate, $endDate])
@@ -746,14 +771,13 @@ public function getEarningsSummary(Request $request, $job_id = null)
             $lateArrivals = $attendanceRecords->where('status', 'late')->count();
             $absentDays = $attendanceRecords->where('status', 'absent')->count();
             
-            // Calculate total working days in the month (excluding weekends)
+            // Calculate total working days in the salary period (excluding weekends)
             $totalWorkingDays = $this->getWorkingDays($startDate, $endDate);
             
             // Calculate absent days from total working days
             $actualAbsentDays = $totalWorkingDays - ($presentDays + $lateArrivals);
 
             $acceptedDate = $application->updated_at ?? now();
-            $nextPayDate = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
 
             $earningsSummary = [
                 "employer" => $application->job && isset($application->job->creator) 
@@ -805,6 +829,10 @@ public function getEarningsSummary(Request $request, $job_id = null)
                     "late_arrivals" => $lateArrivals,
                     "absent_days" => $actualAbsentDays > 0 ? $actualAbsentDays : $absentDays,
                     "total_working_days" => $totalWorkingDays,
+                    "days_in_period" => $daysInPeriod,
+                    "salary_closing_date" => $closingDate,
+                    "salary_period_start" => $startDate,
+                    "salary_period_end" => $endDate,
                     "attendance_percentage" => $totalWorkingDays > 0 ? 
                         round((($presentDays + $lateArrivals) / $totalWorkingDays) * 100, 2) : 0
                 ],
