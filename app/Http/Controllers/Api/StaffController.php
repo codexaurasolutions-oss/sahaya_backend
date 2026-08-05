@@ -218,6 +218,11 @@ class StaffController extends Controller
         $canonicalRole = $this->detectCanonicalRole($role)
             ?? $this->normalizeStaffSearchText($role);
         $aliases = $this->roleAliases()[$canonicalRole] ?? [$canonicalRole];
+        \Log::info('AI_SEARCH_DEBUG role_filter', [
+            'input_role' => $role,
+            'canonical_role' => $canonicalRole,
+            'aliases' => $aliases,
+        ]);
 
         return $query->whereHas('userWorkInfo', function ($workQuery) use ($aliases) {
             $workQuery->where(function ($roleQuery) use ($aliases) {
@@ -254,6 +259,10 @@ class StaffController extends Controller
         }
 
         $searchTerms = $this->expandLocationWithAliases($location);
+        \Log::info('AI_SEARCH_DEBUG location_filter', [
+            'input_location' => $location,
+            'expanded_terms' => $searchTerms,
+        ]);
 
         return $query->where(function ($locationQuery) use ($searchTerms) {
             $locationQuery->whereHas('addresses', function ($addressQuery) use ($searchTerms) {
@@ -400,7 +409,7 @@ class StaffController extends Controller
             return $requestedLocation;
         }
 
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         if (!$user) {
             return '';
         }
@@ -566,7 +575,7 @@ class StaffController extends Controller
             ];
         }
 
-        return $this->getUserCoordinates(Auth::user());
+        return $this->getUserCoordinates(Auth::guard('api')->user());
     }
 
     private function calculateDistanceKm(float $startLat, float $startLong, float $endLat, float $endLong): float
@@ -1068,6 +1077,43 @@ class StaffController extends Controller
                 ->where('user_role_id', 2)
                 ->where('is_job_seeking', 1);
 
+            // 🔹 DEBUG: Dump ALL job-seeking staff with their key fields
+            $allJobSeeking = User::select('id', 'first_name', 'last_name', 'phone_number', 'current_city', 'area_locality', 'is_job_seeking', 'is_available')
+                ->with(['userWorkInfo:user_id,primary_role,preferred_work_location', 'addresses:user_id,city,state,area_locality,street,pincode,address_type'])
+                ->where('user_role_id', 2)
+                ->where('is_job_seeking', 1)
+                ->get();
+            \Log::info('AI_SEARCH_DEBUG all_job_seeking_staff', [
+                'count' => $allJobSeeking->count(),
+                'staff' => $allJobSeeking->map(fn($s) => [
+                    'id' => $s->id,
+                    'name' => $s->first_name . ' ' . $s->last_name,
+                    'phone' => $s->phone_number,
+                    'current_city' => $s->current_city,
+                    'area_locality' => $s->area_locality,
+                    'is_job_seeking' => $s->is_job_seeking,
+                    'is_available' => $s->is_available,
+                    'primary_role' => $s->userWorkInfo?->primary_role,
+                    'preferred_work_location' => $s->userWorkInfo?->preferred_work_location,
+                    'addresses' => $s->addresses->map(fn($a) => [
+                        'type' => $a->address_type,
+                        'city' => $a->city,
+                        'state' => $a->state,
+                        'area' => $a->area_locality,
+                        'street' => $a->street,
+                    ])->toArray(),
+                ])->toArray(),
+            ]);
+
+            // Also check ALL staff (regardless of is_job_seeking) for comparison
+            $allStaffCount = User::where('user_role_id', 2)->where('is_deleted', 0)->count();
+            $anyJobSeekingCount = User::where('user_role_id', 2)->where('is_deleted', 0)->count();
+            \Log::info('AI_SEARCH_DEBUG total_staff_count', [
+                'total_staff_role_2' => $allStaffCount,
+                'query' => $queryText,
+                'searcher_id' => Auth::guard('api')->id(),
+            ]);
+
             // If no query text, just return all staff (no AI, no subscription needed)
             if ($queryText === '') {
                 $data = $this->applyNearbyStaffProximity(
@@ -1096,6 +1142,14 @@ class StaffController extends Controller
 
             if (!$canUseAi) {
                 // Even without AI, apply basic role/location filter from query text
+                $basicResolved = $this->resolveBasicSearchFilters($basicQueryText, $preparsedFilters, 'role');
+                \Log::info('AI_SEARCH_DEBUG non_ai_path', [
+                    'basic_query' => $basicQueryText,
+                    'resolved_filters' => $basicResolved,
+                    'can_use_ai' => false,
+                    'has_subscription' => (bool) $subscription,
+                ]);
+
                 $data = $this->applyBasicFilters(
                     $baseQuery,
                     $basicQueryText,
@@ -1190,6 +1244,13 @@ class StaffController extends Controller
             // Clone base query for strict and relaxed searches
             $query = clone $baseQuery;
 
+            // 🔹 DEBUG: Log base count before any filters
+            $baseCount = (clone $baseQuery)->count();
+            \Log::info('AI_SEARCH_DEBUG base_count', [
+                'query' => $queryText,
+                'base_staff_count' => $baseCount,
+            ]);
+
             $applyCoreFilters = function($q) use ($filters) {
                 if (!empty($filters['name'])) {
                     $name = $filters['name'];
@@ -1214,6 +1275,15 @@ class StaffController extends Controller
 
             // Apply core filters (Role, Location, Gender, Name)
             $applyCoreFilters($query);
+
+            // 🔹 DEBUG: Log SQL and count after core filters
+            $coreSql = $query->toRawSql();
+            $coreBindings = $query->getBindings();
+            \Log::info('AI_SEARCH_DEBUG after_core_filters', [
+                'filters' => $filters,
+                'sql' => $coreSql,
+                'bindings' => $coreBindings,
+            ]);
 
             // Apply strict filters (Salary, Experience, Languages, Skills, Keywords)
             if (!empty($filters['salary']) && is_array($filters['salary'])) {
@@ -1291,6 +1361,13 @@ class StaffController extends Controller
             }
 
             $data = $query->get();
+
+            // 🔹 DEBUG: Log result count
+            \Log::info('AI_SEARCH_DEBUG after_query', [
+                'result_count' => $data->count(),
+                'filters' => $filters,
+                'staff_ids' => $data->pluck('id')->toArray(),
+            ]);
 
             // ✅ Fallback: If strict AI filters yield 0 results, run a relaxed query
             if ($data->isEmpty() && (!empty($filters['general_keywords']) || !empty($filters['skills']) || !empty($filters['experience']) || !empty($filters['languages']) || !empty($filters['salary']))) {
@@ -1468,7 +1545,7 @@ class StaffController extends Controller
 
 
     public function getJobs() {
-        $id = Auth::user()->id;
+        $id = Auth::guard('api')->id();
         $staff = User::find($id);
         if (!$staff) {
             return response()->json([
@@ -1969,7 +2046,7 @@ class StaffController extends Controller
     public function updateAvailability(Request $request)
     {
         try {
-            $user = Auth::user();
+            $user = Auth::guard('api')->user();
             if (!$user) return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
 
             $isAvailable = filter_var($request->input('is_available', false), FILTER_VALIDATE_BOOLEAN);
@@ -2015,7 +2092,7 @@ class StaffController extends Controller
 
     public function getAvailabilityStatus()
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         if (!$user) return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
 
         $isAvailable = Schema::hasColumn('users', 'is_available') ? (bool)$user->is_available : (bool)$user->is_active;
@@ -2033,7 +2110,7 @@ class StaffController extends Controller
 
     public function optInHireMe(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         if (!$user) return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
 
         // Update profile with hire me details if provided
@@ -2075,7 +2152,7 @@ class StaffController extends Controller
 
     public function pauseHireMe()
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         $user->update(['is_active' => 0, 'status' => 'paused']);
         
         if (Schema::hasColumn('users', 'is_available')) $user->update(['is_available' => false]);
@@ -2090,7 +2167,7 @@ class StaffController extends Controller
 
     public function deactivateHireMe()
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         $user->update(['is_active' => 0, 'status' => 'inactive']);
 
         if (Schema::hasColumn('users', 'is_available')) $user->update(['is_available' => false]);
