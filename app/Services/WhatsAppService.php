@@ -138,6 +138,20 @@ class WhatsAppService
         return $this->sendTemplate($phone, 'leave_marked', [$date, $status]);
     }
 
+    public function paymentInvoice($phone, $name, $invoiceNo, $date, $plan, $baseAmount, $gstAmount, $totalAmount, $paymentId)
+    {
+        return $this->sendTemplate($phone, 'payment_invoice', [
+            $name,
+            $invoiceNo,
+            $date,
+            $plan,
+            number_format($baseAmount, 2),
+            number_format($gstAmount, 2),
+            number_format($totalAmount, 2),
+            $paymentId,
+        ]);
+    }
+
     public function sendOtp($phone, $otp)
     {
         if (!$this->isConfigured()) {

@@ -58,6 +58,8 @@ return [
 
     'asset_url' => env('ASSET_URL'),
 
+    'gst_number' => env('GST_NUMBER', '123'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

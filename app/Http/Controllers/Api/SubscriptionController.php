@@ -448,6 +448,9 @@ class SubscriptionController extends Controller
             // Send notifications
             $this->sendSubscriptionNotifications($user, $subscriptionUser);
 
+            // Send WhatsApp invoice for zero-payment (wallet-funded) subscriptions too
+            $this->sendWhatsAppInvoice($user, $subscriptionUser, $subscription);
+
             DB::commit();
 
             return response()->json([
@@ -573,17 +576,22 @@ class SubscriptionController extends Controller
             $baseAmount = (float) ($subscriptionUser->base_amount ?? $subscription->price);
             $gstAmount = (float) ($subscriptionUser->gst_amount ?? 0);
             $totalAmount = (float) ($subscriptionUser->total_amount ?? $subscriptionUser->amount);
+            $paymentId = $subscriptionUser->transaction_id ?? $subscriptionUser->payment_id ?? 'FREE';
 
-            $invoiceText = \App\Services\GstService::formatInvoiceText(
-                $subscription->subscription_name ?? 'Subscription Plan',
-                $baseAmount,
-                $gstAmount,
-                $totalAmount,
-                $subscriptionUser->order_number,
-                now()->format('d M Y, h:i A')
-            );
-
-            \App\Services\NotificationService::send($user->id, 'Payment Receipt', $invoiceText, 'payment_receipt');
+            $whatsapp = app(\App\Services\WhatsAppService::class);
+            if ($whatsapp->isConfigured() && !empty($user->phone_number)) {
+                $whatsapp->paymentInvoice(
+                    $user->phone_number,
+                    $user->first_name ?? $user->name ?? 'Customer',
+                    $subscriptionUser->order_number ?? 'N/A',
+                    now()->format('d M Y'),
+                    $subscription->subscription_name ?? 'Subscription Plan',
+                    $baseAmount,
+                    $gstAmount,
+                    $totalAmount,
+                    $paymentId
+                );
+            }
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error("WhatsApp invoice failed", ['error' => $e->getMessage()]);
         }
