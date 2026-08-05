@@ -49,7 +49,8 @@ class JobApplyLimitController extends Controller
         $user = Auth::guard('api')->user();
         $pricePerCredit = (float) (Setting::where('key', 'credit_purchase_price')->value('value') ?? 10);
         $creditsToPurchase = (int) $request->credits_to_purchase;
-        $totalAmount = $pricePerCredit * $creditsToPurchase;
+        $grossAmount = $pricePerCredit * $creditsToPurchase;
+        $gst = \App\Services\GstService::extractGst($grossAmount);
 
         try {
             $razorpayKey    = config('services.razorpay.key');
@@ -59,7 +60,7 @@ class JobApplyLimitController extends Controller
 
             $orderData = [
                 'receipt'  => 'credit_' . $user->id . '_' . time(),
-                'amount'   => (int) round($totalAmount * 100),
+                'amount'   => (int) round($grossAmount * 100),
                 'currency' => 'INR',
                 'notes'    => [
                     'user_id'  => $user->id,
@@ -73,7 +74,10 @@ class JobApplyLimitController extends Controller
             $purchase = JobApplyLimitPurchase::create([
                 'user_id'             => $user->id,
                 'razorpay_order_id'   => $razorpayOrder->id,
-                'amount'              => $totalAmount,
+                'amount'              => $grossAmount,
+                'base_amount'         => $gst['base_amount'],
+                'gst_amount'          => $gst['gst_amount'],
+                'total_amount'        => $gst['total_amount'],
                 'extra_limit_granted' => $creditsToPurchase,
                 'status'              => 'pending',
             ]);
@@ -82,12 +86,16 @@ class JobApplyLimitController extends Controller
                 'status' => 'success',
                 'data'   => [
                     'order_id'        => $razorpayOrder->id,
-                    'amount'          => (int) round($totalAmount * 100),
+                    'amount'          => (int) round($grossAmount * 100),
                     'currency'        => 'INR',
                     'razorpay_key'    => $razorpayKey,
                     'purchase_id'     => $purchase->id,
                     'name'            => 'Sahayya',
                     'description'     => $creditsToPurchase . ' Credits',
+                    'base_amount'     => $gst['base_amount'],
+                    'gst_amount'      => $gst['gst_amount'],
+                    'total_amount'    => $gst['total_amount'],
+                    'gst_rate'        => $gst['gst_rate'],
                     'prefill_name'    => $user->first_name . ' ' . $user->last_name,
                     'prefill_email'   => $user->email ?? '',
                     'prefill_contact' => $user->phone_number ?? '',
@@ -155,6 +163,29 @@ class JobApplyLimitController extends Controller
             });
 
             $freshUser = $user->fresh();
+
+            // Send WhatsApp invoice
+            try {
+                $purchase = JobApplyLimitPurchase::where('razorpay_order_id', $request->razorpay_order_id)->first();
+                if ($purchase && !empty($user->phone_number)) {
+                    $whatsapp = app(\App\Services\WhatsAppService::class);
+                    if ($whatsapp->isConfigured()) {
+                        $whatsapp->paymentInvoice(
+                            $user->phone_number,
+                            $user->first_name ?? $user->name ?? 'Customer',
+                            'CREDITS-' . $purchase->id,
+                            now()->format('d M Y'),
+                            $creditsGranted . ' Job Credits',
+                            (float) ($purchase->base_amount ?? $purchase->amount),
+                            (float) ($purchase->gst_amount ?? 0),
+                            (float) ($purchase->total_amount ?? $purchase->amount),
+                            $request->razorpay_payment_id
+                        );
+                    }
+                }
+            } catch (\Throwable $e) {
+                Log::error("WhatsApp credit invoice failed", ['error' => $e->getMessage()]);
+            }
 
             return response()->json([
                 'status'  => 'success',

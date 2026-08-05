@@ -15,6 +15,9 @@ class JobApplyLimitPurchase extends Model
         'razorpay_payment_id',
         'razorpay_signature',
         'amount',
+        'base_amount',
+        'gst_amount',
+        'total_amount',
         'extra_limit_granted',
         'status',
     ];

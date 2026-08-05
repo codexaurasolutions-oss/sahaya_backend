@@ -407,11 +407,11 @@ class SubscriptionController extends Controller
         }
     }
 
-    public function zeroPaymentData($request)
+    public function zeroPaymentData($subscriptionUser)
     {
         
         $user = Auth::guard('api')->user();
-        $subscriptionUser = SubscriptionUser::find($request->id);
+        $subscriptionUser = SubscriptionUser::find($subscriptionUser->id);
         
         try {
             DB::beginTransaction();
@@ -422,13 +422,17 @@ class SubscriptionController extends Controller
             $startDate = now();
             $endDate = now()->addDays($subscription->validity);
 
-                        // Update subscription user record
+            // Update subscription user record — wallet-funded zero payment
             $subscriptionUser->update([
-                'transaction_id' => $request->razorpay_payment_id,
-                'payment_id' => $request->razorpay_payment_id,
+                'transaction_id' => 'WALLET-ZERO-' . $subscriptionUser->id,
+                'payment_id' => 'WALLET-ZERO-' . $subscriptionUser->id,
                 'payment_status' => 'completed',
-                'payment_mode' => 'razorpay',
-                'payment_response' => $request->all(),
+                'payment_mode' => 'wallet',
+                'payment_response' => [
+                    'source' => 'wallet',
+                    'subscription_user_id' => $subscriptionUser->id,
+                    'wallet_used' => $subscriptionUser->wallet_used ?? 0,
+                ],
                 'status' => 'active',
                 'start_date' => $startDate,
                 'end_date' => $endDate,
@@ -1001,7 +1005,7 @@ class SubscriptionController extends Controller
             'razorpay_signature' => 'required',
         ]);
 
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
 
         try {
             $generated_signature = hash_hmac(
@@ -1041,6 +1045,8 @@ class SubscriptionController extends Controller
                 ]);
             }
 
+            DB::beginTransaction();
+
             $activeSubscription->increment('extra_staff');
 
             $plan = Subscription::find($activeSubscription->subscription_id);
@@ -1062,6 +1068,8 @@ class SubscriptionController extends Controller
                 'created_by' => $user->id,
             ]);
 
+            DB::commit();
+
             \App\Services\NotificationService::send(
                 $user->id,
                 'Extra Staff Limit Purchased',
@@ -1076,6 +1084,7 @@ class SubscriptionController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'status' => false,
                 'message' => 'Payment verification failed: ' . $e->getMessage()
