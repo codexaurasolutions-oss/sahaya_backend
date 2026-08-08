@@ -429,6 +429,14 @@ class JobApplicationController extends Controller
                     'Your application for ' . ($job ? $job->title : 'the job') . ' has been rejected',
                     'job_application_rejected'
                 );
+                try {
+                    \App\Services\NotificationService::jobRejected(
+                        $staff->id,
+                        $job ? $job->title : 'the job'
+                    );
+                } catch (\Throwable $e) {
+                    \Log::warning('jobRejected WhatsApp failed: ' . $e->getMessage());
+                }
             }
         }
 
@@ -568,6 +576,15 @@ class JobApplicationController extends Controller
                         'job_quit',
                         ['job_id' => $job->id]
                     );
+                    try {
+                        \App\Services\NotificationService::quitJobRequest(
+                            $job->created_by,
+                            $staff->name,
+                            $job->title
+                        );
+                    } catch (\Throwable $e) {
+                        \Log::warning('quitJobRequest WhatsApp failed: ' . $e->getMessage());
+                    }
                 } elseif ($staff->added_by) {
                     \App\Services\NotificationService::send(
                         $staff->added_by,
@@ -576,6 +593,15 @@ class JobApplicationController extends Controller
                         'job_quit',
                         ['job_id' => $jobId]
                     );
+                    try {
+                        \App\Services\NotificationService::quitJobRequest(
+                            $staff->added_by,
+                            $staff->name,
+                            'their job'
+                        );
+                    } catch (\Throwable $e) {
+                        \Log::warning('quitJobRequest WhatsApp failed: ' . $e->getMessage());
+                    }
                 }
             } catch (\Throwable $e) {
                 \Log::warning('Quit job notification failed: ' . $e->getMessage());
@@ -686,11 +712,11 @@ class JobApplicationController extends Controller
             if ($request->houseowner_id) {
                 try {
                     $staffName = $user->first_name ? $user->first_name . ' ' . ($user->last_name ?? '') : ($user->name ?? 'A staff member');
-                    $dates = $request->start_date . ' to ' . $request->end_date;
                     \App\Services\NotificationService::leaveApplied(
                         $request->houseowner_id,
                         $staffName,
-                        $dates,
+                        $request->start_date,
+                        $request->end_date,
                         ['application_id' => $leave->id]
                     );
                 } catch (\Exception $e) {

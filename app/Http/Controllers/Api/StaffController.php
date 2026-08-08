@@ -803,10 +803,10 @@ class StaffController extends Controller
             'status' => 'nullable|in:active,block,inactive',
             'occupation' => 'nullable|max:100',
             'service_category' => 'nullable|max:100',
-            'area_locality' => 'required|max:255',
-            'google_location' => 'required|string',
-            'lat' => 'required|numeric',
-            'long' => 'required|numeric',
+            'area_locality' => 'nullable|max:255',
+            'google_location' => 'nullable|string',
+            'lat' => 'nullable|numeric',
+            'long' => 'nullable|numeric',
             'current_city' => 'nullable|max:100',
             'current_state' => 'nullable|max:100',
             'current_pincode' => 'nullable|max:20',
@@ -950,6 +950,7 @@ class StaffController extends Controller
         // Update status
         $user->update([
             'status' => $request->status,
+            'is_active' => $request->status === 'active' ? 1 : 0,
         ]);
 
         return response()->json([
@@ -996,6 +997,14 @@ class StaffController extends Controller
         } catch (\Exception $e) {
             $startDate = Carbon::now()->startOfMonth();
             $endDate   = Carbon::now()->endOfMonth();
+        }
+
+        // If staff has a joining_date, don't show attendance before they joined
+        if ($staff->userWorkInfo && $staff->userWorkInfo->joining_date) {
+            $joiningCarbon = Carbon::parse($staff->userWorkInfo->joining_date);
+            if ($startDate->lessThan($joiningCarbon)) {
+                $startDate = $joiningCarbon->startOfDay();
+            }
         }
 
         // Get attendance records for that month

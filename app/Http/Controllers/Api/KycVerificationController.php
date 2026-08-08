@@ -236,6 +236,11 @@ class KycVerificationController extends Controller
                     'Your KYC verification has been approved.',
                     'kyc_approved'
                 );
+                try {
+                    \App\Services\NotificationService::kycApproved($kyc->user_id);
+                } catch (\Throwable $e) {
+                    \Log::warning('kycApproved WhatsApp failed: ' . $e->getMessage());
+                }
             } else {
                 $user = User::find($kyc->user_id);
                 if ($user) {
@@ -248,6 +253,11 @@ class KycVerificationController extends Controller
                     'Your KYC verification has been rejected. Please re-upload your documents.',
                     'kyc_rejected'
                 );
+                try {
+                    \App\Services\NotificationService::kycRejected($kyc->user_id);
+                } catch (\Throwable $e) {
+                    \Log::warning('kycRejected WhatsApp failed: ' . $e->getMessage());
+                }
             }
 
             DB::commit();

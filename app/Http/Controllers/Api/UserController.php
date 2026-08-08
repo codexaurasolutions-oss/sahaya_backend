@@ -3673,11 +3673,11 @@ public function addressUpdate(Request $request)
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'pincode' => 'required|string|max:10',
-            'area_locality' => 'required|string|max:255',
-            'google_location' => 'required|string',
+            'area_locality' => 'nullable|string|max:255',
+            'google_location' => 'nullable|string',
             'is_primary' => 'sometimes|boolean',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric'
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric'
         ])->validate();
 
         $id = $validated['id'] ?? null;

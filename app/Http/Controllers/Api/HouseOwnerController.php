@@ -122,10 +122,10 @@ class HouseOwnerController extends Controller
             'dob' => 'nullable|max:50',
             'gender' => 'nullable|max:20',
             'status' => 'nullable|in:active,block,inactive',
-            'area_locality' => 'required|max:255',
-            'google_location' => 'required|string',
-            'lat' => 'required|numeric',
-            'long' => 'required|numeric',
+            'area_locality' => 'nullable|max:255',
+            'google_location' => 'nullable|string',
+            'lat' => 'nullable|numeric',
+            'long' => 'nullable|numeric',
             'current_city' => 'nullable|max:100',
             'current_state' => 'nullable|max:100',
             'current_pincode' => 'nullable|max:20',
@@ -198,7 +198,16 @@ class HouseOwnerController extends Controller
     public function destroy($id)
     {
         $house = User::where('id', $id)->first();
-        $house->delete();
+        if (!$house) {
+            return response()->json([
+                'success' => false,
+                'message' => 'House owner not found'
+            ], 404);
+        }
+        $house->update([
+            'is_deleted' => 1,
+            'deleted_at' => now(),
+        ]);
         return response()->json([
             'success' => true,
             'message' => 'House owner deleted successfully'

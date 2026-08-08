@@ -107,7 +107,7 @@ class NotificationService extends Controller
             if (!empty($phone)) {
                 self::getWhatsApp()->sendTextMessage($phone, $message);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::warning("WhatsApp failed for user $userId: " . $e->getMessage());
         }
     }
@@ -125,7 +125,7 @@ class NotificationService extends Controller
             if (!$whatsapp->isConfigured()) return;
 
             $whatsapp->$methodName($phone, ...$params);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::warning("WhatsApp template failed for user $userId: " . $e->getMessage());
         }
     }
@@ -340,16 +340,17 @@ class NotificationService extends Controller
     /**
      * Leave Applied - WhatsApp + Push to owner
      */
-    public static function leaveApplied($ownerId, $staffName, $dates, $extra = [])
+    public static function leaveApplied($ownerId, $staffName, $fromDate, $toDate, $extra = [])
     {
-        $message = "{$staffName} has applied for leave on {$dates}.";
+        $dateRange = "{$fromDate} to {$toDate}";
+        $message = "{$staffName} has applied for leave from {$dateRange}.";
         try {
             self::send($ownerId, 'Leave Application', $message, 'leave_application', $extra);
         } catch (\Throwable $e) {
             \Log::warning('leaveApplied send failed: ' . $e->getMessage());
         }
         try {
-            self::sendWhatsAppTemplate($ownerId, 'leaveApplied', [$staffName, $dates, $dates]);
+            self::sendWhatsAppTemplate($ownerId, 'leaveApplied', [$staffName, $fromDate, $toDate]);
         } catch (\Throwable $e) {
             \Log::warning('leaveApplied WhatsApp failed: ' . $e->getMessage());
         }
@@ -370,6 +371,114 @@ class NotificationService extends Controller
             self::sendWhatsAppTemplate($staffId, 'jobAccepted', [$jobTitle]);
         } catch (\Throwable $e) {
             \Log::warning('jobAccepted WhatsApp failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Job Application Rejected - WhatsApp + Push to staff
+     */
+    public static function jobRejected($staffId, $jobTitle)
+    {
+        $message = "Your application for \"{$jobTitle}\" has been rejected.";
+        try {
+            self::send($staffId, 'Application Rejected', $message, 'job_application_rejected');
+        } catch (\Throwable $e) {
+            \Log::warning('jobRejected send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'jobRejected', [$jobTitle]);
+        } catch (\Throwable $e) {
+            \Log::warning('jobRejected WhatsApp failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Quit Job Request - WhatsApp to house owner
+     */
+    public static function quitJobRequest($ownerId, $staffName, $jobTitle)
+    {
+        $message = "{$staffName} has requested to quit the job \"{$jobTitle}\".";
+        try {
+            self::send($ownerId, 'Quit Job Request', $message, 'quit_job_request');
+        } catch (\Throwable $e) {
+            \Log::warning('quitJobRequest send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($ownerId, 'quitJobRequest', [$staffName, $jobTitle]);
+        } catch (\Throwable $e) {
+            \Log::warning('quitJobRequest WhatsApp failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * KYC Approved - WhatsApp to staff
+     */
+    public static function kycApproved($staffId)
+    {
+        $message = "Your KYC has been approved. You can now access all features.";
+        try {
+            self::send($staffId, 'KYC Approved', $message, 'kyc_approved');
+        } catch (\Throwable $e) {
+            \Log::warning('kycApproved send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'kycApproved', []);
+        } catch (\Throwable $e) {
+            \Log::warning('kycApproved WhatsApp failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * KYC Rejected - WhatsApp to staff
+     */
+    public static function kycRejected($staffId)
+    {
+        $message = "Your KYC has been rejected. Please re-upload your documents.";
+        try {
+            self::send($staffId, 'KYC Rejected', $message, 'kyc_rejected');
+        } catch (\Throwable $e) {
+            \Log::warning('kycRejected send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'kycRejected', []);
+        } catch (\Throwable $e) {
+            \Log::warning('kycRejected WhatsApp failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Salary Slip - WhatsApp to staff
+     */
+    public static function salarySlip($staffId, $month, $amount)
+    {
+        $message = "Your salary slip for {$month} is ready. Amount: ₹{$amount}";
+        try {
+            self::send($staffId, 'Salary Slip', $message, 'salary_slip');
+        } catch (\Throwable $e) {
+            \Log::warning('salarySlip send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'salarySlip', [$month, $amount]);
+        } catch (\Throwable $e) {
+            \Log::warning('salarySlip WhatsApp failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Leave Marked - WhatsApp to staff
+     */
+    public static function leaveMarked($staffId, $date, $status)
+    {
+        $message = "Leave has been marked for {$date} as {$status}.";
+        try {
+            self::send($staffId, 'Leave Marked', $message, 'leave_marked');
+        } catch (\Throwable $e) {
+            \Log::warning('leaveMarked send failed: ' . $e->getMessage());
+        }
+        try {
+            self::sendWhatsAppTemplate($staffId, 'leaveMarked', [$date, $status]);
+        } catch (\Throwable $e) {
+            \Log::warning('leaveMarked WhatsApp failed: ' . $e->getMessage());
         }
     }
 }

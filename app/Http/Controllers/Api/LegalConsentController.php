@@ -95,7 +95,6 @@ class LegalConsentController extends Controller
         $usersByPhone = [];
         if ($phoneNumbers->isNotEmpty()) {
             $users = User::whereIn('phone_number', $phoneNumbers)
-                ->orWhereIn('phone', $phoneNumbers)
                 ->get(['id', 'name', 'first_name', 'last_name', 'phone_number', 'phone', 'email']);
 
             foreach ($users as $user) {

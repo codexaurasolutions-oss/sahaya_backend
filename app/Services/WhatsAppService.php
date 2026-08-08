@@ -152,6 +152,44 @@ class WhatsAppService
         ]);
     }
 
+    public function sendTextMessage($phone, $message)
+    {
+        if (!$this->isConfigured()) {
+            Log::warning('WhatsApp360dialog credentials not configured');
+            return false;
+        }
+
+        $formattedPhone = $this->formatPhone($phone);
+        if (!$formattedPhone) {
+            Log::warning("WhatsApp text: Invalid phone: $phone");
+            return false;
+        }
+
+        $payload = [
+            'messaging_product' => 'whatsapp',
+            'to' => $formattedPhone,
+            'type' => 'text',
+            'text' => ['body' => $message],
+        ];
+
+        $response = Http::withHeaders([
+            'D360-API-KEY' => $this->apiKey,
+            'Content-Type' => 'application/json',
+        ])->timeout(30)->post($this->apiUrl, $payload);
+
+        if ($response->successful()) {
+            Log::info('WhatsApp text sent', ['phone' => $formattedPhone]);
+            return true;
+        }
+
+        Log::warning('WhatsApp text failed', [
+            'phone' => $formattedPhone,
+            'status' => $response->status(),
+            'body' => $response->body(),
+        ]);
+        return false;
+    }
+
     public function sendOtp($phone, $otp)
     {
         if (!$this->isConfigured()) {
