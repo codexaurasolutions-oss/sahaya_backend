@@ -18,6 +18,14 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+    protected function unauthenticated($request, \Illuminate\Auth\AuthenticationException $exception)
+    {
+        if ($request->is('api/*') || $request->wantsJson()) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => $exception->getMessage()], 401);
+        }
+        return parent::unauthenticated($request, $exception);
+    }
+
     public function register()
     {
         $this->reportable(function (Throwable $e) {
